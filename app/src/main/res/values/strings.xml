@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Unacceptable Health</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Unacceptable Health</string>
+    <string name="nav_header_subtitle">Don\'t be a fat cow!</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="nav_title_exercise">Exercise</string>
+    <string name="nav_title_nutrition">Nutrition</string>
+    <string name="nav_title_recipes">Recipes</string>
+    <string name="nav_title_goals">Goals</string>
+</resources>
