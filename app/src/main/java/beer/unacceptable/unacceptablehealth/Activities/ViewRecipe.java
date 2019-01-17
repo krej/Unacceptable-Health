@@ -1,4 +1,4 @@
-package beer.unacceptable.unacceptablehealth;
+package beer.unacceptable.unacceptablehealth.Activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-public class Recipes extends AppCompatActivity {
+import beer.unacceptable.unacceptablehealth.R;
+
+public class ViewRecipe extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

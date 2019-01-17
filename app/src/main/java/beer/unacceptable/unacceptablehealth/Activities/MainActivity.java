@@ -1,4 +1,4 @@
-package beer.unacceptable.unacceptablehealth;
+package beer.unacceptable.unacceptablehealth.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import beer.unacceptable.unacceptablehealth.R;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -87,7 +89,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_nutrition) {
 
         } else if (id == R.id.nav_recipes) {
-            Intent i = new Intent(getApplicationContext(), Recipes.class);
+            Intent i = new Intent(getApplicationContext(), RecipeList.class);
             startActivity(i);
         } else if (id == R.id.nav_goals) {
 
