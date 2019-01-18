@@ -3,6 +3,8 @@ package beer.unacceptable.unacceptablehealth.Activities;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,10 +15,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import beer.unacceptable.unacceptablehealth.Adapters.MyAdapter;
+import beer.unacceptable.unacceptablehealth.Models.Ingredient;
+import beer.unacceptable.unacceptablehealth.Models.Recipe;
 import beer.unacceptable.unacceptablehealth.R;
 
 public class RecipeList extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private RecyclerView m_rvRecipes;
+    private RecyclerView.Adapter m_Adapter;
+    private RecyclerView.LayoutManager m_LayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,14 +34,14 @@ public class RecipeList extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -42,6 +51,30 @@ public class RecipeList extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //my code
+        m_rvRecipes = (RecyclerView)findViewById(R.id.recipeView);
+        m_rvRecipes.setHasFixedSize(false);
+
+        m_LayoutManager = new LinearLayoutManager(this);
+        m_rvRecipes.setLayoutManager(m_LayoutManager);
+
+        Recipe[] myDataset = LoadRecipes();
+
+        m_Adapter = new MyAdapter(myDataset);
+        m_rvRecipes.setAdapter(m_Adapter);
+    }
+
+    private Recipe[] LoadRecipes() {
+        Ingredient[] i1 = new Ingredient[] {new Ingredient("Flour", 5, "grams")};
+        Ingredient[] i2 = new Ingredient[] {new Ingredient("Muffin Mix", 1, "packet"), new Ingredient("Water", 50, "grams")};
+        Ingredient[] i3 = new Ingredient[] {new Ingredient("Egg Wash", 2, "eggs"), new Ingredient("Corn Meal", 70, "grams"), new Ingredient("Water", 99, "grams")};
+
+        Recipe r1 = new Recipe("Basic Muffins", i1);
+        Recipe r2 = new Recipe("Insane Muffins", i2);
+        Recipe r3 = new Recipe("Out of this world Muffins", i3);
+
+        return new Recipe[] {r1, r2, r3};
     }
 
     @Override
@@ -82,7 +115,7 @@ public class RecipeList extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        /*if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
@@ -94,7 +127,7 @@ public class RecipeList extends AppCompatActivity
 
         } else if (id == R.id.nav_send) {
 
-        }
+        }*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
