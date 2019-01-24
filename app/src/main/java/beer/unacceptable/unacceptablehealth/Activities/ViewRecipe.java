@@ -9,13 +9,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Toast;
 
-import beer.unacceptable.unacceptablehealth.Adapters.MyAdapter;
+import beer.unacceptable.unacceptablehealth.Adapters.IngredientAdapter;
 import beer.unacceptable.unacceptablehealth.Models.Ingredient;
 import beer.unacceptable.unacceptablehealth.Models.Recipe;
 import beer.unacceptable.unacceptablehealth.R;
-import beer.unacceptable.unacceptablehealth.Tools.Tools;
 
 public class ViewRecipe extends AppCompatActivity {
 
@@ -26,7 +24,7 @@ public class ViewRecipe extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_recipe_list);
+        setContentView(R.layout.activity_view_recipe);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -38,7 +36,6 @@ public class ViewRecipe extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
@@ -46,7 +43,7 @@ public class ViewRecipe extends AppCompatActivity {
 
         //Tools.ShowToast(getApplicationContext(), r.name, Toast.LENGTH_LONG);
         setTitle(r.name);
-/*
+
         m_rvIngredients = (RecyclerView)findViewById(R.id.recipeView);
         m_rvIngredients.setHasFixedSize(false);
 
@@ -55,7 +52,8 @@ public class ViewRecipe extends AppCompatActivity {
 
         Ingredient[] myDataset = r.ingredients;
 
-        m_Adapter = new MyAdapter(myDataset);
-        m_rvIngredients.setAdapter(m_Adapter);*/
+        m_Adapter = new IngredientAdapter(R.layout.content_list_ingredients, 0);
+        ((IngredientAdapter) m_Adapter).PopulateDataset(myDataset);
+        m_rvIngredients.setAdapter(m_Adapter);
     }
 }

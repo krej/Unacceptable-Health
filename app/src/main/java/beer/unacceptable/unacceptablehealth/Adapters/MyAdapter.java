@@ -1,21 +1,16 @@
 package beer.unacceptable.unacceptablehealth.Adapters;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import beer.unacceptable.unacceptablehealth.Activities.ViewRecipe;
 import beer.unacceptable.unacceptablehealth.Models.*;
 import beer.unacceptable.unacceptablehealth.R;
-import beer.unacceptable.unacceptablehealth.Tools.Tools;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private Recipe[] m_Dataset;

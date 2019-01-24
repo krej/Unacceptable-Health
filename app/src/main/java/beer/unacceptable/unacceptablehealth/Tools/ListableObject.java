@@ -1,5 +1,7 @@
 package beer.unacceptable.unacceptablehealth.Tools;
 
-public class ListableObject {
+import java.io.Serializable;
+
+public class ListableObject implements Serializable {
     public String name = "Empty";
 }

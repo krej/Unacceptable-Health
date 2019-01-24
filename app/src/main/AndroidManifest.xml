@@ -10,17 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Activities.RecipeList"
-            android:label="@string/title_activity_recipe_list"
-            android:parentActivityName=".Activities.MainActivity"
+            android:name=".Activities.ViewRecipe"
+            android:label="@string/title_activity_view_recipe"
             android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="beer.unacceptable.unacceptablehealth.Activities.MainActivity"/>
         </activity>
         <activity
-            android:name=".Activities.ViewRecipe"
-            android:label="@string/title_activity_recipes"
+            android:name=".Activities.RecipeList"
+            android:label="@string/title_activity_recipe_list"
             android:parentActivityName=".Activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

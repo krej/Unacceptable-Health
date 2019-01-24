@@ -2,9 +2,10 @@ package beer.unacceptable.unacceptablehealth.Models;
 
 import java.io.Serializable;
 
-public class Recipe implements Serializable  {
+import beer.unacceptable.unacceptablehealth.Tools.ListableObject;
 
-    public String name;
+public class Recipe extends ListableObject {
+
     public Ingredient ingredients[];
 
     public Recipe(String name, Ingredient ingredients[]) {

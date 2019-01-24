@@ -2,8 +2,9 @@ package beer.unacceptable.unacceptablehealth.Models;
 
 import java.io.Serializable;
 
-public class Ingredient implements Serializable {
-    public String name;
+import beer.unacceptable.unacceptablehealth.Tools.ListableObject;
+
+public class Ingredient extends ListableObject {
     public double amount;
     public String measure;
 
