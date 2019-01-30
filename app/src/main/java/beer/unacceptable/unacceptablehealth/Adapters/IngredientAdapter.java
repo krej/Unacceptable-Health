@@ -3,11 +3,11 @@ package beer.unacceptable.unacceptablehealth.Adapters;
 import android.app.Dialog;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.unacceptable.unacceptablelibrary.Adapters.Adapter;
+import com.unacceptable.unacceptablelibrary.Models.ListableObject;
 
 import beer.unacceptable.unacceptablehealth.Models.Ingredient;
 import beer.unacceptable.unacceptablehealth.R;
-import beer.unacceptable.unacceptablehealth.Tools.ListableObject;
 
 public class IngredientAdapter extends Adapter {
     public IngredientAdapter(int iLayout, int iDialogLayout) {

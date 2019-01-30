@@ -1,8 +1,6 @@
 package beer.unacceptable.unacceptablehealth.Models;
 
-import java.io.Serializable;
-
-import beer.unacceptable.unacceptablehealth.Tools.ListableObject;
+import com.unacceptable.unacceptablelibrary.Models.ListableObject;
 
 public class Recipe extends ListableObject {
 

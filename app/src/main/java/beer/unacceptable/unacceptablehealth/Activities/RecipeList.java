@@ -1,11 +1,8 @@
 package beer.unacceptable.unacceptablehealth.Activities;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -24,7 +21,7 @@ public class RecipeList extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private RecyclerView m_rvRecipes;
-    private RecyclerView.Adapter m_Adapter;
+    private RecipeAdapter m_Adapter;
     private RecyclerView.LayoutManager m_LayoutManager;
 
     @Override
@@ -59,13 +56,14 @@ public class RecipeList extends AppCompatActivity
         m_LayoutManager = new LinearLayoutManager(this);
         m_rvRecipes.setLayoutManager(m_LayoutManager);
 
-        Recipe[] myDataset = LoadRecipes();
 
-        m_Adapter = new MyAdapter(myDataset);
+        m_Adapter = new RecipeAdapter(R.layout.recipe_list_preview, 0);
+        LoadRecipes();
+
         m_rvRecipes.setAdapter(m_Adapter);
     }
 
-    private Recipe[] LoadRecipes() {
+    private void LoadRecipes() {
         Ingredient[] i1 = new Ingredient[] {new Ingredient("Flour", 5, "grams")};
         Ingredient[] i2 = new Ingredient[] {new Ingredient("Muffin Mix", 1, "packet"), new Ingredient("Water", 50, "grams")};
         Ingredient[] i3 = new Ingredient[] {new Ingredient("Egg Wash", 2, "eggs"), new Ingredient("Corn Meal", 70, "grams"), new Ingredient("Water", 99, "grams")};
@@ -74,7 +72,11 @@ public class RecipeList extends AppCompatActivity
         Recipe r2 = new Recipe("Insane Muffins", i2);
         Recipe r3 = new Recipe("Out of this world Muffins", i3);
 
-        return new Recipe[] {r1, r2, r3};
+        m_Adapter.add(r1);
+
+        m_Adapter.add(r2);
+        m_Adapter.add(r3);
+
     }
 
     @Override
