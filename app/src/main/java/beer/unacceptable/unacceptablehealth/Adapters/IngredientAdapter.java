@@ -6,7 +6,9 @@ import android.widget.TextView;
 import com.unacceptable.unacceptablelibrary.Adapters.Adapter;
 import com.unacceptable.unacceptablelibrary.Models.ListableObject;
 
-import beer.unacceptable.unacceptablehealth.Models.Ingredient;
+import java.util.ArrayList;
+
+import beer.unacceptable.unacceptablehealth.Models.IngredientAddition;
 import beer.unacceptable.unacceptablehealth.R;
 
 public class IngredientAdapter extends Adapter {
@@ -24,13 +26,13 @@ public class IngredientAdapter extends Adapter {
 
 
 
-        Ingredient i = (Ingredient) m_Dataset.get(position);
+        IngredientAddition i = (IngredientAddition) m_Dataset.get(position);
 
         TextView txtName = holder.view.findViewById(R.id.ingredient_name);
         TextView txtAmount = holder.view.findViewById(R.id.ingredient_amount);
         TextView txtMeasure = holder.view.findViewById(R.id.ingredient_measure);
 
-        txtName.setText(i.name);
+        txtName.setText(i.ingredient.name);
         txtAmount.setText(Double.toString(i.amount));
         txtMeasure.setText(i.measure);
 
@@ -40,9 +42,9 @@ public class IngredientAdapter extends Adapter {
         //holder.txtFooter.setText("AAU: " + item.aau);
     }
 
-    public void PopulateDataset(ListableObject[] ds) {
-        for (int i = 0; i < ds.length; i++) {
-            add(ds[i]);
+    public void PopulateDataset(ArrayList<IngredientAddition>ds) {
+        for (int i = 0; i < ds.size(); i++) {
+            add(ds.get(i));
         }
     }
 }

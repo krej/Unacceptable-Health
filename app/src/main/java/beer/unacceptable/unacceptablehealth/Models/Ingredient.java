@@ -2,13 +2,11 @@ package beer.unacceptable.unacceptablehealth.Models;
 
 import com.unacceptable.unacceptablelibrary.Models.ListableObject;
 
+/**
+ * Theres nothing really to this class. It is just a name, which exists in ListableObject. I just wanted a class called Ingredient.
+ */
 public class Ingredient extends ListableObject {
-    public double amount;
-    public String measure;
-
-    public Ingredient(String name, double amount, String measure) {
+    public Ingredient(String name) {
         this.name = name;
-        this.amount = amount;
-        this.measure = measure;
     }
 }

@@ -10,8 +10,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import java.util.ArrayList;
+
 import beer.unacceptable.unacceptablehealth.Adapters.IngredientAdapter;
-import beer.unacceptable.unacceptablehealth.Models.Ingredient;
+import beer.unacceptable.unacceptablehealth.Models.IngredientAddition;
 import beer.unacceptable.unacceptablehealth.Models.Recipe;
 import beer.unacceptable.unacceptablehealth.R;
 
@@ -50,7 +52,7 @@ public class ViewRecipe extends AppCompatActivity {
         m_LayoutManager = new LinearLayoutManager(this);
         m_rvIngredients.setLayoutManager(m_LayoutManager);
 
-        Ingredient[] myDataset = r.ingredients;
+        ArrayList<IngredientAddition> myDataset = r.ingredientAdditions;
 
         m_Adapter = new IngredientAdapter(R.layout.content_list_ingredients, 0);
         ((IngredientAdapter) m_Adapter).PopulateDataset(myDataset);

@@ -12,8 +12,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import beer.unacceptable.unacceptablehealth.Adapters.MyAdapter;
+import java.util.ArrayList;
+
+import beer.unacceptable.unacceptablehealth.Adapters.RecipeAdapter;
 import beer.unacceptable.unacceptablehealth.Models.Ingredient;
+import beer.unacceptable.unacceptablehealth.Models.IngredientAddition;
 import beer.unacceptable.unacceptablehealth.Models.Recipe;
 import beer.unacceptable.unacceptablehealth.R;
 
@@ -64,9 +67,17 @@ public class RecipeList extends AppCompatActivity
     }
 
     private void LoadRecipes() {
-        Ingredient[] i1 = new Ingredient[] {new Ingredient("Flour", 5, "grams")};
-        Ingredient[] i2 = new Ingredient[] {new Ingredient("Muffin Mix", 1, "packet"), new Ingredient("Water", 50, "grams")};
-        Ingredient[] i3 = new Ingredient[] {new Ingredient("Egg Wash", 2, "eggs"), new Ingredient("Corn Meal", 70, "grams"), new Ingredient("Water", 99, "grams")};
+        ArrayList<IngredientAddition> i1 = new ArrayList<IngredientAddition> ();
+        i1.add(new IngredientAddition(5, "grams", new Ingredient("Flour")));
+
+        ArrayList<IngredientAddition> i2 = new ArrayList<IngredientAddition>();
+        i2.add(new IngredientAddition(1, "packet", new Ingredient("Muffin Mix")));
+        i2.add(new IngredientAddition(50, "grams", new Ingredient("Water")));
+
+        ArrayList<IngredientAddition> i3 = new ArrayList<IngredientAddition>();
+        i3.add(new IngredientAddition(2, "eggs", new Ingredient("Egg Wash")));
+        i3.add(new IngredientAddition(70, "grams", new Ingredient("Corn Meal")));
+        i3.add(new IngredientAddition(99, "grams", new Ingredient("Water")));
 
         Recipe r1 = new Recipe("Basic Muffins", i1);
         Recipe r2 = new Recipe("Insane Muffins", i2);
