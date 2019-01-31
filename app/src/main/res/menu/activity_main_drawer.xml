@@ -25,6 +25,23 @@
                 android:id="@+id/nav_goals"
                 android:icon="@drawable/ic_menu_manage"
                 android:title="@string/nav_title_goals"/>
+            <item
+                android:id="@+id/nav_food_database"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="@string/nav_title_food_database"/>
+            <item
+                android:id="@+id/nav_exercise_database"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="@string/nav_title_exercise_database"/>
+        </menu>
+    </item>
+
+    <item android:title="Account">
+        <menu>
+            <item
+                android:id="@+id/nav_sign_out"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="@string/nav_title_sign_out"/>
         </menu>
     </item>
 

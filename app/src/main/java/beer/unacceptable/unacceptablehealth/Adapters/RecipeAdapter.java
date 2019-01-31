@@ -3,7 +3,6 @@ package beer.unacceptable.unacceptablehealth.Adapters;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,7 @@ import android.widget.TextView;
 
 import com.unacceptable.unacceptablelibrary.Adapters.Adapter;
 
-import beer.unacceptable.unacceptablehealth.Activities.ViewRecipe;
+import beer.unacceptable.unacceptablehealth.Screens.ViewRecipe;
 import beer.unacceptable.unacceptablehealth.Models.*;
 import beer.unacceptable.unacceptablehealth.R;
 

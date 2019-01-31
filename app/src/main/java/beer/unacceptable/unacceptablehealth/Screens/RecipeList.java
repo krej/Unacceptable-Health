@@ -1,4 +1,4 @@
-package beer.unacceptable.unacceptablehealth.Activities;
+package beer.unacceptable.unacceptablehealth.Screens;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;

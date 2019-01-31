@@ -1,4 +1,4 @@
-package beer.unacceptable.unacceptablehealth.Activities;
+package beer.unacceptable.unacceptablehealth.Screens;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +12,7 @@ import android.view.View;
 
 import java.util.ArrayList;
 
-import beer.unacceptable.unacceptablehealth.Adapters.IngredientAdapter;
+import beer.unacceptable.unacceptablehealth.Adapters.IngredientAdditionAdapter;
 import beer.unacceptable.unacceptablehealth.Models.IngredientAddition;
 import beer.unacceptable.unacceptablehealth.Models.Recipe;
 import beer.unacceptable.unacceptablehealth.R;
@@ -39,6 +39,8 @@ public class ViewRecipe extends AppCompatActivity {
             }
         });
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
         Recipe r = (Recipe) bundle.getSerializable("recipe");
@@ -54,8 +56,8 @@ public class ViewRecipe extends AppCompatActivity {
 
         ArrayList<IngredientAddition> myDataset = r.ingredientAdditions;
 
-        m_Adapter = new IngredientAdapter(R.layout.content_list_ingredients, 0);
-        ((IngredientAdapter) m_Adapter).PopulateDataset(myDataset);
+        m_Adapter = new IngredientAdditionAdapter(R.layout.content_list_ingredients, 0);
+        ((IngredientAdditionAdapter) m_Adapter).PopulateDataset(myDataset);
         m_rvIngredients.setAdapter(m_Adapter);
     }
 }
