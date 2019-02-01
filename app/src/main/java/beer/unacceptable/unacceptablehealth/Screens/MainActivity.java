@@ -47,9 +47,11 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Tools.LoadSharedPrefs(getApplicationContext());
+        Tools.LoadSharedPrefs(getApplicationContext(), "health");
 
         if (!Tools.LoginTokenExists(this)) return;
+
+        //TODO: Can I move this so its not here?
         Network.getInstance(this); //start the network singleton
     }
 

@@ -25,7 +25,7 @@ import beer.unacceptable.unacceptablehealth.R;
 public class FoodDatabase extends AppCompatActivity {
 
     private RecyclerView m_rvIngredients;
-    private IngredientAdapter m_Adapter = new IngredientAdapter(R.layout.default_list, 0);
+    private IngredientAdapter m_Adapter = new IngredientAdapter(R.layout.default_list, R.layout.dialog_edit_ingredient);
     private RecyclerView.LayoutManager m_LayoutManager;
 
     @Override
@@ -41,6 +41,7 @@ public class FoodDatabase extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                m_Adapter.AddItem(m_rvIngredients.getContext(), null);
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
