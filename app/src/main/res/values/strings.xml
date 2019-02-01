@@ -108,4 +108,8 @@
     <string name="title_activity_food_database">Food Database</string>
     <string name="add_ingredient">Add Ingredient</string>
     <string name="name">Name</string>
+    <string name="add_recipe">Add Recipe</string>
+    <string name="select_ingredient">Select An Ingredient</string>
+    <string name="amount">Amount</string>
+    <string name="measure">Measure</string>
 </resources>

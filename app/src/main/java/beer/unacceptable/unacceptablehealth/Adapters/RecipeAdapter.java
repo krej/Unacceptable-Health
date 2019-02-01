@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.unacceptable.unacceptablelibrary.Adapters.Adapter;
@@ -100,6 +101,21 @@ public class RecipeAdapter extends Adapter {
 
     @Override
     protected boolean AddItem(Dialog d, boolean bExisting, String sExtraData) {
-        return false;
+        EditText name = d.findViewById(R.id.name);
+
+        String sName = name.getText().toString();
+
+        if (sName.length() == 0) {
+            InfoMissing(d.getContext());
+            return false;
+        }
+
+        Intent i = new Intent(d.getContext(), ViewRecipe.class);
+        i.putExtra("Name", sName);
+        d.getContext().startActivity(i);
+
+        return true;
     }
+
+
 }

@@ -8,27 +8,43 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:id="@+id/edit_ingredient_ll">
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
 
         <TextView
             android:id="@+id/add_ingredient_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/add_ingredient"
             android:textAlignment="center"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:text="@string/select_ingredient"/>
+
+        <Spinner
+            android:id="@+id/ingredient_selector_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="279dp"/>
 
         <EditText
-            android:id="@+id/ingredient_name"
+            android:id="@+id/ingredient_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="numberDecimal"
+            android:hint="@string/amount"/>
+
+        <EditText
+            android:id="@+id/ingredient_measure"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:hint="@string/name"
-            />
+            android:hint="@string/measure"/>
+
 
         <EditText
-            android:id="@+id/ingredientID"
+            android:id="@+id/ingredientAdditionID"
             android:inputType="text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,7 +54,6 @@
             android:layout_marginBottom="4dp"
             android:enabled="false"
             android:visibility="gone"/>
-
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
