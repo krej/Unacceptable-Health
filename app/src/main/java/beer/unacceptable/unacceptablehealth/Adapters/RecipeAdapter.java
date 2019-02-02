@@ -16,10 +16,10 @@ import beer.unacceptable.unacceptablehealth.Models.*;
 import beer.unacceptable.unacceptablehealth.R;
 
 public class RecipeAdapter extends Adapter {
-    //private Recipe[] m_Dataset;
+    //private FoodRecipe[] m_Dataset;
 
     public RecipeAdapter(int iLayout, int iDialogLayout) {
-        super(iLayout, iDialogLayout);
+        super(iLayout, iDialogLayout, false);
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -38,7 +38,7 @@ public class RecipeAdapter extends Adapter {
                 @Override
                 public void onClick(View view) {
                     int item = getLayoutPosition();
-                    Recipe b = (Recipe)m_Dataset.get(item);
+                    FoodRecipe b = (FoodRecipe)m_Dataset.get(item);
                     //Tools.ShowToast(view.getContext(), b.name, Toast.LENGTH_LONG);
                     Intent i = new Intent(view.getContext(), ViewRecipe.class);
                     Bundle bundle = new Bundle();
@@ -50,7 +50,7 @@ public class RecipeAdapter extends Adapter {
         }
     }
 /*
-    public RecipeAdapter(Recipe[] myDataset) {
+    public RecipeAdapter(FoodRecipe[] myDataset) {
         m_Dataset = myDataset;
     }
 

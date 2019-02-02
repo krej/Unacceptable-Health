@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -16,15 +19,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.unacceptable.unacceptablelibrary.Models.ListableObject;
 import com.unacceptable.unacceptablelibrary.Tools.Network;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import java.util.ArrayList;
 
 import beer.unacceptable.unacceptablehealth.Adapters.IngredientAdditionAdapter;
+import beer.unacceptable.unacceptablehealth.Models.FoodRecipe;
 import beer.unacceptable.unacceptablehealth.Models.Ingredient;
 import beer.unacceptable.unacceptablehealth.Models.IngredientAddition;
-import beer.unacceptable.unacceptablehealth.Models.Recipe;
 import beer.unacceptable.unacceptablehealth.R;
 
 public class ViewRecipe extends AppCompatActivity {
@@ -32,6 +36,7 @@ public class ViewRecipe extends AppCompatActivity {
     private RecyclerView m_rvIngredients;
     private IngredientAdditionAdapter m_Adapter;
     private RecyclerView.LayoutManager m_LayoutManager;
+    private FoodRecipe CurrentRecipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,19 +103,46 @@ public class ViewRecipe extends AppCompatActivity {
     private void LoadRecipe() {
         Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
-        Recipe r = (Recipe) bundle.getSerializable("recipe");
+        CurrentRecipe = (FoodRecipe) bundle.getSerializable("recipe");
         String sName = "";
         ArrayList<IngredientAddition> myDataset = null;
 
-        if (r != null) {
+        if (CurrentRecipe != null) {
             //Tools.ShowToast(getApplicationContext(), r.name, Toast.LENGTH_LONG);
-            sName = r.name;
-            myDataset = r.ingredientAdditions;
+            sName = CurrentRecipe.name;
+            myDataset = CurrentRecipe.ingredientAdditions;
             m_Adapter.PopulateDataset(myDataset);
         } else {
             sName = intent.getStringExtra("Name");
+            CurrentRecipe = new FoodRecipe(sName);
         }
 
         setTitle(sName);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_view_recipe, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.save_recipe:
+
+                CurrentRecipe.ClearIngredients();
+
+                ArrayList<ListableObject> ingreds = m_Adapter.Dataset();
+                for (int i = 0; i < ingreds.size(); i ++) {
+                    CurrentRecipe.ingredientAdditions.add((IngredientAddition) ingreds.get(i));
+                }
+                CurrentRecipe.notes = "hardcoded notes";
+
+                CurrentRecipe.Save();
+        }
+
+        return true;
     }
 }

@@ -20,7 +20,7 @@ import beer.unacceptable.unacceptablehealth.R;
 
 public class IngredientAdditionAdapter extends Adapter {
     public IngredientAdditionAdapter(int iLayout, int iDialogLayout) {
-        super(iLayout, iDialogLayout);
+        super(iLayout, iDialogLayout, false);
     }
 
     private Ingredient[] m_dsIngredients;
@@ -49,10 +49,10 @@ public class IngredientAdditionAdapter extends Adapter {
             ingredientAddition.ingredient = ingred;
             ingredientAddition.amount = dAmount;
             ingredientAddition.measure = sMeasure;
-            ingred.idString = sID;
+            //ingred.idString = sID;
         } else {
             ingredientAddition = new IngredientAddition(dAmount, sMeasure, ingred);
-            ingred.idString = sID;
+            //ingred.idString = sID;
             add(ingredientAddition);
         }
 
@@ -70,10 +70,13 @@ public class IngredientAdditionAdapter extends Adapter {
         TextView txtAmount = holder.view.findViewById(R.id.ingredient_amount);
         TextView txtMeasure = holder.view.findViewById(R.id.ingredient_measure);
 
-        txtName.setText(i.ingredient.name);
-        txtAmount.setText(Double.toString(i.amount));
-        txtMeasure.setText(i.measure);
+        //if (OnlyEmptyIngredientExists()) {
 
+        //} else {
+            txtName.setText(i.ingredient.name);
+            txtAmount.setText(Double.toString(i.amount));
+            txtMeasure.setText(i.measure);
+        //}
         //Hop item = (Hop) m_Dataset.get(position);
 
         //holder.txtHeader.setText(item.name);
@@ -83,10 +86,16 @@ public class IngredientAdditionAdapter extends Adapter {
     @Override
     protected View SetupDialog(final Context c, ListableObject i) {
         View root = super.SetupDialog(c,i);
+        if (m_dsIngredients == null || m_dsIngredients.length == 0) return root;
+
+        IngredientAddition ingredientAddition = (IngredientAddition)i;
 
         Spinner ingredSpinner = root.findViewById(R.id.ingredient_selector_spinner);
+
         ArrayAdapter<Ingredient> aa = new ArrayAdapter<>(c, android.R.layout.simple_spinner_dropdown_item, m_dsIngredients);
         ingredSpinner.setAdapter(aa);
+
+
 
         /*Ingredient ingred = (Ingredient)i;
 
@@ -95,10 +104,31 @@ public class IngredientAdditionAdapter extends Adapter {
             name.setText(ingred.name);
         }*/
 
+        if (ingredientAddition != null) {
+            EditText amount = root.findViewById(R.id.ingredient_amount);
+            EditText measure = root.findViewById(R.id.ingredient_measure);
+
+            ingredSpinner.setSelection(GetIngredientPosition(ingredientAddition.ingredient));
+            amount.setText(String.valueOf(ingredientAddition.amount));
+            measure.setText(ingredientAddition.measure);
+        }
+
         return root;
     }
 
+    private int GetIngredientPosition(Ingredient ingredient) {
+        int position = 0;
+        for (Ingredient i : m_dsIngredients) {
+            if (i.name.equals(ingredient.name)) break;
+            position++;
+        }
+
+        return position;
+    }
+
     public void PopulateDataset(ArrayList<IngredientAddition>ds) {
+        if (ds == null || ds.size() == 0) return;
+
         for (int i = 0; i < ds.size(); i++) {
             add(ds.get(i));
         }

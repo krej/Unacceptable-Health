@@ -2,6 +2,13 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="beer.unacceptable.unacceptablehealth.Screens.ViewRecipe">
+
+    <item
+        android:id="@+id/save_recipe"
+        android:orderInCategory="50"
+        android:title="@string/save"
+        app:showAsAction="ifRoom"/>
+
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
