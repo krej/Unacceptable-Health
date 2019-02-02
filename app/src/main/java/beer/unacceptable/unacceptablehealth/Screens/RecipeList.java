@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -77,6 +78,11 @@ public class RecipeList extends AppCompatActivity
         LoadRecipes();
 
         m_rvRecipes.setAdapter(m_Adapter);
+
+        //TODO: content_recipe_list.xml is shared between this screen (RecipeList) and ViewRecipe because its really just a generic list...
+        //TODO: I don't like how this field is shared between both and then hidden here, but it was kinda a pain to fix it right now and its late and I want to be working on something else...
+        EditText instructions = findViewById(R.id.recipe_instructions);
+        instructions.setVisibility(View.GONE);
     }
 
     private void LoadRecipes() {
@@ -101,6 +107,7 @@ public class RecipeList extends AppCompatActivity
         m_Adapter.add(r2);
         m_Adapter.add(r3);*/
 
+        //TODO: This shouldn't load ENTIRE recipes, just the names because we're gonna need to reload it later...
         Network.WebRequest(Request.Method.GET, Tools.RestAPIURL() + "/foodrecipe", null,
 
                 new Response.Listener<String>() {

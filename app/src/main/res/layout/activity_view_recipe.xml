@@ -35,6 +35,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <!--This is what I changed to get it to use the same layout-->
+
     <include
         android:id="@+id/include"
         layout="@layout/content_recipe_list"/>

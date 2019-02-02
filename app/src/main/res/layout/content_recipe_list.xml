@@ -9,8 +9,26 @@
     tools:context=".Screens.RecipeList"
     tools:showIn="@layout/app_bar_recipe_list">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recipeView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <EditText
+            android:id="@+id/recipe_instructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/instructions"
+            android:inputType="textMultiLine"
+            />
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recipeView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -104,20 +105,50 @@ public class ViewRecipe extends AppCompatActivity {
         Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
         CurrentRecipe = (FoodRecipe) bundle.getSerializable("recipe");
-        String sName = "";
-        ArrayList<IngredientAddition> myDataset = null;
 
         if (CurrentRecipe != null) {
             //Tools.ShowToast(getApplicationContext(), r.name, Toast.LENGTH_LONG);
-            sName = CurrentRecipe.name;
-            myDataset = CurrentRecipe.ingredientAdditions;
-            m_Adapter.PopulateDataset(myDataset);
+            //reload it
+            Network.WebRequest(Request.Method.GET, Tools.RestAPIURL() + "/foodrecipe/" + CurrentRecipe.idString, null,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+
+                            GsonBuilder gsonBuilder = new GsonBuilder();
+                            Gson gson = gsonBuilder.create();
+                            CurrentRecipe = gson.fromJson(response, FoodRecipe.class);
+
+
+                            ArrayList<IngredientAddition> myDataset = null;
+                            String sName = "";
+                            sName = CurrentRecipe.name;
+                            myDataset = CurrentRecipe.ingredientAdditions;
+                            m_Adapter.PopulateDataset(myDataset);
+                            EditText instructions = findViewById(R.id.recipe_instructions);
+                            instructions.setText(CurrentRecipe.instructions);
+                            setTitle(sName);
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            //mTextView.setText("That didn't work " + error.getMessage());
+                            String errorMsg = "";
+                            try {
+                                errorMsg = error.getCause().getMessage();
+                            } catch(Exception e) {
+
+                            }
+                            Tools.ShowToast(getApplicationContext(), "Failed to load ingredients: " + errorMsg, Toast.LENGTH_LONG);
+                        }
+                    });
+
         } else {
+            String sName = "";
             sName = intent.getStringExtra("Name");
             CurrentRecipe = new FoodRecipe(sName);
+            setTitle(sName);
         }
 
-        setTitle(sName);
     }
 
     @Override
@@ -139,6 +170,8 @@ public class ViewRecipe extends AppCompatActivity {
                     CurrentRecipe.ingredientAdditions.add((IngredientAddition) ingreds.get(i));
                 }
                 CurrentRecipe.notes = "hardcoded notes";
+                EditText instructions = findViewById(R.id.recipe_instructions);
+                CurrentRecipe.instructions = instructions.getText().toString();
 
                 CurrentRecipe.Save();
         }
