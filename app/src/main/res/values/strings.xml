@@ -114,4 +114,18 @@
     <string name="measure">Measure</string>
     <string name="save">Save</string>
     <string name="instructions">Instructions</string>
+    <string name="title_activity_view_daily_log">View Daily Log</string>
+    <string name="used_flonase">Used Flonase?</string>
+    <string name="create_daily_log">Create Daily Log</string>
+    <string name="bad_allergies">Bad Allergies</string>
+    <string name="starting_allergies">Allergies Starting</string>
+    <string name="allergy_insurance">Allergy Insurance</string>
+    <string name="had_headache">Had Headache</string>
+    <string name="work_day">Work Day?</string>
+    <string name="rate_work">Rate your work day</string>
+    <string name="rate_day">Rate your non-working day.</string>
+    <string name="mindful_moment">Today\'s Mindful Moment</string>
+    <string name="overall_notes">Overal Notes For The Day</string>
+    <string name="healthy_rating">How healthy did you feel?</string>
+    <string name="bad_butt_day">Bad Butt Day?</string>
 </resources>

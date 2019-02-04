@@ -13,6 +13,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".Screens.ViewDailyLog"
+            android:label="@string/title_activity_view_daily_log"
+            android:parentActivityName=".Screens.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="beer.unacceptable.unacceptablehealth.Screens.MainActivity"/>
+        </activity>
+        <activity
             android:name=".Screens.FoodDatabase"
             android:label="@string/title_activity_food_database"
             android:parentActivityName=".Screens.MainActivity"

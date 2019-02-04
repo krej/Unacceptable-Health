@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".Screens.ViewDailyLog"
+    tools:showIn="@layout/activity_view_daily_log">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/daily_log_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="date"/>
+
+        <TextView
+            android:id="@+id/lbl_healthy_rating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/healthy_rating"/>
+
+        <RatingBar
+            android:id="@+id/rating_healthy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="1"/>
+
+        <CheckBox
+            android:id="@+id/chk_used_flonase"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/used_flonase"/>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:id="@+id/radGrp_flonase">
+
+            <RadioButton
+                android:id="@+id/rad_flonase_bad_allergies"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/bad_allergies"/>
+
+            <RadioButton
+                android:id="@+id/rad_flonase_starting_allergies"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/starting_allergies"/>
+
+            <RadioButton
+                android:id="@+id/rad_flonase_allergy_insurance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/allergy_insurance"/>
+
+        </RadioGroup>
+
+        <CheckBox
+            android:id="@+id/chk_had_headache"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/had_headache"/>
+
+        <CheckBox
+            android:id="@+id/chk_work_day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/work_day"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/ll_work_rating"
+            android:visibility="gone">
+
+            <TextView
+                    android:id="@+id/txt_rate_work"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rate_work"/>
+
+            <RatingBar
+                    android:id="@+id/rating_work"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    android:stepSize="1"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txt_rate_day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/rate_day"/>
+
+        <RatingBar
+            android:id="@+id/rating_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="1"/>
+
+        <TextView
+            android:id="@+id/lbl_mindful_moment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/mindful_moment"/>
+
+        <EditText
+            android:id="@+id/txt_mindful_moment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textMultiLine"/>
+
+        <TextView
+            android:id="@+id/lbl_overall_notes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/overall_notes"/>
+
+
+        <EditText
+            android:id="@+id/txt_overall_notes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textMultiLine"/>
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
