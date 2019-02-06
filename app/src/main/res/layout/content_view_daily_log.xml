@@ -35,6 +35,16 @@
             android:stepSize="1"/>
 
         <CheckBox
+            android:id="@+id/chk_bbd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bbd"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
+
+        <CheckBox
             android:id="@+id/chk_used_flonase"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -76,6 +86,10 @@
             android:layout_height="wrap_content"
             android:text="@string/had_headache"/>
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
+
         <CheckBox
             android:id="@+id/chk_work_day"
             android:layout_width="match_parent"
@@ -116,6 +130,10 @@
             android:layout_height="wrap_content"
             android:numStars="5"
             android:stepSize="1"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
 
         <TextView
             android:id="@+id/lbl_mindful_moment"

@@ -20,6 +20,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import beer.unacceptable.unacceptablehealth.Models.DailyLog;
 import beer.unacceptable.unacceptablehealth.R;
 
 public class ViewDailyLog extends AppCompatActivity {
@@ -28,6 +29,7 @@ public class ViewDailyLog extends AppCompatActivity {
     RatingBar rWorkRating;*/
     LinearLayout llWorkRating;
     int animTime;
+    DailyLog m_dlLog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,10 @@ public class ViewDailyLog extends AppCompatActivity {
 
 
         PopulateDateField();
+
+        if ( m_dlLog == null) {
+            setTitle("Create Daily Log");
+        }
     }
 
     private void SetupVisibilityClickListeners() {

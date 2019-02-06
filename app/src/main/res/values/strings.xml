@@ -127,5 +127,8 @@
     <string name="mindful_moment">Today\'s Mindful Moment</string>
     <string name="overall_notes">Overal Notes For The Day</string>
     <string name="healthy_rating">How healthy did you feel?</string>
-    <string name="bad_butt_day">Bad Butt Day?</string>
+    <string name="bbd">BBD?</string>
+    <string name="notification_channel">Notification Channel</string>
+    <string name="channel_description">My notification channel</string>
+    <string name="NOTIFICATION_CHANNEL_ID">beer.unacceptable.unacceptablehealth</string>
 </resources>
