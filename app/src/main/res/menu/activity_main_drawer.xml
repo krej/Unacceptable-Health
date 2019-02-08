@@ -16,6 +16,10 @@
             android:id="@+id/nav_recipes"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/nav_title_recipes"/>
+        <item
+            android:id="@+id/nav_daily_logs"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/view_daily_log"/>
 
     </group>
 

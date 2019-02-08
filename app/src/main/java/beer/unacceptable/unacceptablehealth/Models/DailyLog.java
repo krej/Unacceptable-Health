@@ -13,6 +13,19 @@ public class DailyLog extends ListableObject {
     public Date date;
 
     /**
+     * How healthy you felt today
+     */
+    @Expose
+    public int HealthRating;
+
+    /**
+     * BBD...
+     */
+    @Expose
+    public boolean BBD;
+
+
+    /**
      * Did you use flonase today?
      */
     @Expose
@@ -21,8 +34,8 @@ public class DailyLog extends ListableObject {
     /**
      * The reasoning for using flonase:
      * 1. Allergies were bad
-     * 2. Allergies were looking to be bad, so I took it as insurance
-     * 3. I had something I needed to do today, so I took it as a precaution even though I felt fine.
+     * 2. Allergies were looking to be bad, so I took it to be safe
+     * 3. I had something I needed to do today, so I took it as a precaution even though I felt fine. Allergy Insurance
      */
     @Expose
     public int FlonaseReasoning;

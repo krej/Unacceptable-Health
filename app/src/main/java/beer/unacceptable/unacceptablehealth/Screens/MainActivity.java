@@ -66,13 +66,14 @@ public class MainActivity extends AppCompatActivity
 
     //TODO: Can I move this so its not here?
     private boolean InitialAppSetup() {
+        createNotificationChannel();
+        DailyLogAlarmReceiver.SetupDailyLogAlarm(this);
+
         Tools.LoadSharedPrefs(getApplicationContext(), "health");
         if (!Tools.LoginTokenExists(this)) return false;
 
         Network.getInstance(this); //start the network singleton
 
-        createNotificationChannel();
-        DailyLogAlarmReceiver.SetupDailyLogAlarm(this);
 
         return true;
     }
@@ -131,13 +132,12 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        Intent intent = null;
+        Class<?> classToLaunch = null;
 
 
         switch (id) {
@@ -146,20 +146,25 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_nutrition:
                 break;
             case R.id.nav_recipes:
-                intent = new Intent(getApplicationContext(), RecipeList.class);
+                classToLaunch = RecipeList.class;
+                break;
+            case R.id.nav_daily_logs:
+                classToLaunch = DailyLogList.class;
                 break;
             case R.id.nav_goals:
                 break;
             case R.id.nav_food_database:
-                intent = new Intent(getApplicationContext(), FoodDatabase.class);
+                classToLaunch = FoodDatabase.class;
                 break;
             case R.id.nav_sign_out:
                 Tools.LaunchSignInScreen(this);
                 break;
         }
 
-        if (intent != null)
+        if (classToLaunch != null) {
+            Intent intent = new Intent(getApplicationContext(), classToLaunch);
             startActivity(intent);
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
