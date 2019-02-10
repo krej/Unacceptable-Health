@@ -9,9 +9,15 @@
     tools:context=".Screens.ViewDailyLog"
     tools:showIn="@layout/activity_view_daily_log">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:id="@+id/ll_daily_log_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <EditText
@@ -51,11 +57,11 @@
             android:text="@string/used_flonase"/>
 
         <RadioGroup
+            android:id="@+id/radGrp_flonase"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:visibility="gone"
-            android:id="@+id/radGrp_flonase">
+            android:visibility="gone">
 
             <RadioButton
                 android:id="@+id/rad_flonase_bad_allergies"
@@ -98,24 +104,24 @@
 
 
         <LinearLayout
+            android:id="@+id/ll_work_rating"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:id="@+id/ll_work_rating"
             android:visibility="gone">
 
             <TextView
-                    android:id="@+id/txt_rate_work"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/rate_work"/>
+                android:id="@+id/txt_rate_work"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/rate_work"/>
 
             <RatingBar
-                    android:id="@+id/rating_work"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:numStars="5"
-                    android:stepSize="1"/>
+                android:id="@+id/rating_work"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:stepSize="1"/>
         </LinearLayout>
 
         <TextView
@@ -163,4 +169,6 @@
             android:inputType="textMultiLine"/>
 
     </LinearLayout>
+
+    </ScrollView>
 </android.support.constraint.ConstraintLayout>

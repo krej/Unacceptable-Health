@@ -43,7 +43,7 @@ public class DailyLogAlarmReceiver extends BroadcastReceiver {
 
     public static void SetupDailyLogAlarm(Context context) {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 9);
+        calendar.set(Calendar.HOUR_OF_DAY, 22);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         Intent intent1 = new Intent(context, DailyLogAlarmReceiver.class);

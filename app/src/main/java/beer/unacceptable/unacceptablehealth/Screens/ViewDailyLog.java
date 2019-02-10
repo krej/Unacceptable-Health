@@ -30,8 +30,10 @@ import com.unacceptable.unacceptablelibrary.Tools.Tools;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import beer.unacceptable.unacceptablehealth.Models.DailyLog;
 import beer.unacceptable.unacceptablehealth.R;
@@ -61,6 +63,7 @@ public class ViewDailyLog extends AppCompatActivity {
     RatingBar rbPersonalDayRating;
     TextView txtMindfulMoment;
     TextView txtOverallNotes;
+    LinearLayout llMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +104,8 @@ public class ViewDailyLog extends AppCompatActivity {
         } else {
             LoadDailyLog(idString);
         }
+
+        //llMain.fix
     }
 
     private void FindUIElements() {
@@ -117,6 +122,7 @@ public class ViewDailyLog extends AppCompatActivity {
         rbPersonalDayRating = findViewById(R.id.rating_day);
         txtMindfulMoment = findViewById(R.id.txt_mindful_moment);
         txtOverallNotes = findViewById(R.id.txt_overall_notes);
+        llMain = findViewById(R.id.ll_daily_log_main);
     }
 
     private void LoadDailyLog(String idString) {
@@ -276,6 +282,8 @@ public class ViewDailyLog extends AppCompatActivity {
                 m_dlLog.date = new Date();
         }
 
+        m_dlLog.date = dateAtNoon(m_dlLog.date);
+
         m_dlLog.HealthRating = (int)rbHealth.getRating();
         m_dlLog.BBD = chkBBD.isChecked();
         m_dlLog.UsedFlonase = chkUsedFlonase.isChecked();
@@ -290,6 +298,19 @@ public class ViewDailyLog extends AppCompatActivity {
         m_dlLog.PersonalDayRating = (int)rbPersonalDayRating.getRating();
         m_dlLog.MindfulMoment = txtMindfulMoment.getText().toString();
         m_dlLog.OverallNotes = txtOverallNotes.getText().toString();
+    }
+
+    private Date dateAtNoon(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 12);
+        cal.set(Calendar.MINUTE,0);
+        cal.set(Calendar.SECOND,0);
+        cal.set(Calendar.MILLISECOND,0);
+        cal.setTimeZone(TimeZone.getTimeZone("CDT"));
+
+
+        return cal.getTime();
     }
 
     private int GetFlonaseReasoning(CheckBox chkUsedFlonase, RadioButton radFlonaseBadAllergy, RadioButton radFlonaseStartingAllergies, RadioButton radFlonaseAllergyInsurance) {
