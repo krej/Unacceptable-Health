@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity
         DailyLogAlarmReceiver.SetupDailyLogAlarm(this);
 
         Tools.LoadSharedPrefs(getApplicationContext(), "health");
-        if (!Tools.LoginTokenExists(this)) return false;
+        if (!Tools.LoginTokenExists(this, MainActivity.class)) return false;
 
         Network.getInstance(this); //start the network singleton
 
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity
                 classToLaunch = FoodDatabase.class;
                 break;
             case R.id.nav_sign_out:
-                Tools.LaunchSignInScreen(this);
+                Tools.LaunchSignInScreen(this, MainActivity.class);
                 break;
         }
 
