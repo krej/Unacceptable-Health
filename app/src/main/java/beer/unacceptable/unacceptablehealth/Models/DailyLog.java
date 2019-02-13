@@ -2,10 +2,13 @@ package beer.unacceptable.unacceptablehealth.Models;
 
 import com.google.gson.annotations.Expose;
 import com.unacceptable.unacceptablelibrary.Models.ListableObject;
+import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import java.util.Date;
 
 public class DailyLog extends ListableObject {
+    public static String m_sDateFormat = "MM/dd/yyyy";
+
     /**
      * The date of the entry
      */
@@ -76,4 +79,20 @@ public class DailyLog extends ListableObject {
      */
     @Expose
     public String OverallNotes;
+
+    public String formatDate() {
+        return Tools.FormatDate(date, m_sDateFormat);
+    }
+
+    public boolean isFlonaseBadAllergy() {
+        return FlonaseReasoning == 1;
+    }
+
+    public boolean isFlonaseStartingAllergies() {
+        return FlonaseReasoning == 2;
+    }
+
+    public boolean isFlonaseAllergyInsurance() {
+        return FlonaseReasoning == 3;
+    }
 }
