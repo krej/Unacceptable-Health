@@ -118,15 +118,20 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        Class<?> classToLaunch = null;
 
         switch(id) {
             case R.id.action_settings:
-                return true;
-            case R.id.create_daily_log:
-                Intent i = new Intent(getApplicationContext(), ViewDailyLog.class);
-                startActivity(i);
+                classToLaunch = Settings.class;
                 break;
+            case R.id.create_daily_log:
+                classToLaunch = ViewDailyLog.class;
+                break;
+        }
+
+        if (classToLaunch != null) {
+            Intent i = new Intent(getApplicationContext(), classToLaunch);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);
