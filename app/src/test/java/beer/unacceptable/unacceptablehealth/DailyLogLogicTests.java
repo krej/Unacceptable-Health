@@ -127,9 +127,9 @@ public class DailyLogLogicTests {
         calendar.set(Calendar.MONTH, Calendar.FEBRUARY); //changed to Calendar.FEBRUARY because its off by one
         calendar.set(Calendar.DAY_OF_MONTH, 12);
         calendar.set(Calendar.YEAR, 2019);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 7); //hard code an actual time because thats what new Date() returns when you run the program
+        calendar.set(Calendar.MINUTE, 36);
+        calendar.set(Calendar.SECOND, 24);
         calendar.set(Calendar.MILLISECOND, 0);
         Date dt = calendar.getTime();
         return dt;

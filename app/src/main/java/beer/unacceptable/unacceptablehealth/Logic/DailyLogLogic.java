@@ -140,7 +140,7 @@ public class DailyLogLogic extends BaseLogic<DailyLogLogic.View> {
     }
 
     private boolean canEditLog(Date dt) {
-        Date dtToday = dateLogic.getTodaysDate();
+        Date dtToday = Tools.setTimeToMidnight(dateLogic.getTodaysDate());
         return dt.compareTo(dtToday) == 0;
         //return false;
     }
