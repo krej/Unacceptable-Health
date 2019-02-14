@@ -19,6 +19,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.unacceptable.unacceptablelibrary.Repositories.LibraryRepository;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import beer.unacceptable.unacceptablehealth.Logic.DailyLogLogic;
@@ -58,7 +59,7 @@ public class ViewDailyLog extends AppCompatActivity implements DailyLogLogic.Vie
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        m_oLogic = new DailyLogLogic(new Repository(), new DateLogic());
+        m_oLogic = new DailyLogLogic(new Repository(), new DateLogic(), new LibraryRepository());
         m_oLogic.attachView(this);
 
         FindUIElements();

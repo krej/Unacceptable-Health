@@ -7,6 +7,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.unacceptable.unacceptablelibrary.Logic.BaseLogic;
+import com.unacceptable.unacceptablelibrary.Repositories.ILibraryRepository;
 import com.unacceptable.unacceptablelibrary.Repositories.RepositoryCallback;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
@@ -25,13 +26,15 @@ import static beer.unacceptable.unacceptablehealth.Adapters.DailyLogAdapter.Date
 
 public class DailyLogLogic extends BaseLogic<DailyLogLogic.View> {
     IRepository repository;
+    ILibraryRepository libraryRepository; //for ListableObject saving
     IDateLogic dateLogic;
 
     DailyLog m_dlLog;
 
-    public DailyLogLogic(IRepository repository, IDateLogic dateLogic) {
+    public DailyLogLogic(IRepository repository, IDateLogic dateLogic, ILibraryRepository libraryRepository) {
         this.repository = repository;
         this.dateLogic = dateLogic;
+        this.libraryRepository = libraryRepository;
     }
 
     public void LoadLog(String idString) {
@@ -89,7 +92,8 @@ public class DailyLogLogic extends BaseLogic<DailyLogLogic.View> {
                         String sOverallNotes) {
 
         Date dt = stringToDate(sDate);
-        if (canEditLog(sDate)) {
+        //if (canEditLog(sDate)) {
+        if (canEditLog(dt)) {
             m_dlLog.name = sDate;
             m_dlLog.date = dateAtNoon(dt);
             m_dlLog.HealthRating = iHealthRating;
@@ -103,7 +107,7 @@ public class DailyLogLogic extends BaseLogic<DailyLogLogic.View> {
             m_dlLog.MindfulMoment = sMindfulMoment;
             m_dlLog.OverallNotes = sOverallNotes;
 
-            m_dlLog.Save();
+            m_dlLog.Save(libraryRepository);
         } else {
             view.showMessage("Log is read only.");
         }
@@ -135,9 +139,10 @@ public class DailyLogLogic extends BaseLogic<DailyLogLogic.View> {
         return 0;
     }
 
-    //TODO: Make this accept a Date object, might be easier to compare
-    private boolean canEditLog(String sDate) {
-        return sDate.equalsIgnoreCase(Tools.FormatDate(dateLogic.getTodaysDate(), "MM/dd/yyyy")) || sDate.length() == 0;
+    private boolean canEditLog(Date dt) {
+        Date dtToday = dateLogic.getTodaysDate();
+        return dt.compareTo(dtToday) == 0;
+        //return false;
     }
 
     private Date stringToDate(String sDate) {
@@ -151,6 +156,10 @@ public class DailyLogLogic extends BaseLogic<DailyLogLogic.View> {
         }
 
         return dt;
+    }
+
+    public DailyLog getLog() {
+        return m_dlLog;
     }
 
     private void createNewDailyLog() {
