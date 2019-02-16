@@ -3,11 +3,11 @@ package beer.unacceptable.unacceptablehealth;
 import com.android.volley.VolleyError;
 import com.unacceptable.unacceptablelibrary.Repositories.ILibraryRepository;
 import com.unacceptable.unacceptablelibrary.Repositories.RepositoryCallback;
-import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.AdditionalMatchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -16,11 +16,9 @@ import java.util.Date;
 
 import beer.unacceptable.unacceptablehealth.Logic.DailyLogLogic;
 import beer.unacceptable.unacceptablehealth.Logic.IDateLogic;
-import beer.unacceptable.unacceptablehealth.Models.DailyLog;
 import beer.unacceptable.unacceptablehealth.Repositories.IRepository;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
@@ -248,4 +246,6 @@ public class DailyLogLogicTests {
 
         Assert.assertEquals(5, m_oLogic.getLog().WorkRating);
     }
+
+
 }

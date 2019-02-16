@@ -1,20 +1,19 @@
 package beer.unacceptable.unacceptablehealth.Logic;
 
-import android.widget.CheckBox;
-import android.widget.RadioButton;
-
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.unacceptable.unacceptablelibrary.Logic.BaseLogic;
 import com.unacceptable.unacceptablelibrary.Repositories.ILibraryRepository;
 import com.unacceptable.unacceptablelibrary.Repositories.RepositoryCallback;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
-import java.text.DateFormat;
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -22,18 +21,16 @@ import java.util.TimeZone;
 import beer.unacceptable.unacceptablehealth.Models.DailyLog;
 import beer.unacceptable.unacceptablehealth.Repositories.IRepository;
 
-import static beer.unacceptable.unacceptablehealth.Adapters.DailyLogAdapter.DateFormat;
-
 public class DailyLogLogic extends BaseLogic<DailyLogLogic.View> {
-    IRepository repository;
+    IRepository m_repository;
     ILibraryRepository libraryRepository; //for ListableObject saving
-    IDateLogic dateLogic;
+    IDateLogic m_DateLogic;
 
     DailyLog m_dlLog;
 
     public DailyLogLogic(IRepository repository, IDateLogic dateLogic, ILibraryRepository libraryRepository) {
-        this.repository = repository;
-        this.dateLogic = dateLogic;
+        this.m_repository = repository;
+        this.m_DateLogic = dateLogic;
         this.libraryRepository = libraryRepository;
     }
 
@@ -45,16 +42,14 @@ public class DailyLogLogic extends BaseLogic<DailyLogLogic.View> {
             return;
         }
 
-        repository.LoadDailyLog(idString, new RepositoryCallback() {
+        m_repository.LoadDailyLog(idString, new RepositoryCallback() {
             @Override
             public void onSuccess(String response) {
-                GsonBuilder gsonBuilder = new GsonBuilder();
-                Gson gson = gsonBuilder.create();
-                m_dlLog = gson.fromJson(response, DailyLog.class);
+                m_dlLog = convertJsonResponseToObject(response);
                 view.setScreenTitle("Daily Log: " + Tools.FormatDate(m_dlLog.date, "MMM dd yy"));
                 view.fillScreen(m_dlLog);
 
-                if (m_dlLog.date == null || Tools.CompareDatesWithoutTime(m_dlLog.date,dateLogic.getTodaysDate())) {
+                if (m_dlLog.date == null || Tools.CompareDatesWithoutTime(m_dlLog.date,m_DateLogic.getTodaysDate())) {
                     view.setScreenControlsEnabled(true);
                 } else {
                     view.setScreenControlsEnabled(false);
@@ -75,6 +70,13 @@ public class DailyLogLogic extends BaseLogic<DailyLogLogic.View> {
             }
         });
 
+    }
+
+    //TODO: Need to handle this returning a Response object
+    private DailyLog convertJsonResponseToObject(String json) {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        return gson.fromJson(json, DailyLog.class);
     }
 
     public void saveLog(String sDate,
@@ -140,7 +142,7 @@ public class DailyLogLogic extends BaseLogic<DailyLogLogic.View> {
     }
 
     private boolean canEditLog(Date dt) {
-        Date dtToday = Tools.setTimeToMidnight(dateLogic.getTodaysDate());
+        Date dtToday = Tools.setTimeToMidnight(m_DateLogic.getTodaysDate());
         return dt.compareTo(dtToday) == 0;
         //return false;
     }
@@ -165,7 +167,34 @@ public class DailyLogLogic extends BaseLogic<DailyLogLogic.View> {
     private void createNewDailyLog() {
         view.setScreenTitle("Create Daily Log");
         m_dlLog = new DailyLog();
-        m_dlLog.date = dateLogic.getTodaysDate();
+        m_dlLog.date = m_DateLogic.getTodaysDate();
+    }
+
+    public void LoadTodaysLog(final RepositoryCallback callback) {
+        String sDate = Tools.FormatDate(m_DateLogic.getTodaysDate(), DailyLog.m_sDateFormat);
+        m_repository.LoadDailyLogByDate(sDate, new RepositoryCallback() {
+            @Override
+            public void onSuccess(String t) {
+                m_dlLog = convertJsonResponseToObject(t);
+                callback.onSuccess(t);
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+                //TODO: ??? what do you do on an error?
+                callback.onError(error);
+            }
+        });
+    }
+
+    public boolean continueToLog() {
+        if (m_dlLog == null || m_dlLog.idString == null || m_dlLog.idString.length() == 0) return true;
+
+        return !logIsFullyCompleted(m_dlLog);
+    }
+
+    private boolean logIsFullyCompleted(DailyLog log) {
+        return log.HealthRating > 0 && log.PersonalDayRating > 0 && log.OverallNotes.length() > 0;
     }
 
     public interface View {

@@ -2,6 +2,9 @@ package beer.unacceptable.unacceptablehealth.Repositories;
 
 import com.unacceptable.unacceptablelibrary.Repositories.RepositoryCallback;
 
+import java.util.Date;
+
 public interface IRepository {
-    public void LoadDailyLog(String sStringID, RepositoryCallback callback);
+    void LoadDailyLog(String sStringID, RepositoryCallback callback);
+    void LoadDailyLogByDate(String sDate, RepositoryCallback callback);
 }
