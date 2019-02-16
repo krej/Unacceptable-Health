@@ -16,6 +16,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.unacceptable.unacceptablelibrary.Tools.Network;
+import com.unacceptable.unacceptablelibrary.Tools.Preferences;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import beer.unacceptable.unacceptablehealth.Adapters.DailyLogAdapter;
@@ -60,7 +61,7 @@ public class DailyLogList extends AppCompatActivity {
     }
 
     private void LoadDailyLogs() {
-        Network.WebRequest(Request.Method.GET, Tools.HealthAPIURL() + "/dailylog", null,
+        Network.WebRequest(Request.Method.GET, Preferences.HealthAPIURL() + "/dailylog", null,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

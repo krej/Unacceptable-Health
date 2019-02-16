@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.unacceptable.unacceptablelibrary.Models.ListableObject;
 import com.unacceptable.unacceptablelibrary.Tools.Network;
+import com.unacceptable.unacceptablelibrary.Tools.Preferences;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import java.util.ArrayList;
@@ -75,7 +76,7 @@ public class ViewRecipe extends AppCompatActivity {
     }
 
     private void LoadIngredients() {
-        Network.WebRequest(Request.Method.GET, Tools.RestAPIURL() + "/ingredient", null,
+        Network.WebRequest(Request.Method.GET, Preferences.RestAPIURL() + "/ingredient", null,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -109,7 +110,7 @@ public class ViewRecipe extends AppCompatActivity {
         if (CurrentRecipe != null) {
             //Tools.ShowToast(getApplicationContext(), r.name, Toast.LENGTH_LONG);
             //reload it
-            Network.WebRequest(Request.Method.GET, Tools.RestAPIURL() + "/foodrecipe/" + CurrentRecipe.idString, null,
+            Network.WebRequest(Request.Method.GET, Preferences.RestAPIURL() + "/foodrecipe/" + CurrentRecipe.idString, null,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {

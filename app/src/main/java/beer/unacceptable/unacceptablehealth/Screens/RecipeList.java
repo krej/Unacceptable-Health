@@ -23,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.unacceptable.unacceptablelibrary.Tools.Network;
+import com.unacceptable.unacceptablelibrary.Tools.Preferences;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import java.util.ArrayList;
@@ -108,7 +109,7 @@ public class RecipeList extends AppCompatActivity
         m_Adapter.add(r3);*/
 
         //TODO: This shouldn't load ENTIRE recipes, just the names because we're gonna need to reload it later...
-        Network.WebRequest(Request.Method.GET, Tools.RestAPIURL() + "/foodrecipe", null,
+        Network.WebRequest(Request.Method.GET, Preferences.RestAPIURL() + "/foodrecipe", null,
 
                 new Response.Listener<String>() {
                     @Override

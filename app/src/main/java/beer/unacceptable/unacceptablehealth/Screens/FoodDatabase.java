@@ -16,6 +16,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.unacceptable.unacceptablelibrary.Tools.Network;
+import com.unacceptable.unacceptablelibrary.Tools.Preferences;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import beer.unacceptable.unacceptablehealth.Adapters.IngredientAdapter;
@@ -62,7 +63,7 @@ public class FoodDatabase extends AppCompatActivity {
     }
 
     private void LoadIngredients() {
-        Network.WebRequest(Request.Method.GET, Tools.HealthAPIURL() + "/ingredient", null,
+        Network.WebRequest(Request.Method.GET, Preferences.HealthAPIURL() + "/ingredient", null,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

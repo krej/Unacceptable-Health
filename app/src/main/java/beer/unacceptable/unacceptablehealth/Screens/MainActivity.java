@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.unacceptable.unacceptablelibrary.Tools.CustomizedExceptionHandler;
 import com.unacceptable.unacceptablelibrary.Tools.Network;
+import com.unacceptable.unacceptablelibrary.Tools.Preferences;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import beer.unacceptable.unacceptablehealth.R;
@@ -67,10 +68,11 @@ public class MainActivity extends AppCompatActivity
         createNotificationChannel();
         DailyLogAlarmReceiver.SetupDailyLogAlarm(this);
 
-        Tools.LoadSharedPrefs(getApplicationContext(), "health");
+        //Tools.LoadSharedPrefs(getApplicationContext(), "health");
+        Preferences.getInstance(getApplicationContext(), "health");
         if (!Tools.LoginTokenExists(this, MainActivity.class)) return false;
 
-        Network.getInstance(this); //start the network singleton
+        Network.getInstance(this.getApplicationContext()); //start the network singleton
 
         if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
