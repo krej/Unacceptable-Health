@@ -15,18 +15,20 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
 import com.unacceptable.unacceptablelibrary.Tools.Network;
 import com.unacceptable.unacceptablelibrary.Tools.Preferences;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
-import beer.unacceptable.unacceptablehealth.Adapters.IngredientAdapter;
+import beer.unacceptable.unacceptablehealth.Adapters.IngredientAdapterViewControl;
 import beer.unacceptable.unacceptablehealth.Models.Ingredient;
 import beer.unacceptable.unacceptablehealth.R;
 
 public class FoodDatabase extends AppCompatActivity {
 
     private RecyclerView m_rvIngredients;
-    private IngredientAdapter m_Adapter = new IngredientAdapter(R.layout.default_list, R.layout.dialog_edit_ingredient);
+    //private IngredientAdapter m_Adapter = new IngredientAdapter(R.layout.default_list, R.layout.dialog_edit_ingredient);
+    private NewAdapter m_Adapter;
     private RecyclerView.LayoutManager m_LayoutManager;
 
     @Override
@@ -42,7 +44,7 @@ public class FoodDatabase extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                m_Adapter.AddItem(m_rvIngredients.getContext(), null);
+                m_Adapter.showAddItemDialog(m_rvIngredients.getContext(), null);
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -50,6 +52,7 @@ public class FoodDatabase extends AppCompatActivity {
         //TODO: Figure this out. i had to switch activity_food_database to load content_recipe_list because when loading content_food_database it couldn't find my id...
         //TODO: They're the exact same xml file though so I should probably just do some renaming
         m_rvIngredients = (RecyclerView)findViewById(R.id.recipeView);
+        m_Adapter = new NewAdapter(R.layout.default_list, R.layout.dialog_edit_ingredient, true, new IngredientAdapterViewControl());
 
         m_rvIngredients.setHasFixedSize(false);
 

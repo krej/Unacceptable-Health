@@ -53,7 +53,7 @@ public class IngredientAdapter extends Adapter {
     protected View SetupDialog(final Context c, ListableObject i) {
         View root = super.SetupDialog(c,i);
 
-        EditText name = root.findViewById(R.id.ingredient_name);
+        /*EditText name = root.findViewById(R.id.ingredient_name);
         EditText ingredID = root.findViewById(R.id.ingredientID);
 
         Ingredient ingred = (Ingredient)i;
@@ -61,13 +61,13 @@ public class IngredientAdapter extends Adapter {
         if (ingred != null) {
             ingredID.setText(ingred.idString);
             name.setText(ingred.name);
-        }
+        }*/
 
         return root;
     }
 
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if (OnlyEmptyIngredientExists()) return;
+        /*if (OnlyEmptyIngredientExists()) return;
 
 
 
@@ -76,7 +76,7 @@ public class IngredientAdapter extends Adapter {
         TextView txtName = holder.view.findViewById(R.id.firstLine);
 
 
-        txtName.setText(i.name);
+        txtName.setText(i.name);*/
 
 
         //Hop item = (Hop) m_Dataset.get(position);

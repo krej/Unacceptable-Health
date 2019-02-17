@@ -15,11 +15,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
 import com.unacceptable.unacceptablelibrary.Tools.Network;
 import com.unacceptable.unacceptablelibrary.Tools.Preferences;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import beer.unacceptable.unacceptablehealth.Adapters.DailyLogAdapter;
+import beer.unacceptable.unacceptablehealth.Adapters.DailyLogAdapterViewControl;
 import beer.unacceptable.unacceptablehealth.Adapters.RecipeAdapter;
 import beer.unacceptable.unacceptablehealth.Models.DailyLog;
 import beer.unacceptable.unacceptablehealth.Models.FoodRecipe;
@@ -28,7 +30,7 @@ import beer.unacceptable.unacceptablehealth.R;
 public class DailyLogList extends AppCompatActivity {
 
     private RecyclerView m_rvDailyLogs;
-    private DailyLogAdapter m_Adapter;
+    private NewAdapter m_Adapter;
     private RecyclerView.LayoutManager m_LayoutManager;
 
     @Override
@@ -54,7 +56,7 @@ public class DailyLogList extends AppCompatActivity {
         m_rvDailyLogs.setLayoutManager(m_LayoutManager);
 
 
-        m_Adapter = new DailyLogAdapter(R.layout.default_list, 0);
+        m_Adapter = new NewAdapter(R.layout.default_list, 0, true, new DailyLogAdapterViewControl());
         LoadDailyLogs();
 
         m_rvDailyLogs.setAdapter(m_Adapter);

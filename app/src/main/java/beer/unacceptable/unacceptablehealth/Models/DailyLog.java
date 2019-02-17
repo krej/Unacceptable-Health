@@ -8,6 +8,7 @@ import java.util.Date;
 
 public class DailyLog extends ListableObject {
     public static String m_sDateFormat = "MM/dd/yyyy";
+    public static String LongDateFormat = "E, MMMM dd, yyyy";
 
     /**
      * The date of the entry

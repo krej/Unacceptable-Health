@@ -34,3 +34,10 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:2.8.9'
     androidTestImplementation 'org.mockito:mockito-android:2.8.9'
 }
+
+android.applicationVariants.all { variant ->
+    variant.outputs.all {
+        def appName = "UnacceptableHealth"
+        outputFileName = appName+"-${variant.versionName}.apk"
+    }
+}

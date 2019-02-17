@@ -19,7 +19,6 @@ import beer.unacceptable.unacceptablehealth.Screens.ViewDailyLog;
 import beer.unacceptable.unacceptablehealth.Screens.ViewRecipe;
 
 public class DailyLogAdapter extends Adapter {
-    public static String DateFormat = "E, MMMM dd, yyyy";
 
     public DailyLogAdapter(int iLayout, int iDialogLayout) {
         super(iLayout, iDialogLayout, false);
@@ -36,7 +35,7 @@ public class DailyLogAdapter extends Adapter {
         DailyLog dl = (DailyLog)m_Dataset.get(position);
 
         TextView etFirstLine = holder.view.findViewById(R.id.firstLine);
-        etFirstLine.setText(Tools.FormatDate(dl.date, DateFormat));
+        //etFirstLine.setText(Tools.FormatDate(dl.date, DateFormat));
         //etFirstLine.setText("butt sax");
     }
 
