@@ -1,13 +1,10 @@
 package beer.unacceptable.unacceptablehealth.Screens;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -20,11 +17,8 @@ import com.unacceptable.unacceptablelibrary.Tools.Network;
 import com.unacceptable.unacceptablelibrary.Tools.Preferences;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
-import beer.unacceptable.unacceptablehealth.Adapters.DailyLogAdapter;
 import beer.unacceptable.unacceptablehealth.Adapters.DailyLogAdapterViewControl;
-import beer.unacceptable.unacceptablehealth.Adapters.RecipeAdapter;
 import beer.unacceptable.unacceptablehealth.Models.DailyLog;
-import beer.unacceptable.unacceptablehealth.Models.FoodRecipe;
 import beer.unacceptable.unacceptablehealth.R;
 
 public class DailyLogList extends AppCompatActivity {
@@ -40,14 +34,6 @@ public class DailyLogList extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         m_rvDailyLogs = (RecyclerView)findViewById(R.id.dailyLogList);
         m_rvDailyLogs.setHasFixedSize(false);
@@ -56,7 +42,7 @@ public class DailyLogList extends AppCompatActivity {
         m_rvDailyLogs.setLayoutManager(m_LayoutManager);
 
 
-        m_Adapter = new NewAdapter(R.layout.default_list, 0, true, new DailyLogAdapterViewControl());
+        m_Adapter = new NewAdapter(R.layout.dailylog_preview, 0, true, new DailyLogAdapterViewControl());
         LoadDailyLogs();
 
         m_rvDailyLogs.setAdapter(m_Adapter);

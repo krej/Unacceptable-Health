@@ -33,7 +33,7 @@ public class IngredientAdapterViewControl extends BaseAdapterViewControl {
     }
 
     @Override
-    public void SetupViewInList(NewAdapter.ViewHolder view, ListableObject i) {
+    public void SetupViewInList(NewAdapter.ViewHolder view, ListableObject i, int position) {
         TextView txtName = view.view.findViewById(R.id.firstLine);
         txtName.setText(i.name);
     }

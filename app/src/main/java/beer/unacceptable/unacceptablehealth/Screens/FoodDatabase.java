@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -53,6 +54,8 @@ public class FoodDatabase extends AppCompatActivity {
         //TODO: They're the exact same xml file though so I should probably just do some renaming
         m_rvIngredients = (RecyclerView)findViewById(R.id.recipeView);
         m_Adapter = new NewAdapter(R.layout.default_list, R.layout.dialog_edit_ingredient, true, new IngredientAdapterViewControl());
+        EditText instructions = findViewById(R.id.recipe_instructions);
+        instructions.setVisibility(View.GONE);
 
         m_rvIngredients.setHasFixedSize(false);
 

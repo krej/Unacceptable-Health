@@ -49,11 +49,7 @@ public class DailyLogLogic extends BaseLogic<DailyLogLogic.View> {
                 view.setScreenTitle("Daily Log: " + Tools.FormatDate(m_dlLog.date, "MMM dd yy"));
                 view.fillScreen(m_dlLog);
 
-                if (m_dlLog.date == null || Tools.CompareDatesWithoutTime(m_dlLog.date,m_DateLogic.getTodaysDate())) {
-                    view.setScreenControlsEnabled(true);
-                } else {
-                    view.setScreenControlsEnabled(false);
-                }
+                view.setScreenControlsEnabled(canEditLog());
             }
 
             @Override
@@ -70,6 +66,10 @@ public class DailyLogLogic extends BaseLogic<DailyLogLogic.View> {
             }
         });
 
+    }
+
+    public boolean canEditLog() {
+        return m_dlLog == null || m_dlLog.date == null || Tools.CompareDatesWithoutTime(m_dlLog.date,m_DateLogic.getTodaysDate());
     }
 
     //TODO: Need to handle this returning a Response object
@@ -195,6 +195,11 @@ public class DailyLogLogic extends BaseLogic<DailyLogLogic.View> {
 
     private boolean logIsFullyCompleted(DailyLog log) {
         return log.HealthRating > 0 && log.PersonalDayRating > 0 && log.OverallNotes.length() > 0;
+    }
+
+    public float getDaysAverageRating(DailyLog log) {
+        if (!log.WorkDay) return log.PersonalDayRating;
+        return ((float)log.WorkRating + (float)log.PersonalDayRating) / 2;
     }
 
     public interface View {

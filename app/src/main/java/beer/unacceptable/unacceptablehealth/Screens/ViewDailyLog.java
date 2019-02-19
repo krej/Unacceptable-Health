@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.unacceptable.unacceptablelibrary.Repositories.LibraryRepository;
+import com.unacceptable.unacceptablelibrary.Tools.Preferences;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import beer.unacceptable.unacceptablehealth.Logic.DailyLogLogic;
@@ -68,6 +69,9 @@ public class ViewDailyLog extends AppCompatActivity implements DailyLogLogic.Vie
         Intent intent = this.getIntent();
         String idString = intent.getStringExtra("idString");
 
+        //attempt again to stop the random crashes by making sure the preferences are loaded
+        Preferences.getInstance(this, "health");
+
         m_oLogic.LoadLog(idString);
     }
 
@@ -94,6 +98,8 @@ public class ViewDailyLog extends AppCompatActivity implements DailyLogLogic.Vie
         txtMindfulMoment.setEnabled(bEnabled);
         txtOverallNotes.setEnabled(bEnabled);
         llMain.setEnabled(bEnabled);
+
+        invalidateOptionsMenu();
     }
 
     private void FindUIElements() {
@@ -136,6 +142,7 @@ public class ViewDailyLog extends AppCompatActivity implements DailyLogLogic.Vie
 
         AnimateView(chkUsedFlonase, radFlo);
         AnimateView(chkWorkDay, llWorkRating);
+
     }
 
     private void SetupVisibilityClickListeners() {
@@ -192,6 +199,8 @@ public class ViewDailyLog extends AppCompatActivity implements DailyLogLogic.Vie
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_view_recipe, menu);
+        MenuItem miSave = menu.findItem(R.id.save_recipe);
+        miSave.setVisible(m_oLogic == null || m_oLogic.canEditLog());
         return true;
     }
 

@@ -16,6 +16,7 @@ import java.util.Date;
 
 import beer.unacceptable.unacceptablehealth.Logic.DailyLogLogic;
 import beer.unacceptable.unacceptablehealth.Logic.IDateLogic;
+import beer.unacceptable.unacceptablehealth.Models.DailyLog;
 import beer.unacceptable.unacceptablehealth.Repositories.IRepository;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -247,5 +248,40 @@ public class DailyLogLogicTests {
         Assert.assertEquals(5, m_oLogic.getLog().WorkRating);
     }
 
+    //tests for the data going into the DailyLogList items
+    @Test
+    public void calculateOverallDayRating_WorkAndPersonal() {
+        DailyLog log = new DailyLog();
+        log.WorkDay = true;
+        log.WorkRating = 2;
+        log.PersonalDayRating = 5;
 
+        double rating;
+        rating = m_oLogic.getDaysAverageRating(log);
+
+        Assert.assertEquals(3.5, rating, 0.001);
+
+        log.WorkRating = 1;
+        log.PersonalDayRating = 2;
+
+        rating = m_oLogic.getDaysAverageRating(log);
+
+        Assert.assertEquals(1.5, rating, 0.001);
+    }
+
+    @Test
+    public void calculateOverallDayRating_NoWorkDay() {
+        DailyLog log = new DailyLog();
+        log.WorkDay = false;
+        log.WorkRating = 0;
+        log.PersonalDayRating = 5;
+
+        double rating;
+        rating = m_oLogic.getDaysAverageRating(log);
+        Assert.assertEquals(5, rating, 0.1);
+
+        log.PersonalDayRating = 2;
+        rating = m_oLogic.getDaysAverageRating(log);
+        Assert.assertEquals(2, rating, 0.1);
+    }
 }
