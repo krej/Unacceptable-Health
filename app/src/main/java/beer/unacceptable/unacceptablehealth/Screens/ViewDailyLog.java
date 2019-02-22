@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.unacceptable.unacceptablelibrary.Repositories.LibraryRepository;
+import com.unacceptable.unacceptablelibrary.Tools.CustomizedExceptionHandler;
 import com.unacceptable.unacceptablelibrary.Tools.Preferences;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
@@ -29,7 +31,7 @@ import beer.unacceptable.unacceptablehealth.Models.DailyLog;
 import beer.unacceptable.unacceptablehealth.R;
 import beer.unacceptable.unacceptablehealth.Repositories.Repository;
 
-public class ViewDailyLog extends AppCompatActivity implements DailyLogLogic.View {
+public class ViewDailyLog extends BaseActivity implements DailyLogLogic.View {
     RadioGroup radFlo;
     LinearLayout llWorkRating;
     int animTime;
@@ -68,9 +70,6 @@ public class ViewDailyLog extends AppCompatActivity implements DailyLogLogic.Vie
 
         Intent intent = this.getIntent();
         String idString = intent.getStringExtra("idString");
-
-        //attempt again to stop the random crashes by making sure the preferences are loaded
-        Preferences.getInstance(this, "health");
 
         m_oLogic.LoadLog(idString);
     }

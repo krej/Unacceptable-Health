@@ -31,7 +31,7 @@ import com.unacceptable.unacceptablelibrary.Tools.Tools;
 import beer.unacceptable.unacceptablehealth.R;
 import beer.unacceptable.unacceptablehealth.Receivers.DailyLogAlarmReceiver;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
@@ -58,54 +58,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        InitialAppSetup();
-        //File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "Crash");
-    }
-
-    //TODO: Can I move this so its not here?
-    private boolean InitialAppSetup() {
-        createNotificationChannel();
-        DailyLogAlarmReceiver.SetupDailyLogAlarm(this);
-
-        //Tools.LoadSharedPrefs(getApplicationContext(), "health");
-        Preferences.getInstance(getApplicationContext(), "health");
-        if (!Tools.LoginTokenExists(this, MainActivity.class)) return false;
-
-        Network.getInstance(this.getApplicationContext()); //start the network singleton
-
-        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
-        }
-        Thread.setDefaultUncaughtExceptionHandler(new CustomizedExceptionHandler(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getPath()));
-
-        return true;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (grantResults.length > 0
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Tools.ShowToast(getApplicationContext(), "Permission Granted", Toast.LENGTH_LONG);
-
-        }
-    }
-
-    private void createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.notification_channel);
-            String description = getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(getResources().getString(R.string.NOTIFICATION_CHANNEL_ID), name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
     }
 
     @Override

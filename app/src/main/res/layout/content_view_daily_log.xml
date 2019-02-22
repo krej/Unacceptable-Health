@@ -167,8 +167,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textMultiLine"/>
+            android:inputType="textMultiLine"
+            android:minHeight="100dp"/>
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp"/>
     </LinearLayout>
 
     </ScrollView>
