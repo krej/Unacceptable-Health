@@ -10,32 +10,34 @@ import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
 import com.unacceptable.unacceptablelibrary.Models.ListableObject;
 import com.unacceptable.unacceptablelibrary.Repositories.LibraryRepository;
 
-import beer.unacceptable.unacceptablehealth.Controllers.IngredientLogic;
-import beer.unacceptable.unacceptablehealth.Models.Ingredient;
+import beer.unacceptable.unacceptablehealth.Controllers.WorkoutTypeController;
 import beer.unacceptable.unacceptablehealth.R;
+import beer.unacceptable.unacceptablehealth.Repositories.Repository;
 
-public class IngredientAdapterViewControl extends BaseAdapterViewControl {
-    private IngredientLogic m_oIngredientLogic;
-
-    public IngredientAdapterViewControl() {
-         m_oIngredientLogic = new IngredientLogic(new LibraryRepository());
+public class WorkoutTypeViewControl extends BaseAdapterViewControl {
+    private WorkoutTypeController m_oController;
+    public WorkoutTypeViewControl() {
+        m_bAlternateRowColors = true;
+        m_sAlternateRowBackgroundColor = "#dbdbdb";
+        m_oController = new WorkoutTypeController(new Repository(), new LibraryRepository());
     }
 
     @Override
     public void SetupDialog(View root, ListableObject i) {
-        Ingredient ingred = (Ingredient)i;
-
+        TextView header = root.findViewById(R.id.add_ingredient_header);
         EditText name = root.findViewById(R.id.ingredient_name);
-        EditText ingredID = root.findViewById(R.id.ingredientID);
 
-        ingredID.setText(ingred.idString);
-        name.setText(ingred.name);
+        header.setText("Workout Type");
+
+        if (i != null) {
+            name.setText(i.name);
+        }
     }
 
     @Override
     public void SetupViewInList(NewAdapter.ViewHolder view, ListableObject i) {
-        TextView txtName = view.view.findViewById(R.id.firstLine);
-        txtName.setText(i.name);
+        TextView name = view.view.findViewById(R.id.firstLine);
+        name.setText(i.name);
     }
 
     @Override
@@ -46,11 +48,8 @@ public class IngredientAdapterViewControl extends BaseAdapterViewControl {
     @Override
     public boolean onDialogOkClicked(Dialog d, ListableObject i) {
         EditText name = d.findViewById(R.id.ingredient_name);
-        EditText ingredID = (EditText) d.findViewById(R.id.ingredientID);
-
         String sName = name.getText().toString();
-        String sID = ingredID.getText().toString();
 
-        return m_oIngredientLogic.save(d.getContext(), m_Adapter, i, sName);
+        return m_oController.save(d.getContext(), m_Adapter, i, sName);
     }
 }

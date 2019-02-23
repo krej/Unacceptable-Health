@@ -130,11 +130,15 @@ public class MainActivity extends BaseActivity
             case R.id.nav_sign_out:
                 Tools.LaunchSignInScreen(this, MainActivity.class);
                 break;
+            case R.id.nav_exercise_database:
+                classToLaunch = ExerciseDatabase.class;
+                break;
         }
 
         if (classToLaunch != null) {
             Intent intent = new Intent(getApplicationContext(), classToLaunch);
             startActivity(intent);
+            //overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

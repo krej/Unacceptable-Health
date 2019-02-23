@@ -11,7 +11,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import beer.unacceptable.unacceptablehealth.Logic.IngredientLogic;
+import beer.unacceptable.unacceptablehealth.Controllers.IngredientLogic;
 import beer.unacceptable.unacceptablehealth.Models.Ingredient;
 
 import static org.mockito.ArgumentMatchers.any;

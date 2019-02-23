@@ -16,8 +16,8 @@ import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import java.util.Calendar;
 
-import beer.unacceptable.unacceptablehealth.Logic.DailyLogLogic;
-import beer.unacceptable.unacceptablehealth.Logic.DateLogic;
+import beer.unacceptable.unacceptablehealth.Controllers.DailyLogLogic;
+import beer.unacceptable.unacceptablehealth.Controllers.DateLogic;
 import beer.unacceptable.unacceptablehealth.R;
 import beer.unacceptable.unacceptablehealth.Repositories.Repository;
 import beer.unacceptable.unacceptablehealth.Screens.ViewDailyLog;

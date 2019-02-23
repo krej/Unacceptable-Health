@@ -1,4 +1,4 @@
-package beer.unacceptable.unacceptablehealth.Logic;
+package beer.unacceptable.unacceptablehealth.Controllers;
 
 import java.util.Date;
 

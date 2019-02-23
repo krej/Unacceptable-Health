@@ -15,6 +15,24 @@
         android:roundIcon="@mipmap/wheelchairguy"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".Screens.WorkoutTypeList"
+            android:label="@string/title_activity_workout_type_list"
+            android:parentActivityName=".Screens.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="beer.unacceptable.unacceptablehealth.Screens.MainActivity"/>
+        </activity>
+        <activity
+            android:name=".Screens.ExerciseDatabase"
+            android:label="@string/title_activity_exercise_database"
+            android:parentActivityName=".Screens.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="beer.unacceptable.unacceptablehealth.Screens.MainActivity"/>
+        </activity>
         <activity android:name=".Screens.BaseActivity">
         </activity>
         <activity

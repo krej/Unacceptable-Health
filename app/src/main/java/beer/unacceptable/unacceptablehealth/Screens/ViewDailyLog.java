@@ -4,8 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,12 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.unacceptable.unacceptablelibrary.Repositories.LibraryRepository;
-import com.unacceptable.unacceptablelibrary.Tools.CustomizedExceptionHandler;
-import com.unacceptable.unacceptablelibrary.Tools.Preferences;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
-import beer.unacceptable.unacceptablehealth.Logic.DailyLogLogic;
-import beer.unacceptable.unacceptablehealth.Logic.DateLogic;
+import beer.unacceptable.unacceptablehealth.Controllers.DailyLogLogic;
+import beer.unacceptable.unacceptablehealth.Controllers.DateLogic;
 import beer.unacceptable.unacceptablehealth.Models.DailyLog;
 import beer.unacceptable.unacceptablehealth.R;
 import beer.unacceptable.unacceptablehealth.Repositories.Repository;

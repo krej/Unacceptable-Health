@@ -7,15 +7,14 @@ import com.unacceptable.unacceptablelibrary.Repositories.RepositoryCallback;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.AdditionalMatchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import java.util.Calendar;
 import java.util.Date;
 
-import beer.unacceptable.unacceptablehealth.Logic.DailyLogLogic;
-import beer.unacceptable.unacceptablehealth.Logic.IDateLogic;
+import beer.unacceptable.unacceptablehealth.Controllers.DailyLogLogic;
+import beer.unacceptable.unacceptablehealth.Controllers.IDateLogic;
 import beer.unacceptable.unacceptablehealth.Models.DailyLog;
 import beer.unacceptable.unacceptablehealth.Repositories.IRepository;
 

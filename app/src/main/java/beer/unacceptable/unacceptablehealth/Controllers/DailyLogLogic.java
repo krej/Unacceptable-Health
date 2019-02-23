@@ -1,25 +1,24 @@
-package beer.unacceptable.unacceptablehealth.Logic;
+package beer.unacceptable.unacceptablehealth.Controllers;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.unacceptable.unacceptablelibrary.Logic.BaseLogic;
 import com.unacceptable.unacceptablelibrary.Repositories.ILibraryRepository;
 import com.unacceptable.unacceptablelibrary.Repositories.RepositoryCallback;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
-import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
 import beer.unacceptable.unacceptablehealth.Models.DailyLog;
 import beer.unacceptable.unacceptablehealth.Repositories.IRepository;
+
+import static com.unacceptable.unacceptablelibrary.Tools.Tools.convertJsonResponseToObject;
 
 public class DailyLogLogic extends BaseLogic<DailyLogLogic.View> {
     IRepository m_repository;
@@ -45,7 +44,7 @@ public class DailyLogLogic extends BaseLogic<DailyLogLogic.View> {
         m_repository.LoadDailyLog(idString, new RepositoryCallback() {
             @Override
             public void onSuccess(String response) {
-                m_dlLog = convertJsonResponseToObject(response);
+                m_dlLog = convertJsonResponseToObject(response, DailyLog.class);
                 view.setScreenTitle("Daily Log: " + Tools.FormatDate(m_dlLog.date, "MMM dd yy"));
                 view.fillScreen(m_dlLog);
 
@@ -73,11 +72,11 @@ public class DailyLogLogic extends BaseLogic<DailyLogLogic.View> {
     }
 
     //TODO: Need to handle this returning a Response object
-    private DailyLog convertJsonResponseToObject(String json) {
+    /*private DailyLog convertJsonResponseToObject(String json) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
         return gson.fromJson(json, DailyLog.class);
-    }
+    }*/
 
     public void saveLog(String sDate,
                         int iHealthRating,
@@ -175,7 +174,7 @@ public class DailyLogLogic extends BaseLogic<DailyLogLogic.View> {
         m_repository.LoadDailyLogByDate(sDate, new RepositoryCallback() {
             @Override
             public void onSuccess(String t) {
-                m_dlLog = convertJsonResponseToObject(t);
+                m_dlLog = convertJsonResponseToObject(t, DailyLog.class);
                 callback.onSuccess(t);
             }
 

@@ -21,4 +21,9 @@ public class Repository implements IRepository {
     public void LoadDailyLogByDate(String sDate, RepositoryCallback callback) {
         Network.WebRequest(Request.Method.GET, Preferences.HealthAPIURL() + "/dailylog/" + sDate, null, callback, true );
     }
+
+    @Override
+    public void LoadAllWorkoutTypes(RepositoryCallback callback) {
+        Network.WebRequest(Request.Method.GET, Preferences.HealthAPIURL() + "/workouttype/", null, callback, true);
+    }
 }
