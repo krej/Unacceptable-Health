@@ -1,8 +1,12 @@
 package beer.unacceptable.unacceptablehealth.Adapters;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -37,10 +41,10 @@ public class DailyLogAdapterViewControl extends BaseAdapterViewControl {
         TextView etDate = view.view.findViewById(R.id.dailyLogPreview_Date);
         RatingBar overallRating = view.view.findViewById(R.id.dailyLogPreview_OverallDayRating);
 
-        etDate.setText(Tools.FormatDate(dl.date, DailyLog.LongDateFormat));
+        etDate.setText(m_oLogic.getLongDate(dl));
         overallRating.setRating(m_oLogic.getDaysAverageRating(dl));
 
-        etDate.setShadowLayer(1.5f, 1, 1, Color.parseColor("#8f3820"));
+        //etDate.setShadowLayer(1.5f, 1, 1, Color.parseColor("#FFFFFF")); //8f3820
     }
 
     @Override
@@ -48,7 +52,17 @@ public class DailyLogAdapterViewControl extends BaseAdapterViewControl {
         DailyLog dl = (DailyLog)i;
         Intent intent = new Intent(v.getContext(), ViewDailyLog.class);
         intent.putExtra("idString", dl.idString);
-        v.getContext().startActivity(intent);
+        intent.putExtra("title", m_oLogic.getLongDate(dl));
+        ActivityOptionsCompat activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                (Activity)v.getContext(),
+
+                // Now we provide a list of Pair items which contain the view we can transitioning
+                // from, and the name of the view it is transitioning to, in the launched activity
+                new Pair<View, String>(v.findViewById(R.id.dailyLogPreview_Date),
+                        ViewDailyLog.VIEW_NAME_HEADER_TITLE));
+
+        //v.getContext().startActivity(intent);
+        ActivityCompat.startActivity(v.getContext(), intent, activityOptions.toBundle());
     }
 
     @Override

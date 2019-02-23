@@ -114,7 +114,7 @@
     <string name="measure">Measure</string>
     <string name="save">Save</string>
     <string name="instructions">Instructions</string>
-    <string name="title_activity_view_daily_log">View Daily Log</string>
+    <string name="title_activity_view_daily_log"></string> <!--View Daily Log - Removed to try and do animations. I need a title i can grab the TextView of -->
     <string name="used_flonase">Used Flonase?</string>
     <string name="create_daily_log">Create Daily Log</string>
     <string name="bad_allergies">Bad Allergies</string>

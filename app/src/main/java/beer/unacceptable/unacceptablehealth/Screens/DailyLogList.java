@@ -42,7 +42,7 @@ public class DailyLogList extends AppCompatActivity {
         m_rvDailyLogs.setLayoutManager(m_LayoutManager);
 
 
-        m_Adapter = new NewAdapter(R.layout.dailylog_preview, 0, true, new DailyLogAdapterViewControl());
+        m_Adapter = new NewAdapter(R.layout.dailylog_preview, 0, false, new DailyLogAdapterViewControl());
         LoadDailyLogs();
 
         m_rvDailyLogs.setAdapter(m_Adapter);

@@ -45,7 +45,8 @@ public class DailyLogLogic extends BaseLogic<DailyLogLogic.View> {
             @Override
             public void onSuccess(String response) {
                 m_dlLog = convertJsonResponseToObject(response, DailyLog.class);
-                view.setScreenTitle("Daily Log: " + Tools.FormatDate(m_dlLog.date, "MMM dd yy"));
+                //view.setScreenTitle("Daily Log: " + Tools.FormatDate(m_dlLog.date, "MMM dd yy"));
+                view.setScreenTitle(getLongDate(m_dlLog));
                 view.fillScreen(m_dlLog);
 
                 view.setScreenControlsEnabled(canEditLog());
@@ -199,6 +200,10 @@ public class DailyLogLogic extends BaseLogic<DailyLogLogic.View> {
     public float getDaysAverageRating(DailyLog log) {
         if (!log.WorkDay) return log.PersonalDayRating;
         return ((float)log.WorkRating + (float)log.PersonalDayRating) / 2;
+    }
+
+    public String getLongDate(DailyLog dl) {
+        return Tools.FormatDate(dl.date, DailyLog.LongDateFormat);
     }
 
     public interface View {

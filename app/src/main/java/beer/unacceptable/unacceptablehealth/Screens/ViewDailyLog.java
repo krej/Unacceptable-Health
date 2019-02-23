@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,31 +48,44 @@ public class ViewDailyLog extends BaseActivity implements DailyLogLogic.View {
     TextView txtOverallNotes;
     LinearLayout llMain;
 
+    Toolbar toolbar;
+    TextView tvTitle;
+
     private DailyLogLogic m_oLogic;
+
+
+    // View name of the header title. Used for activity scene transitions
+    public static final String VIEW_NAME_HEADER_TITLE = "detail:header:title";
+    // View name of the personal rating. Used for activity scene transitions
+    public static final String VIEW_NAME_PERSONAL_RATING = "detail:body:personal_rating";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_daily_log);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        FindUIElements();
 
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         m_oLogic = new DailyLogLogic(new Repository(), new DateLogic(), new LibraryRepository());
         m_oLogic.attachView(this);
 
-        FindUIElements();
         SetupVisibilityClickListeners();
 
         Intent intent = this.getIntent();
         String idString = intent.getStringExtra("idString");
+        String title = intent.getStringExtra("title");
+
+        ViewCompat.setTransitionName(tvTitle, VIEW_NAME_HEADER_TITLE);
 
         m_oLogic.LoadLog(idString);
+
     }
 
     public void setScreenTitle(String sTitle) {
-        setTitle(sTitle);
+        //setTitle(sTitle);
+        tvTitle.setText(sTitle);
     }
 
     public void showMessage(String sMessage) {
@@ -118,6 +132,8 @@ public class ViewDailyLog extends BaseActivity implements DailyLogLogic.View {
         radFlo = findViewById(R.id.radGrp_flonase);
         llWorkRating = findViewById(R.id.ll_work_rating);
         animTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+        toolbar = findViewById(R.id.toolbar);
+        tvTitle = findViewById(R.id.toolbarTitleTV);
     }
 
     public void fillScreen(DailyLog dailyLog) {
