@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -72,14 +73,19 @@ public class ViewDailyLog extends BaseActivity implements DailyLogLogic.View {
         m_oLogic.attachView(this);
 
         SetupVisibilityClickListeners();
+        SetupNotesAutoScroll();
 
         Intent intent = this.getIntent();
         String idString = intent.getStringExtra("idString");
-        String title = intent.getStringExtra("title");
 
         ViewCompat.setTransitionName(tvTitle, VIEW_NAME_HEADER_TITLE);
 
         m_oLogic.LoadLog(idString);
+
+    }
+
+    private void SetupNotesAutoScroll() {
+        txtOverallNotes.setMovementMethod(new ScrollingMovementMethod());
 
     }
 

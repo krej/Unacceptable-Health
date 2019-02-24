@@ -52,7 +52,7 @@ public class DailyLogAdapterViewControl extends BaseAdapterViewControl {
         DailyLog dl = (DailyLog)i;
         Intent intent = new Intent(v.getContext(), ViewDailyLog.class);
         intent.putExtra("idString", dl.idString);
-        intent.putExtra("title", m_oLogic.getLongDate(dl));
+
         ActivityOptionsCompat activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 (Activity)v.getContext(),
 

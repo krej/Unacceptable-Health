@@ -79,7 +79,7 @@ public class WorkoutTypeControllerTests {
     @Test
     public void saveItem_WithName_Saves() {
 
-        boolean result = m_oController.save(mock(Context.class), mock(NewAdapter.class), null, "");
+        boolean result = m_oController.save(mock(Context.class), mock(NewAdapter.class), null, "Run");
 
         verify(m_libraryRepo).Save(anyString(), any(byte[].class), any(RepositoryCallback.class));
         Assert.assertTrue(result);
