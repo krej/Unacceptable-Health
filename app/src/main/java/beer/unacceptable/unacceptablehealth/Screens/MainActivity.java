@@ -26,6 +26,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +55,7 @@ public class MainActivity extends BaseActivity
     RatingBar m_rbOverallRating;
     DailyLogLogic m_oDailyLogController;
     MainScreenController m_oController;
+    LinearLayout m_ll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +119,7 @@ public class MainActivity extends BaseActivity
         m_rbOverallRating = findViewById(R.id.dailyLogPreview_OverallDayRating);
         m_tvDailyLogHeader = findViewById(R.id.todays_log_date);
         m_tvIdString = findViewById(R.id.idString);
+        m_ll = findViewById(R.id.linear_layout);
     }
 
     @Override
@@ -228,5 +231,12 @@ public class MainActivity extends BaseActivity
         m_tvDailyLogHeader.setText(m_oDailyLogController.getLongDate(dl));
         m_rbOverallRating.setRating(m_oDailyLogController.getDaysAverageRating(dl));
         m_tvIdString.setText(dl.idString);
+    }
+
+    @Override
+    public void showDailyLogError() {
+        TextView tvError = new TextView(getApplicationContext());
+        tvError.setText(getString(R.string.error_loading_dailylog));
+        m_ll.addView(tvError);
     }
 }

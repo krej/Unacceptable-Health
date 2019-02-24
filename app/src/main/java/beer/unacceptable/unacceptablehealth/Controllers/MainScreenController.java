@@ -49,7 +49,9 @@ public class MainScreenController extends BaseLogic<MainScreenController.View> {
 
             @Override
             public void onError(VolleyError error) {
-
+                view.showTodaysLog(false);
+                view.showNewLogButton(false);
+                view.showDailyLogError();
             }
         });
     }
@@ -61,5 +63,6 @@ public class MainScreenController extends BaseLogic<MainScreenController.View> {
         void showNewLogButton(boolean b);
 
         void populateTodaysLog(DailyLog dl);
+        void showDailyLogError();
     }
 }

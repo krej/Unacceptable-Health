@@ -1,5 +1,6 @@
 package beer.unacceptable.unacceptablehealth;
 
+import com.android.volley.VolleyError;
 import com.unacceptable.unacceptablelibrary.Repositories.RepositoryCallback;
 
 import org.junit.Before;
@@ -16,6 +17,7 @@ import beer.unacceptable.unacceptablehealth.Models.DailyLog;
 import beer.unacceptable.unacceptablehealth.Repositories.IRepository;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
@@ -115,5 +117,23 @@ public class MainScreenControllerTest {
         verify(view).showTodaysLog(true);
         verify(view).showNewLogButton(false);
         verify(view).populateTodaysLog(any(DailyLog.class));
+    }
+
+    @Test
+    public void screenLods_FailureLoadingDailyLog_ShowError() {
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                RepositoryCallback callback = invocation.getArgument(1);
+                callback.onError(new VolleyError());
+                return null;
+            }
+        }).when(m_repo).LoadDailyLogByDate(anyString(), any(RepositoryCallback.class));
+
+        m_oController.LoadTodaysLog();
+
+        verify(view).showNewLogButton(false);
+        verify(view).showTodaysLog(false);
+        verify(view).showDailyLogError();
     }
 }

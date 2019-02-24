@@ -217,4 +217,5 @@
     <string name="workout_types">Workout Types</string>
     <string name="title_activity_workout_type_list">Workout Types</string>
     <string name="todays_log">Today\'s Log</string>
+    <string name="error_loading_dailylog">Error Loading Daily Log</string>
 </resources>
