@@ -218,4 +218,28 @@
     <string name="title_activity_workout_type_list">Workout Types</string>
     <string name="todays_log">Today\'s Log</string>
     <string name="error_loading_dailylog">Error Loading Daily Log</string>
+    <string name="title_activity_create_goal">Create Goal</string>
+    <string name="breif_goal_description">Breif Goal Description</string>
+    <string name="brief_goal_description">Brief Goal Description</string>
+    <string name="goal_start_date">Start Date</string>
+    <string name="goal_end_date">End Date</string>
+    <string name="description">Description</string>
+    <string name="goal_items_header">Goal Items</string>
+    <string name="create_goal_based_on_week">Create Goal Based On Week</string>
+    <string name="select_starting_date">Select a Starting Date</string>
+    <string name="select_ending_date">Select an Ending Date</string>
+    <string-array name="daysofweek">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+    <string-array name="testArray">
+        <item>test1</item>
+        <item>balls</item>
+        <item>net</item>
+    </string-array>
 </resources>

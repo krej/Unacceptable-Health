@@ -185,6 +185,7 @@ public class MainActivity extends BaseActivity
                 classToLaunch = DailyLogList.class;
                 break;
             case R.id.nav_goals:
+                classToLaunch = CreateGoal.class;
                 break;
             case R.id.nav_food_database:
                 classToLaunch = FoodDatabase.class;

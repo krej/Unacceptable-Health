@@ -36,16 +36,18 @@ public class DailyLogList extends AppCompatActivity {
 
 
         m_rvDailyLogs = (RecyclerView)findViewById(R.id.dailyLogList);
-        m_rvDailyLogs.setHasFixedSize(false);
+        /*m_rvDailyLogs.setHasFixedSize(false);
 
         m_LayoutManager = new LinearLayoutManager(this);
         m_rvDailyLogs.setLayoutManager(m_LayoutManager);
 
 
         m_Adapter = new NewAdapter(R.layout.dailylog_preview, 0, false, new DailyLogAdapterViewControl());
-        LoadDailyLogs();
 
-        m_rvDailyLogs.setAdapter(m_Adapter);
+        m_rvDailyLogs.setAdapter(m_Adapter);*/
+
+        m_Adapter = Tools.setupRecyclerView(m_rvDailyLogs, getApplicationContext(), R.layout.dailylog_preview, 0, false, new DailyLogAdapterViewControl());
+        LoadDailyLogs();
     }
 
     private void LoadDailyLogs() {

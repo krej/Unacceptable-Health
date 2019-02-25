@@ -38,6 +38,6 @@ dependencies {
 android.applicationVariants.all { variant ->
     variant.outputs.all {
         def appName = "UnacceptableHealth"
-        outputFileName = appName+"-${variant.versionName}.apk"
+        outputFileName = appName + "-${variant.versionName}.apk"
     }
 }
