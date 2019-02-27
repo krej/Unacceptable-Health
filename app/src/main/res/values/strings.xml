@@ -242,4 +242,5 @@
         <item>balls</item>
         <item>net</item>
     </string-array>
+    <string name="title_activity_view_goal">View Goal</string>
 </resources>

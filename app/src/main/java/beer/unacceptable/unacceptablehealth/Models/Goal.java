@@ -15,6 +15,10 @@ public class Goal extends ListableObject {
     public String Description;
     @Expose
     public ArrayList<GoalItem> GoalItems;
+    @Expose
+    public ArrayList<PendingGoalItem> PendingGoalItems;
+    @Expose
+    public boolean BasedOnWeek;
     //Not sure about this yet
     //@Expose
     //public ArrayList<GoalItemHistory> GoalItemHistory;

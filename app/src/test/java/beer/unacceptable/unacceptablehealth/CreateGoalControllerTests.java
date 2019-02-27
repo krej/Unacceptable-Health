@@ -1,6 +1,9 @@
 package beer.unacceptable.unacceptablehealth;
 
 import com.unacceptable.unacceptablelibrary.Models.ListableObject;
+import com.unacceptable.unacceptablelibrary.Repositories.ILibraryRepository;
+import com.unacceptable.unacceptablelibrary.Repositories.RepositoryCallback;
+import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -8,6 +11,8 @@ import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+import java.lang.reflect.Array;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -15,10 +20,12 @@ import java.util.Date;
 import beer.unacceptable.unacceptablehealth.Controllers.CreateGoalController;
 import beer.unacceptable.unacceptablehealth.Controllers.IDateLogic;
 import beer.unacceptable.unacceptablehealth.Models.Goal;
+import beer.unacceptable.unacceptablehealth.Models.GoalItem;
 import beer.unacceptable.unacceptablehealth.Models.PendingGoalItem;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutType;
 import beer.unacceptable.unacceptablehealth.Repositories.IRepository;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
@@ -31,15 +38,17 @@ public class CreateGoalControllerTests {
     private CreateGoalController.View m_view;
     private IDateLogic m_date;
     private IRepository m_repo;
+    private ILibraryRepository m_libraryRepo;
 
-    private WorkoutType arms, run, abs;
+    private WorkoutType arms, run, abs, rest;
 
     @Before
     public void setup() {
         m_date = mock(IDateLogic.class);
         m_view = mock(CreateGoalController.View.class);
         m_repo = mock(IRepository.class);
-        m_oController = new CreateGoalController(m_view, m_date, m_repo);
+        m_libraryRepo = mock(ILibraryRepository.class);
+        m_oController = new CreateGoalController(m_view, m_date, m_repo, m_libraryRepo);
 
         arms = new WorkoutType();
         arms.name = "Arms";
@@ -49,6 +58,9 @@ public class CreateGoalControllerTests {
 
         abs = new WorkoutType();
         abs.name = "Abs";
+
+        rest = new WorkoutType();
+        rest.name = "Rest";
     }
 
     private Calendar getHardCodedDate() {
@@ -65,6 +77,12 @@ public class CreateGoalControllerTests {
         //Date dt = calendar.getTime();
         //return dt;
     }
+
+    private Calendar createDate(int month, int day, int year) {
+        return Tools.createDate(month, day, year, 7, 36, 24);
+    }
+
+
 
     @Test
     public void setDateCalledForStartDate_StartDateStringPassedToUI() {
@@ -220,5 +238,184 @@ public class CreateGoalControllerTests {
         m_oController.setPendingGoalItems(p);
         m_oController.changeGoalType(true);
         Assert.assertEquals(7, m_oController.getPendingGoalItems().size());
+    }
+
+    @Test
+    public void pendingGoalItemsFilledOut_notBasedOnWeek_CreateGoalItems() {
+        ArrayList<PendingGoalItem> pgi = new ArrayList<>();
+        PendingGoalItem p = new PendingGoalItem();
+        p.Type = arms;
+        pgi.add(p);
+
+        p = new PendingGoalItem();
+        p.Type = run;
+        pgi.add(p);
+
+        p = new PendingGoalItem();
+        p.Type = abs;
+        pgi.add(p);
+
+        m_oController.setPendingGoalItems(pgi);
+        m_oController.setDate(createDate(Calendar.MARCH,1,2019), CreateGoalController.DateType.Start);
+        m_oController.setDate(createDate(Calendar.MARCH, 10, 2019), CreateGoalController.DateType.End);
+        m_oController.createGoalItems(false);
+        ArrayList<GoalItem> goalItems = m_oController.getGoalItems();
+
+        Assert.assertEquals("Goal Item list not correct length",10, goalItems.size());
+
+        Assert.assertTrue(Tools.CompareDatesWithoutTime(createDate(Calendar.MARCH, 1, 2019).getTime(), goalItems.get(0).Date));
+        Assert.assertFalse(goalItems.get(0).Completed);
+        Assert.assertEquals(goalItems.get(0).WorkoutType, arms);
+
+        Assert.assertTrue(Tools.CompareDatesWithoutTime(createDate(Calendar.MARCH, 2, 2019).getTime(), goalItems.get(1).Date));
+        Assert.assertFalse(goalItems.get(1).Completed);
+        Assert.assertEquals(goalItems.get(1).WorkoutType, run);
+
+        Assert.assertTrue(Tools.CompareDatesWithoutTime(createDate(Calendar.MARCH, 3, 2019).getTime(), goalItems.get(2).Date));
+        Assert.assertFalse(goalItems.get(2).Completed);
+        Assert.assertEquals(goalItems.get(2).WorkoutType, abs);
+
+        Assert.assertTrue(Tools.CompareDatesWithoutTime(createDate(Calendar.MARCH, 4, 2019).getTime(), goalItems.get(3).Date));
+        Assert.assertFalse(goalItems.get(3).Completed);
+        Assert.assertEquals(goalItems.get(3).WorkoutType, arms);
+
+        Assert.assertTrue(Tools.CompareDatesWithoutTime(createDate(Calendar.MARCH, 5, 2019).getTime(), goalItems.get(4).Date));
+        Assert.assertFalse(goalItems.get(4).Completed);
+        Assert.assertEquals(goalItems.get(4).WorkoutType, run);
+
+        Assert.assertTrue(Tools.CompareDatesWithoutTime(createDate(Calendar.MARCH, 6, 2019).getTime(), goalItems.get(5).Date));
+        Assert.assertFalse(goalItems.get(5).Completed);
+        Assert.assertEquals(goalItems.get(5).WorkoutType, abs);
+
+        Assert.assertTrue(Tools.CompareDatesWithoutTime(createDate(Calendar.MARCH, 7, 2019).getTime(), goalItems.get(6).Date));
+        Assert.assertFalse(goalItems.get(6).Completed);
+        Assert.assertEquals(goalItems.get(6).WorkoutType, arms);
+
+        Assert.assertTrue(Tools.CompareDatesWithoutTime(createDate(Calendar.MARCH, 8, 2019).getTime(), goalItems.get(7).Date));
+        Assert.assertFalse(goalItems.get(7).Completed);
+        Assert.assertEquals(goalItems.get(7).WorkoutType, run);
+
+        Assert.assertTrue(Tools.CompareDatesWithoutTime(createDate(Calendar.MARCH, 9, 2019).getTime(), goalItems.get(8).Date));
+        Assert.assertFalse(goalItems.get(8).Completed);
+        Assert.assertEquals(goalItems.get(8).WorkoutType, abs);
+
+        Assert.assertTrue(Tools.CompareDatesWithoutTime(createDate(Calendar.MARCH, 10, 2019).getTime(), goalItems.get(9).Date));
+        Assert.assertFalse(goalItems.get(9).Completed);
+        Assert.assertEquals(goalItems.get(9).WorkoutType, arms);
+
+
+    }
+
+    @Test
+    public void pendingGoalItemsFilledOut_basedOnWeek_CreateGoalItems() {
+        ArrayList<PendingGoalItem> pgi = new ArrayList<>();
+        PendingGoalItem p = new PendingGoalItem();
+        p.Day = "Monday";
+        p.Type = arms;
+        pgi.add(p);
+
+        p = new PendingGoalItem();
+        p.Day = "Tuesday";
+        p.Type = run;
+        pgi.add(p);
+
+        p = new PendingGoalItem();
+        p.Day = "Wednesday";
+        p.Type = abs;
+        pgi.add(p);
+
+        p = new PendingGoalItem();
+        p.Day = "Thursday";
+        p.Type = run;
+        pgi.add(p);
+
+        p = new PendingGoalItem();
+        p.Day = "Thursday";
+        p.Type = abs;
+        pgi.add(p);
+
+        p = new PendingGoalItem();
+        p.Day = "Friday";
+        p.Type = arms;
+        pgi.add(p);
+
+        p = new PendingGoalItem();
+        p.Day = "Saturday";
+        p.Type = abs;
+        pgi.add(p);
+
+        p = new PendingGoalItem();
+        p.Day = "Sunday";
+        p.Type = rest;
+        pgi.add(p);
+
+        m_oController.setPendingGoalItems(pgi);
+        m_oController.setDate(createDate(Calendar.MARCH,1,2019), CreateGoalController.DateType.Start);
+        m_oController.setDate(createDate(Calendar.MARCH, 9, 2019), CreateGoalController.DateType.End);
+        m_oController.createGoalItems(true);
+        ArrayList<GoalItem> goalItems = m_oController.getGoalItems();
+
+        Assert.assertEquals("Goal Item list not correct length",10, goalItems.size());
+
+        Assert.assertTrue(Tools.CompareDatesWithoutTime(createDate(Calendar.MARCH, 1, 2019).getTime(), goalItems.get(0).Date));
+        Assert.assertFalse(goalItems.get(0).Completed);
+        Assert.assertEquals(goalItems.get(0).WorkoutType, arms);
+
+        Assert.assertTrue(Tools.CompareDatesWithoutTime(createDate(Calendar.MARCH, 2, 2019).getTime(), goalItems.get(1).Date));
+        Assert.assertFalse(goalItems.get(1).Completed);
+        Assert.assertEquals(goalItems.get(1).WorkoutType, abs);
+
+        Assert.assertTrue(Tools.CompareDatesWithoutTime(createDate(Calendar.MARCH, 3, 2019).getTime(), goalItems.get(2).Date));
+        Assert.assertFalse(goalItems.get(2).Completed);
+        Assert.assertEquals(goalItems.get(2).WorkoutType, rest);
+
+        Assert.assertTrue(Tools.CompareDatesWithoutTime(createDate(Calendar.MARCH, 4, 2019).getTime(), goalItems.get(3).Date));
+        Assert.assertFalse(goalItems.get(3).Completed);
+        Assert.assertEquals(goalItems.get(3).WorkoutType, arms);
+
+        Assert.assertTrue(Tools.CompareDatesWithoutTime(createDate(Calendar.MARCH, 5, 2019).getTime(), goalItems.get(4).Date));
+        Assert.assertFalse(goalItems.get(4).Completed);
+        Assert.assertEquals(goalItems.get(4).WorkoutType, run);
+
+        Assert.assertTrue(Tools.CompareDatesWithoutTime(createDate(Calendar.MARCH, 6, 2019).getTime(), goalItems.get(5).Date));
+        Assert.assertFalse(goalItems.get(5).Completed);
+        Assert.assertEquals(goalItems.get(5).WorkoutType, abs);
+
+        Assert.assertTrue(Tools.CompareDatesWithoutTime(createDate(Calendar.MARCH, 7, 2019).getTime(), goalItems.get(6).Date));
+        Assert.assertFalse(goalItems.get(6).Completed);
+        Assert.assertEquals(goalItems.get(6).WorkoutType, run);
+        Assert.assertTrue(Tools.CompareDatesWithoutTime(createDate(Calendar.MARCH, 7, 2019).getTime(), goalItems.get(7).Date));
+        Assert.assertFalse(goalItems.get(7).Completed);
+        Assert.assertEquals(goalItems.get(7).WorkoutType, abs);
+
+        Assert.assertTrue(Tools.CompareDatesWithoutTime(createDate(Calendar.MARCH, 8, 2019).getTime(), goalItems.get(8).Date));
+        Assert.assertFalse(goalItems.get(8).Completed);
+        Assert.assertEquals(goalItems.get(8).WorkoutType, arms);
+
+        Assert.assertTrue(Tools.CompareDatesWithoutTime(createDate(Calendar.MARCH, 9, 2019).getTime(), goalItems.get(9).Date));
+        Assert.assertFalse(goalItems.get(9).Completed);
+        Assert.assertEquals(goalItems.get(9).WorkoutType, abs);
+    }
+
+    @Test
+    public void saveWithNoData_ShowErrors() {
+        m_oController.saveGoal("", "", false, null);
+
+        verify(m_view).showDescriptionError();
+        verify(m_view).showNameError();
+        verify(m_view).showStartDateError();
+        verify(m_view).showEndDateError(eq("This field is required"));
+        verify(m_libraryRepo, never()).Save(anyString(), any(byte[].class), any(RepositoryCallback.class));
+    }
+
+    @Test
+    public void saveWithEndDateBeforeStartDate_ShowError() {
+        m_oController.setDate(createDate(Calendar.MARCH, 1, 2019), CreateGoalController.DateType.Start);
+        m_oController.setDate(createDate(Calendar.FEBRUARY,1,2019), CreateGoalController.DateType.End);
+
+        m_oController.saveGoal("", "", false, null);
+
+        verify(m_view).showEndDateError(eq("End Date must come after Start Date"));
+        verify(m_libraryRepo, never()).Save(anyString(), any(byte[].class), any(RepositoryCallback.class));
     }
 }

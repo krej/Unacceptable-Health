@@ -8,13 +8,18 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
+import com.unacceptable.unacceptablelibrary.Repositories.LibraryRepository;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import java.util.ArrayList;
@@ -34,6 +39,7 @@ public class CreateGoal
 
     TextView m_etStartDate;
     TextView m_etEndDate;
+    TextView m_tvName;
     TextView m_etBriefDescription;
     Switch m_swGoalType;
     FloatingActionButton m_fab;
@@ -68,7 +74,7 @@ public class CreateGoal
 
         m_oViewControl = new PendingGoalItemAdapterViewControl();
         m_Adapter = Tools.setupRecyclerView(m_rvGoalItems, getApplicationContext(), R.layout.list_goal_items, 0, false, m_oViewControl);
-        m_oController = new CreateGoalController(this, new DateLogic(), new Repository());
+        m_oController = new CreateGoalController(this, new DateLogic(), new Repository(), new LibraryRepository());
         m_oController.loadWorkoutTypes();
     }
 
@@ -149,8 +155,9 @@ public class CreateGoal
         m_etStartDate = findViewById(R.id.goal_start_date);
         m_etEndDate = findViewById(R.id.goal_end_date);
         m_rvGoalItems = findViewById(R.id.goal_items);
-        m_etBriefDescription = findViewById(R.id.goal_name);
+        m_etBriefDescription = findViewById(R.id.goal_description);
         m_swGoalType = findViewById(R.id.goal_create_based_on_week);
+        m_tvName = findViewById(R.id.goal_name);
     }
 
     @Override
@@ -180,5 +187,67 @@ public class CreateGoal
     @Override
     public void sendWorkoutTypesToAdapter(WorkoutType[] types) {
         m_oViewControl.setWorkoutTypes(types);
+    }
+
+    @Override
+    public void showNameError() {
+        m_tvName.setError(getString(R.string.error_field_required));
+    }
+
+    @Override
+    public void showDescriptionError() {
+        m_etBriefDescription.setError(getString(R.string.error_field_required));
+    }
+
+    @Override
+    public void showStartDateError() {
+        m_etStartDate.setError(getString(R.string.error_field_required));
+    }
+
+    @Override
+    public void showEndDateError(String sMessage) {
+        m_etEndDate.setError(sMessage);
+    }
+
+    @Override
+    public void showMessage(String sMessage) {
+        Tools.ShowToast(getApplicationContext(), sMessage, Toast.LENGTH_LONG);
+    }
+
+    @Override
+    public void clearErrors() {
+        //TODO: I think i'm gonna want to move these into their own functions so that I can have it clear errors instantly when they're fixed
+        m_etStartDate.setError(null);
+        m_etEndDate.setError(null);
+        m_tvName.setError(null);
+        m_etBriefDescription.setError(null);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_view_recipe, menu);
+        MenuItem miSave = menu.findItem(R.id.save_recipe);
+        //miSave.setVisible(m_oLogic == null || m_oLogic.canEditLog());
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.save_recipe:
+                SaveGoal();
+        }
+
+        return true;
+    }
+
+    private void SaveGoal() {
+        String sName = m_tvName.getText().toString();
+        String sDescription = m_etBriefDescription.getText().toString();
+        boolean bBasedOnWeek = m_swGoalType.isChecked();
+        //m_oController.setPendingGoalItemsFromAdapter(m_Adapter.Dataset());
+
+        m_oController.saveGoal(sName, sDescription, bBasedOnWeek, m_Adapter.Dataset());
     }
 }

@@ -3,6 +3,7 @@ package beer.unacceptable.unacceptablehealth.Controllers;
 import com.android.volley.VolleyError;
 import com.unacceptable.unacceptablelibrary.Logic.BaseLogic;
 import com.unacceptable.unacceptablelibrary.Models.ListableObject;
+import com.unacceptable.unacceptablelibrary.Repositories.ILibraryRepository;
 import com.unacceptable.unacceptablelibrary.Repositories.RepositoryCallback;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
@@ -12,12 +13,12 @@ import java.util.Date;
 
 import beer.unacceptable.unacceptablehealth.Models.DailyLog;
 import beer.unacceptable.unacceptablehealth.Models.Goal;
+import beer.unacceptable.unacceptablehealth.Models.GoalItem;
 import beer.unacceptable.unacceptablehealth.Models.PendingGoalItem;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutType;
 import beer.unacceptable.unacceptablehealth.Repositories.IRepository;
 
 public class CreateGoalController extends BaseLogic<CreateGoalController.View> {
-
 
     public enum DateType {
         Start,
@@ -33,11 +34,13 @@ public class CreateGoalController extends BaseLogic<CreateGoalController.View> {
 
     private IDateLogic m_DateLogic;
     private IRepository m_repository;
+    private ILibraryRepository m_LibraryRepository;
 
-    public CreateGoalController(CreateGoalController.View view, IDateLogic dateLogic, IRepository repository) {
+    public CreateGoalController(CreateGoalController.View view, IDateLogic dateLogic, IRepository repository, ILibraryRepository libraryRepository) {
         attachView(view);
         m_DateLogic = dateLogic;
         m_repository = repository;
+        m_LibraryRepository = libraryRepository;
         m_oGoal = new Goal();
         m_oPendingGoalItems = new ArrayList<>();
     }
@@ -143,8 +146,115 @@ public class CreateGoalController extends BaseLogic<CreateGoalController.View> {
         });
     }
 
+    public void createGoalItems(boolean bBasedOnWeek) {
+        Date dt = m_oGoal.StartDate;
+        Date dtEnd = addDays(m_oGoal.EndDate,1);
+        m_oGoal.GoalItems = new ArrayList<>();
+        int iWorkoutCounter = 0;
+
+        while (dt.before(dtEnd)) {
+
+            if (bBasedOnWeek) {
+                ArrayList<PendingGoalItem> pendingGoalItems = getPendingGoalItemsForDay(m_oPendingGoalItems, Tools.FormatDate(dt, "EEEE")); //EEEE is the day of week spelled out fully: https://knowm.org/get-day-of-week-from-date-object-in-java/
+                for(PendingGoalItem p : pendingGoalItems) {
+                    GoalItem g = new GoalItem();
+                    g.Date = dt;
+                    g.WorkoutType = p.Type;
+                    m_oGoal.GoalItems.add(g);
+                }
+            } else {
+                GoalItem g = new GoalItem();
+                g.Date = dt;
+                g.WorkoutType = m_oPendingGoalItems.get(iWorkoutCounter % m_oPendingGoalItems.size()).Type;
+                iWorkoutCounter++;
+                m_oGoal.GoalItems.add(g);
+            }
+
+
+            dt = addDays(dt, 1);
+        }
+    }
+
+    private ArrayList<PendingGoalItem> getPendingGoalItemsForDay(ArrayList<PendingGoalItem> pendingGoalItems, String sDayOfWeek) {
+        ArrayList<PendingGoalItem> pgiByday = new ArrayList<>();
+        for (PendingGoalItem p : pendingGoalItems) {
+            if (p.Day.equals(sDayOfWeek)) {
+                pgiByday.add(p);
+            }
+        }
+
+        return pgiByday;
+    }
+
+    private Date addDays(Date dt, int days) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(dt);
+        c.add(Calendar.DATE, days);
+        return c.getTime();
+    }
+
+
+    public ArrayList<GoalItem> getGoalItems() {
+        return m_oGoal.GoalItems;
+    }
+
     public WorkoutType[] getWorkoutTypes() {
         return m_oWorkoutTypes;
+    }
+
+
+    public void saveGoal(String sName, String sDescription, boolean bBasedOnWeek, ArrayList<ListableObject> dataset) {
+        boolean bContinue = true;
+        view.clearErrors();
+
+        if (Tools.IsEmptyString(sName)) {
+            view.showNameError();
+            bContinue = false;
+        }
+
+        if (Tools.IsEmptyString(sDescription)) {
+            view.showDescriptionError();
+            bContinue = false;
+        }
+
+        //hard code don't allow dates before November 1st 2018 because thats when I started creating these types of goals
+        if ( m_oGoal.StartDate == null || m_oGoal.StartDate.before(Tools.createDate(Calendar.NOVEMBER, 1, 2018, 0, 0, 0).getTime())) {
+            view.showStartDateError();
+            bContinue = false;
+        }
+
+        if (m_oGoal.EndDate == null) {
+            view.showEndDateError("This field is required");
+            bContinue = false;
+        }
+
+        if (m_oGoal.EndDate != null && m_oGoal.EndDate.before(m_oGoal.StartDate)) {
+            view.showEndDateError("End Date must come after Start Date");
+            bContinue = false;
+        }
+
+        if (dataset == null || dataset.size() == 0) {
+            view.showMessage("Pending Goal Items Required");
+            bContinue = false;
+        }
+
+        if (!bContinue) return;
+
+        m_oGoal.name = sName;
+        m_oGoal.Description = sDescription;
+        createGoalItems(bBasedOnWeek);
+        m_oGoal.BasedOnWeek = bBasedOnWeek;
+        m_oGoal.PendingGoalItems = m_oPendingGoalItems;
+        m_oGoal.Acheived = false;
+
+        m_oGoal.Save(m_LibraryRepository);
+        /*
+         * TODO: I'm leaving off here
+         * This isn't saving the WorkoutType ObjectID inside of each GoalItem.
+         * It's also saving a blank ObjectID for each GoalItem, I don't think thats neccessary for GoalItems because they aren't a collection
+         * I don't have in the UI or saving anywhere the Goal Amount and Type (ie 20 miles ran this goal period)
+         * I also am not showing the finalized Goal Items anywhere. I started a ViewGoal screen but so far its a copy of the CreateGoal screen. I'm not sure if thats what I want to do or what...
+         */
     }
 
     public interface View {
@@ -155,5 +265,11 @@ public class CreateGoalController extends BaseLogic<CreateGoalController.View> {
 
         void clearGoalItems();
         void sendWorkoutTypesToAdapter(WorkoutType[] types);
+        void showNameError();
+        void showDescriptionError();
+        void showStartDateError();
+        void showEndDateError(String sMessage);
+        void showMessage(String sMessage);
+        void clearErrors();
     }
 }

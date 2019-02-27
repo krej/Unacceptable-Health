@@ -12,4 +12,10 @@ public class GoalItem extends ListableObject {
     public Date Date;
     @Expose
     public boolean Completed;
+
+    public GoalItem() {
+        super();
+
+        Completed = false;
+    }
 }
