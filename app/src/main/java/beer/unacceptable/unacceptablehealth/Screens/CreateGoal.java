@@ -125,14 +125,18 @@ public class CreateGoal
         m_etStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(CreateGoal.this, listenerStart, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show();
+                DatePickerDialog dialogDatePicker = new DatePickerDialog(CreateGoal.this, listenerStart, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+                dialogDatePicker.getDatePicker().setFirstDayOfWeek(Calendar.MONDAY);
+                dialogDatePicker.show();
             }
         });
 
         m_etEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(CreateGoal.this, listenerEnd, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show();
+                DatePickerDialog dialogDatePicker = new DatePickerDialog(CreateGoal.this, listenerEnd, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+                dialogDatePicker.getDatePicker().setFirstDayOfWeek(Calendar.MONDAY);
+                dialogDatePicker.show();
             }
         });
     }
