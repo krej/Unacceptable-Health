@@ -40,8 +40,8 @@ public class PendingGoalItemAdapterViewControl extends BaseAdapterViewControl {
         SetItemSelectedListeners(view, p, spDay, spWorkoutType);
 
         spDay.setSelection(Arrays.asList(CreateGoalController.days).indexOf(p.Day));
-        if (p.Type != null)
-            spWorkoutType.setSelection(Arrays.asList(m_oWorkouTypes).indexOf(p.Type));
+        if (p.WorkoutType != null)
+            spWorkoutType.setSelection(Arrays.asList(m_oWorkouTypes).indexOf(p.WorkoutType));
 
         if (m_bShowDay)
             spDay.setVisibility(View.VISIBLE);
@@ -69,7 +69,7 @@ public class PendingGoalItemAdapterViewControl extends BaseAdapterViewControl {
         spWorkoutType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                p.Type = m_oWorkouTypes[position];
+                p.WorkoutType = m_oWorkouTypes[position];
             }
 
             @Override

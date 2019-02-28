@@ -12,8 +12,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +45,8 @@ public class CreateGoal
     TextView m_tvName;
     TextView m_etBriefDescription;
     Switch m_swGoalType;
+    Spinner m_spGoalAmountType;
+    EditText m_etGoalAmount;
     FloatingActionButton m_fab;
 
     private RecyclerView m_rvGoalItems;
@@ -162,6 +167,8 @@ public class CreateGoal
         m_etBriefDescription = findViewById(R.id.goal_description);
         m_swGoalType = findViewById(R.id.goal_create_based_on_week);
         m_tvName = findViewById(R.id.goal_name);
+        m_spGoalAmountType = findViewById(R.id.goal_amount_type);
+        m_etGoalAmount = findViewById(R.id.goal_amount);
     }
 
     @Override
@@ -191,6 +198,8 @@ public class CreateGoal
     @Override
     public void sendWorkoutTypesToAdapter(WorkoutType[] types) {
         m_oViewControl.setWorkoutTypes(types);
+        ArrayAdapter<WorkoutType> aa = new ArrayAdapter<>(m_spGoalAmountType.getContext(), android.R.layout.simple_spinner_dropdown_item, types);
+        m_spGoalAmountType.setAdapter(aa);
     }
 
     @Override
@@ -250,8 +259,10 @@ public class CreateGoal
         String sName = m_tvName.getText().toString();
         String sDescription = m_etBriefDescription.getText().toString();
         boolean bBasedOnWeek = m_swGoalType.isChecked();
+        double dGoalAmount = Tools.ParseDouble(m_etGoalAmount.getText().toString());
+        WorkoutType wtGoalType = (WorkoutType)m_spGoalAmountType.getSelectedItem();
         //m_oController.setPendingGoalItemsFromAdapter(m_Adapter.Dataset());
 
-        m_oController.saveGoal(sName, sDescription, bBasedOnWeek, m_Adapter.Dataset());
+        m_oController.saveGoal(sName, sDescription, bBasedOnWeek, m_Adapter.Dataset(), dGoalAmount, wtGoalType);
     }
 }

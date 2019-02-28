@@ -10,5 +10,5 @@ public class PendingGoalItem extends ListableObject {
     @Expose
     public String Day;
     @Expose
-    public WorkoutType Type;
+    public WorkoutType WorkoutType;
 }

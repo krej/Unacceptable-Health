@@ -243,4 +243,5 @@
         <item>net</item>
     </string-array>
     <string name="title_activity_view_goal">View Goal</string>
+    <string name="goal_amount">Goal Amount</string>
 </resources>

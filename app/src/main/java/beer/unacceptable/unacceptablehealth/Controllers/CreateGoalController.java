@@ -98,6 +98,7 @@ public class CreateGoalController extends BaseLogic<CreateGoalController.View> {
         for (String s : days) {
             PendingGoalItem p = new PendingGoalItem();
             p.Day = s;
+            p.WorkoutType = m_oWorkoutTypes[0];
             m_oPendingGoalItems.add(p);
         }
     }
@@ -157,15 +158,11 @@ public class CreateGoalController extends BaseLogic<CreateGoalController.View> {
             if (bBasedOnWeek) {
                 ArrayList<PendingGoalItem> pendingGoalItems = getPendingGoalItemsForDay(m_oPendingGoalItems, Tools.FormatDate(dt, "EEEE")); //EEEE is the day of week spelled out fully: https://knowm.org/get-day-of-week-from-date-object-in-java/
                 for(PendingGoalItem p : pendingGoalItems) {
-                    GoalItem g = new GoalItem();
-                    g.Date = dt;
-                    g.WorkoutType = p.Type;
+                    GoalItem g = new GoalItem(dt, p.WorkoutType);
                     m_oGoal.GoalItems.add(g);
                 }
             } else {
-                GoalItem g = new GoalItem();
-                g.Date = dt;
-                g.WorkoutType = m_oPendingGoalItems.get(iWorkoutCounter % m_oPendingGoalItems.size()).Type;
+                GoalItem g = new GoalItem(dt, m_oPendingGoalItems.get(iWorkoutCounter % m_oPendingGoalItems.size()).WorkoutType);
                 iWorkoutCounter++;
                 m_oGoal.GoalItems.add(g);
             }
@@ -203,7 +200,7 @@ public class CreateGoalController extends BaseLogic<CreateGoalController.View> {
     }
 
 
-    public void saveGoal(String sName, String sDescription, boolean bBasedOnWeek, ArrayList<ListableObject> dataset) {
+    public void saveGoal(String sName, String sDescription, boolean bBasedOnWeek, ArrayList<ListableObject> dataset, double dGoalAmount, WorkoutType wtGoalType) {
         boolean bContinue = true;
         view.clearErrors();
 
@@ -246,13 +243,15 @@ public class CreateGoalController extends BaseLogic<CreateGoalController.View> {
         m_oGoal.BasedOnWeek = bBasedOnWeek;
         m_oGoal.PendingGoalItems = m_oPendingGoalItems;
         m_oGoal.Acheived = false;
+        m_oGoal.OverallGoalAmount = dGoalAmount;
+        m_oGoal.OverallGoalAmountType = wtGoalType;
 
         m_oGoal.Save(m_LibraryRepository);
         /*
          * TODO: I'm leaving off here
          * This isn't saving the WorkoutType ObjectID inside of each GoalItem.
          * It's also saving a blank ObjectID for each GoalItem, I don't think thats neccessary for GoalItems because they aren't a collection
-         * I don't have in the UI or saving anywhere the Goal Amount and Type (ie 20 miles ran this goal period)
+         * I don't have in the UI or saving anywhere the Goal Amount and WorkoutType (ie 20 miles ran this goal period)
          * I also am not showing the finalized Goal Items anywhere. I started a ViewGoal screen but so far its a copy of the CreateGoal screen. I'm not sure if thats what I want to do or what...
          */
     }

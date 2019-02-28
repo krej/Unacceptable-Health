@@ -11,11 +11,8 @@ import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import java.lang.reflect.Array;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 import beer.unacceptable.unacceptablehealth.Controllers.CreateGoalController;
 import beer.unacceptable.unacceptablehealth.Controllers.IDateLogic;
@@ -152,10 +149,10 @@ public class CreateGoalControllerTests {
         ArrayList<PendingGoalItem> pendingGoalItems = new ArrayList<>();
         PendingGoalItem p = new PendingGoalItem();
         p.Day = "";
-        p.Type = arms;
+        p.WorkoutType = arms;
 
         PendingGoalItem p1 = new PendingGoalItem();
-        p1.Type = run;
+        p1.WorkoutType = run;
 
         pendingGoalItems.add(p);
         pendingGoalItems.add(p1);
@@ -165,9 +162,9 @@ public class CreateGoalControllerTests {
         pendingGoalItems = m_oController.getPendingGoalItems();
 
         Assert.assertEquals("Monday", pendingGoalItems.get(0).Day);
-        Assert.assertEquals("Arms", pendingGoalItems.get(0).Type.name);
+        Assert.assertEquals("Arms", pendingGoalItems.get(0).WorkoutType.name);
         Assert.assertEquals("Tuesday", pendingGoalItems.get(1).Day);
-        Assert.assertEquals("Run", pendingGoalItems.get(1).Type.name);
+        Assert.assertEquals("Run", pendingGoalItems.get(1).WorkoutType.name);
         Assert.assertEquals("Wednesday", pendingGoalItems.get(2).Day);
         Assert.assertEquals("Thursday", pendingGoalItems.get(3).Day);
         Assert.assertEquals("Friday", pendingGoalItems.get(4).Day);
@@ -181,10 +178,10 @@ public class CreateGoalControllerTests {
         ArrayList<PendingGoalItem> oldGoalItems = new ArrayList<>();
         PendingGoalItem p = new PendingGoalItem();
         p.Day = "";
-        p.Type = arms;
+        p.WorkoutType = arms;
 
         PendingGoalItem p1 = new PendingGoalItem();
-        p1.Type = run;
+        p1.WorkoutType = run;
 
         pendingGoalItems.add(p);
         pendingGoalItems.add(p1);
@@ -196,9 +193,9 @@ public class CreateGoalControllerTests {
         pendingGoalItems = m_oController.getPendingGoalItems();
 
         Assert.assertEquals("Monday", pendingGoalItems.get(0).Day);
-        Assert.assertEquals("Arms", pendingGoalItems.get(0).Type.name);
+        Assert.assertEquals("Arms", pendingGoalItems.get(0).WorkoutType.name);
         Assert.assertEquals("Tuesday", pendingGoalItems.get(1).Day);
-        Assert.assertEquals("Run", pendingGoalItems.get(1).Type.name);
+        Assert.assertEquals("Run", pendingGoalItems.get(1).WorkoutType.name);
         Assert.assertEquals("Wednesday", pendingGoalItems.get(2).Day);
         Assert.assertEquals("Thursday", pendingGoalItems.get(3).Day);
         Assert.assertEquals("Friday", pendingGoalItems.get(4).Day);
@@ -209,8 +206,8 @@ public class CreateGoalControllerTests {
         pendingGoalItems = m_oController.getPendingGoalItems();
 
         Assert.assertEquals(2, pendingGoalItems.size());
-        Assert.assertEquals("Arms", pendingGoalItems.get(0).Type.name);
-        Assert.assertEquals("Run", pendingGoalItems.get(1).Type.name);
+        Assert.assertEquals("Arms", pendingGoalItems.get(0).WorkoutType.name);
+        Assert.assertEquals("Run", pendingGoalItems.get(1).WorkoutType.name);
 
         verify(m_view).setGoalItems(eq(oldGoalItems));
     }
@@ -231,7 +228,7 @@ public class CreateGoalControllerTests {
         ArrayList<PendingGoalItem> p = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
             PendingGoalItem item = new PendingGoalItem();
-            item.Type = arms;
+            item.WorkoutType = arms;
             p.add(item);
         }
 
@@ -244,15 +241,15 @@ public class CreateGoalControllerTests {
     public void pendingGoalItemsFilledOut_notBasedOnWeek_CreateGoalItems() {
         ArrayList<PendingGoalItem> pgi = new ArrayList<>();
         PendingGoalItem p = new PendingGoalItem();
-        p.Type = arms;
+        p.WorkoutType = arms;
         pgi.add(p);
 
         p = new PendingGoalItem();
-        p.Type = run;
+        p.WorkoutType = run;
         pgi.add(p);
 
         p = new PendingGoalItem();
-        p.Type = abs;
+        p.WorkoutType = abs;
         pgi.add(p);
 
         m_oController.setPendingGoalItems(pgi);
@@ -311,42 +308,42 @@ public class CreateGoalControllerTests {
         ArrayList<PendingGoalItem> pgi = new ArrayList<>();
         PendingGoalItem p = new PendingGoalItem();
         p.Day = "Monday";
-        p.Type = arms;
+        p.WorkoutType = arms;
         pgi.add(p);
 
         p = new PendingGoalItem();
         p.Day = "Tuesday";
-        p.Type = run;
+        p.WorkoutType = run;
         pgi.add(p);
 
         p = new PendingGoalItem();
         p.Day = "Wednesday";
-        p.Type = abs;
+        p.WorkoutType = abs;
         pgi.add(p);
 
         p = new PendingGoalItem();
         p.Day = "Thursday";
-        p.Type = run;
+        p.WorkoutType = run;
         pgi.add(p);
 
         p = new PendingGoalItem();
         p.Day = "Thursday";
-        p.Type = abs;
+        p.WorkoutType = abs;
         pgi.add(p);
 
         p = new PendingGoalItem();
         p.Day = "Friday";
-        p.Type = arms;
+        p.WorkoutType = arms;
         pgi.add(p);
 
         p = new PendingGoalItem();
         p.Day = "Saturday";
-        p.Type = abs;
+        p.WorkoutType = abs;
         pgi.add(p);
 
         p = new PendingGoalItem();
         p.Day = "Sunday";
-        p.Type = rest;
+        p.WorkoutType = rest;
         pgi.add(p);
 
         m_oController.setPendingGoalItems(pgi);
@@ -399,7 +396,7 @@ public class CreateGoalControllerTests {
 
     @Test
     public void saveWithNoData_ShowErrors() {
-        m_oController.saveGoal("", "", false, null);
+        m_oController.saveGoal("", "", false, null, 0, null);
 
         verify(m_view).showDescriptionError();
         verify(m_view).showNameError();
@@ -413,9 +410,56 @@ public class CreateGoalControllerTests {
         m_oController.setDate(createDate(Calendar.MARCH, 1, 2019), CreateGoalController.DateType.Start);
         m_oController.setDate(createDate(Calendar.FEBRUARY,1,2019), CreateGoalController.DateType.End);
 
-        m_oController.saveGoal("", "", false, null);
+        m_oController.saveGoal("", "", false, null, 0, null);
 
         verify(m_view).showEndDateError(eq("End Date must come after Start Date"));
         verify(m_libraryRepo, never()).Save(anyString(), any(byte[].class), any(RepositoryCallback.class));
+    }
+
+    @Test
+    public void noPendingGoalItems_SwitchToWeekBased_AllPendingGoalItemsHaveWorkoutType() {
+        ArrayList<PendingGoalItem> pgi = new ArrayList<>();
+
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                RepositoryCallback callback = invocation.getArgument(0);
+                callback.onSuccess("[\n" +
+                        "    {\n" +
+                        "        \"Id\": \"5c6f8777f293eb1db4da1e61\",\n" +
+                        "        \"idString\": \"5c6f8777f293eb1db4da1e61\",\n" +
+                        "        \"name\": \"Run\"\n" +
+                        "    },\n" +
+                        "    {\n" +
+                        "        \"Id\": \"5c6f8938f293eb1db4da1e62\",\n" +
+                        "        \"idString\": \"5c6f8938f293eb1db4da1e62\",\n" +
+                        "        \"name\": \"Arms\"\n" +
+                        "    },\n" +
+                        "    {\n" +
+                        "        \"Id\": \"5c6f89a7f293eb1db4da1e63\",\n" +
+                        "        \"idString\": \"5c6f89a7f293eb1db4da1e63\",\n" +
+                        "        \"name\": \"Abs\"\n" +
+                        "    },\n" +
+                        "    {\n" +
+                        "        \"Id\": \"5c73423c230acd3cf8f11aec\",\n" +
+                        "        \"idString\": \"5c73423c230acd3cf8f11aec\",\n" +
+                        "        \"name\": \"Rest Day\"\n" +
+                        "    }\n" +
+                        "]");
+                return null;
+            }
+        }).when(m_repo).LoadAllWorkoutTypes(any(RepositoryCallback.class));
+
+        m_oController.loadWorkoutTypes();
+        m_oController.setPendingGoalItems(pgi);
+        m_oController.changeGoalType(true);
+
+        Assert.assertEquals("Run", m_oController.getPendingGoalItems().get(0).WorkoutType.name);
+        Assert.assertEquals("Run", m_oController.getPendingGoalItems().get(1).WorkoutType.name);
+        Assert.assertEquals("Run", m_oController.getPendingGoalItems().get(2).WorkoutType.name);
+        Assert.assertEquals("Run", m_oController.getPendingGoalItems().get(3).WorkoutType.name);
+        Assert.assertEquals("Run", m_oController.getPendingGoalItems().get(4).WorkoutType.name);
+        Assert.assertEquals("Run", m_oController.getPendingGoalItems().get(5).WorkoutType.name);
+        Assert.assertEquals("Run", m_oController.getPendingGoalItems().get(6).WorkoutType.name);
     }
 }

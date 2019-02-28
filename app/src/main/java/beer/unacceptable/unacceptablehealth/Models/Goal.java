@@ -25,7 +25,7 @@ public class Goal extends ListableObject {
     @Expose
     public double OverallGoalAmount;
     @Expose
-    public String OverallGoalDescription;
+    public WorkoutType OverallGoalAmountType;
     @Expose
     public boolean Acheived;
 }
