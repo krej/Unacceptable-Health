@@ -27,4 +27,12 @@ public class GoalItem extends ListableObject {
         WorkoutType = type;
         name = type.name + " on " + Tools.FormatDate(dt, DailyLog.LongDateFormat);
     }
+
+    public String DateFormatted() {
+        return Tools.FormatDate(Date, DailyLog.LongDateFormat);
+    }
+
+    public String CompletedDisplay() {
+        return Completed ? "Complete" : "Incomplete";
+    }
 }

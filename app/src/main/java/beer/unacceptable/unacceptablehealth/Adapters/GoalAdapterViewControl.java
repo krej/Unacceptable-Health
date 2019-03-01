@@ -9,16 +9,11 @@ import com.unacceptable.unacceptablelibrary.Adapters.BaseAdapterViewControl;
 import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
 import com.unacceptable.unacceptablelibrary.Models.ListableObject;
 
+import beer.unacceptable.unacceptablehealth.Models.Goal;
 import beer.unacceptable.unacceptablehealth.R;
-import beer.unacceptable.unacceptablehealth.Screens.WorkoutTypeList;
+import beer.unacceptable.unacceptablehealth.Screens.ViewGoal;
 
-
-public class ExerciseDatabaseViewControl extends BaseAdapterViewControl {
-    public ExerciseDatabaseViewControl() {
-        m_bAlternateRowColors = true;
-        m_sAlternateRowBackgroundColor = "#dbdbdb";
-    }
-
+public class GoalAdapterViewControl extends BaseAdapterViewControl {
     @Override
     public void SetupDialog(View root, ListableObject i) {
 
@@ -26,23 +21,22 @@ public class ExerciseDatabaseViewControl extends BaseAdapterViewControl {
 
     @Override
     public void SetupViewInList(NewAdapter.ViewHolder view, ListableObject i) {
-        TextView tv = view.view.findViewById(R.id.firstLine);
-        tv.setText(i.name);
+        TextView name = view.view.findViewById(R.id.goal_name);
+        TextView duration = view.view.findViewById(R.id.goal_duration);
+        TextView goalsCompleted = view.view.findViewById(R.id.goal_items_completed);
+
+        Goal g = (Goal)i;
+
+        name.setText(g.name);
+        duration.setText(g.DurationLabel());
+        goalsCompleted.setText(g.GoalsCompletedLabel());
     }
 
     @Override
     public void onItemClick(View v, ListableObject i) {
-        Class<?> classToLaunch = null;
-        switch(i.name) {
-            case "Workout Types":
-                classToLaunch = WorkoutTypeList.class;
-                break;
-        }
-
-        if (classToLaunch != null) {
-            Intent intent = new Intent(v.getContext(), classToLaunch);
-            v.getContext().startActivity(intent);
-        }
+        Intent intent = new Intent(v.getContext(), ViewGoal.class);
+        intent.putExtra("id", i.idString);
+        v.getContext().startActivity(intent);
     }
 
     @Override

@@ -1,14 +1,16 @@
 package beer.unacceptable.unacceptablehealth.Controllers;
 
 import com.android.volley.VolleyError;
+import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
 import com.unacceptable.unacceptablelibrary.Logic.BaseLogic;
-import com.unacceptable.unacceptablelibrary.Models.Response;
 import com.unacceptable.unacceptablelibrary.Repositories.RepositoryCallback;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import java.util.Date;
 
 import beer.unacceptable.unacceptablehealth.Models.DailyLog;
+import beer.unacceptable.unacceptablehealth.Models.GoalItem;
+import beer.unacceptable.unacceptablehealth.Models.GoalItemAction;
 import beer.unacceptable.unacceptablehealth.Repositories.IRepository;
 
 public class MainScreenController extends BaseLogic<MainScreenController.View> {
@@ -22,8 +24,8 @@ public class MainScreenController extends BaseLogic<MainScreenController.View> {
     }
 
     public void LoadTodaysLog() {
-        Date dtToday = m_date.getTodaysDate();
-        String sToday = Tools.FormatDate(dtToday, DailyLog.m_sDateFormat);
+        String sToday = todaysDate();
+
         m_repo.LoadDailyLogByDate(sToday, new RepositoryCallback() {
             @Override
             public void onSuccess(String t) {
@@ -56,6 +58,102 @@ public class MainScreenController extends BaseLogic<MainScreenController.View> {
         });
     }
 
+    private String todaysDate() {
+        Date dtToday = m_date.getTodaysDate();
+        String sToday = Tools.FormatDate(dtToday, DailyLog.m_sDateFormat);
+        return sToday;
+    }
+
+    public void LoadTodaysGoalItems() {
+        m_repo.LoadGoalItemsByDate(todaysDate(), new RepositoryCallback() {
+            @Override
+            public void onSuccess(String t) {
+                GoalItem[] goalItems = Tools.convertJsonResponseToObject(t, GoalItem[].class);
+                if (goalItems.length > 0) {
+                    view.populateTodaysGoalItems(goalItems);
+                    view.setGoalItemsVisibility(true);
+                    view.setNoGoalLabelVisibility(false);
+                } else {
+                    view.setGoalItemsVisibility(false);
+                    view.setNoGoalLabelVisibility(true);
+                }
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+
+            }
+        });
+    }
+
+    public void ToggleGoalItemComplete(final GoalItem goalItem, final NewAdapter adapter) {
+        final GoalItemAction action = new GoalItemAction();
+        action.Item = goalItem;
+        action.Completed = !goalItem.Completed;
+        action.Date = goalItem.Date;
+        action.Remove = false;
+
+        m_repo.ModifyGoalItem(action, new RepositoryCallback() {
+            @Override
+            public void onSuccess(String t) {
+                //TODO: Update the screen somehow
+                goalItem.Completed = action.Completed;
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+
+            }
+        });
+    }
+
+    public void SetGoalItemDate(Date newDate, final GoalItem goalItem, final NewAdapter adapter, final boolean bShowAllGoalItems) {
+        newDate = Tools.setTimeToMidnight(newDate);
+        final GoalItemAction action = new GoalItemAction();
+        action.Item = goalItem;
+        action.Completed = goalItem.Completed;
+        action.Date = newDate;
+        action.Remove = false;
+
+        m_repo.ModifyGoalItem(action, new RepositoryCallback() {
+            @Override
+            public void onSuccess(String t) {
+                goalItem.Date = action.Date;
+                if (!bShowAllGoalItems && !Tools.CompareDatesWithoutTime(goalItem.Date, m_date.getTodaysDate())) {
+                    adapter.remove(goalItem);
+                }
+
+                adapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+
+            }
+        });
+    }
+
+    public void DeleteGoalItem(final GoalItem goalItem, final NewAdapter adapter) {
+        GoalItemAction action = new GoalItemAction();
+        action.Item = goalItem;
+        action.Remove = true;
+
+        m_repo.ModifyGoalItem(action, new RepositoryCallback() {
+            @Override
+            public void onSuccess(String t) {
+                adapter.remove(goalItem);
+                adapter.notifyDataSetChanged(); //TODO: This is needed only because it resets the background colors of all rows. Without it, it looks cool cause it scrolls the rows up. I should figure out how to make this look good, no alternating colors
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+
+            }
+        });
+    }
+
     public interface View {
 
         void showTodaysLog(boolean b);
@@ -64,5 +162,8 @@ public class MainScreenController extends BaseLogic<MainScreenController.View> {
 
         void populateTodaysLog(DailyLog dl);
         void showDailyLogError();
+        void populateTodaysGoalItems(GoalItem[] goalItems);
+        void setGoalItemsVisibility(boolean bVisible);
+        void setNoGoalLabelVisibility(boolean bVisible);
     }
 }

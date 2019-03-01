@@ -10,6 +10,7 @@ import android.support.v4.util.Pair;
 import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.unacceptable.unacceptablelibrary.Adapters.BaseAdapterViewControl;
 import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
@@ -18,6 +19,7 @@ import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import beer.unacceptable.unacceptablehealth.Controllers.DailyLogLogic;
 import beer.unacceptable.unacceptablehealth.Models.DailyLog;
+import beer.unacceptable.unacceptablehealth.Models.GoalItem;
 import beer.unacceptable.unacceptablehealth.R;
 import beer.unacceptable.unacceptablehealth.Screens.ViewDailyLog;
 
@@ -63,6 +65,10 @@ public class DailyLogAdapterViewControl extends BaseAdapterViewControl {
 
         //v.getContext().startActivity(intent);
         ActivityCompat.startActivity(v.getContext(), intent, activityOptions.toBundle());
+    }
+
+    @Override
+    public void onItemLongPress(View v, ListableObject i) {
     }
 
     @Override

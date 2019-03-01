@@ -46,6 +46,10 @@ public class WorkoutTypeViewControl extends BaseAdapterViewControl {
     }
 
     @Override
+    public void onItemLongPress(View v, ListableObject i) {
+    }
+
+    @Override
     public boolean onDialogOkClicked(Dialog d, ListableObject i) {
         EditText name = d.findViewById(R.id.ingredient_name);
         String sName = name.getText().toString();

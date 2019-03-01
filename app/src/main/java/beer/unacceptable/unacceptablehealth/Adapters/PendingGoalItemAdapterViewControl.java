@@ -13,6 +13,7 @@ import com.unacceptable.unacceptablelibrary.Models.ListableObject;
 import java.util.Arrays;
 
 import beer.unacceptable.unacceptablehealth.Controllers.CreateGoalController;
+import beer.unacceptable.unacceptablehealth.Models.GoalItem;
 import beer.unacceptable.unacceptablehealth.Models.PendingGoalItem;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutType;
 import beer.unacceptable.unacceptablehealth.R;
@@ -82,6 +83,10 @@ public class PendingGoalItemAdapterViewControl extends BaseAdapterViewControl {
     @Override
     public void onItemClick(View v, ListableObject i) {
 
+    }
+
+    @Override
+    public void onItemLongPress(View v, ListableObject i) {
     }
 
     @Override

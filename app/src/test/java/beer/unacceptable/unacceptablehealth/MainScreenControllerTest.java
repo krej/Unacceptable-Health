@@ -136,4 +136,9 @@ public class MainScreenControllerTest {
         verify(view).showTodaysLog(false);
         verify(view).showDailyLogError();
     }
+
+    @Test
+    public void screenLoads_LoadTodaysGoalItems_SuccessPopulatesScreen() {
+
+    }
 }

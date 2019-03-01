@@ -44,6 +44,10 @@ public class IngredientAdapterViewControl extends BaseAdapterViewControl {
     }
 
     @Override
+    public void onItemLongPress(View v, ListableObject i) {
+    }
+
+    @Override
     public boolean onDialogOkClicked(Dialog d, ListableObject i) {
         EditText name = d.findViewById(R.id.ingredient_name);
         EditText ingredID = (EditText) d.findViewById(R.id.ingredientID);

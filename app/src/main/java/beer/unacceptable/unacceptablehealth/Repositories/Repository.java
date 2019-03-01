@@ -1,12 +1,16 @@
 package beer.unacceptable.unacceptablehealth.Repositories;
 
 import com.android.volley.Request;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.unacceptable.unacceptablelibrary.Repositories.RepositoryCallback;
 import com.unacceptable.unacceptablelibrary.Tools.Network;
 import com.unacceptable.unacceptablelibrary.Tools.Preferences;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import java.util.Date;
+
+import beer.unacceptable.unacceptablehealth.Models.GoalItemAction;
 
 public class Repository implements IRepository {
     public void LoadDailyLog(String sStringID, RepositoryCallback callback) {
@@ -25,5 +29,30 @@ public class Repository implements IRepository {
     @Override
     public void LoadAllWorkoutTypes(RepositoryCallback callback) {
         Network.WebRequest(Request.Method.GET, Preferences.HealthAPIURL() + "/workouttype/", null, callback, true);
+    }
+
+    @Override
+    public void LoadAllGoals(RepositoryCallback callback) {
+        Network.WebRequest(Request.Method.GET, Preferences.HealthAPIURL() + "/goal/", null, callback, true);
+    }
+
+    @Override
+    public void LoadGoal(String sIdString, RepositoryCallback callback) {
+        Network.WebRequest(Request.Method.GET, Preferences.HealthAPIURL() + "/goal/" + sIdString, null, callback, true);
+    }
+
+    @Override
+    public void LoadGoalItemsByDate(String sDate, RepositoryCallback callback) {
+        Network.WebRequest(Request.Method.GET, Preferences.HealthAPIURL() + "/goal/" + sDate, null, callback, true);
+    }
+    @Override
+    public void ModifyGoalItem(GoalItemAction action, RepositoryCallback callback) {
+        //TODO: Tools function to convert this to bytes???
+        GsonBuilder gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
+        Gson gson = gsonBuilder.create();
+        String json = gson.toJson(action);
+        byte[] data = json.getBytes();
+
+        Network.WebRequest(Request.Method.POST, Preferences.HealthAPIURL() + "/goal/ModifyGoalItem", data, callback, true);
     }
 }

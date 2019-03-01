@@ -1,26 +1,17 @@
 package beer.unacceptable.unacceptablehealth.Screens;
 
-import android.Manifest;
 import android.app.Activity;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,20 +20,18 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
 import com.unacceptable.unacceptablelibrary.Repositories.LibraryRepository;
-import com.unacceptable.unacceptablelibrary.Tools.CustomizedExceptionHandler;
-import com.unacceptable.unacceptablelibrary.Tools.Network;
-import com.unacceptable.unacceptablelibrary.Tools.Preferences;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
+import beer.unacceptable.unacceptablehealth.Adapters.GoalItemAdapterViewControl;
 import beer.unacceptable.unacceptablehealth.Controllers.DailyLogLogic;
 import beer.unacceptable.unacceptablehealth.Controllers.DateLogic;
 import beer.unacceptable.unacceptablehealth.Controllers.MainScreenController;
 import beer.unacceptable.unacceptablehealth.Models.DailyLog;
+import beer.unacceptable.unacceptablehealth.Models.GoalItem;
 import beer.unacceptable.unacceptablehealth.R;
-import beer.unacceptable.unacceptablehealth.Receivers.DailyLogAlarmReceiver;
 import beer.unacceptable.unacceptablehealth.Repositories.Repository;
 
 public class MainActivity extends BaseActivity
@@ -56,6 +45,10 @@ public class MainActivity extends BaseActivity
     DailyLogLogic m_oDailyLogController;
     MainScreenController m_oController;
     LinearLayout m_ll;
+    TextView m_tvNoGoalItems;
+
+    RecyclerView m_rvGoalItems;
+    NewAdapter m_GoalItemsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +73,14 @@ public class MainActivity extends BaseActivity
         FindUIElements();
         SetupOnClickListeners();
 
-        m_oController.LoadTodaysLog();;
+        m_GoalItemsAdapter = Tools.setupRecyclerView(m_rvGoalItems, getApplicationContext(), R.layout.list_goal_item, 0, true, new GoalItemAdapterViewControl(false, false));
+
+        m_oController.LoadTodaysLog();
+        LoadGoalItems();
+    }
+
+    public void LoadGoalItems() {
+        m_oController.LoadTodaysGoalItems();
     }
 
     private void SetupOnClickListeners() {
@@ -120,6 +120,8 @@ public class MainActivity extends BaseActivity
         m_tvDailyLogHeader = findViewById(R.id.todays_log_date);
         m_tvIdString = findViewById(R.id.idString);
         m_ll = findViewById(R.id.linear_layout);
+        m_rvGoalItems = findViewById(R.id.current_goal_items);
+        m_tvNoGoalItems = findViewById(R.id.no_goals_label);
     }
 
     @Override
@@ -185,7 +187,8 @@ public class MainActivity extends BaseActivity
                 classToLaunch = DailyLogList.class;
                 break;
             case R.id.nav_goals:
-                classToLaunch = CreateGoal.class;
+                //classToLaunch = CreateGoal.class;
+                classToLaunch = GoalList.class;
                 break;
             case R.id.nav_food_database:
                 classToLaunch = FoodDatabase.class;
@@ -239,5 +242,28 @@ public class MainActivity extends BaseActivity
         TextView tvError = new TextView(getApplicationContext());
         tvError.setText(getString(R.string.error_loading_dailylog));
         m_ll.addView(tvError);
+    }
+
+    @Override
+    public void populateTodaysGoalItems(GoalItem[] goalItems) {
+        for (GoalItem goalItem : goalItems) {
+            m_GoalItemsAdapter.add(goalItem);
+        }
+    }
+
+    @Override
+    public void setGoalItemsVisibility(boolean bVisible) {
+        if (bVisible)
+            m_rvGoalItems.setVisibility(View.VISIBLE);
+        else
+            m_rvGoalItems.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void setNoGoalLabelVisibility(boolean bVisible) {
+        if (bVisible)
+            m_tvNoGoalItems.setVisibility(View.VISIBLE);
+        else
+            m_tvNoGoalItems.setVisibility(View.GONE);
     }
 }

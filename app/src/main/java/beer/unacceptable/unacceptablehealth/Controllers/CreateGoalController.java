@@ -247,13 +247,6 @@ public class CreateGoalController extends BaseLogic<CreateGoalController.View> {
         m_oGoal.OverallGoalAmountType = wtGoalType;
 
         m_oGoal.Save(m_LibraryRepository);
-        /*
-         * TODO: I'm leaving off here
-         * This isn't saving the WorkoutType ObjectID inside of each GoalItem.
-         * It's also saving a blank ObjectID for each GoalItem, I don't think thats neccessary for GoalItems because they aren't a collection
-         * I don't have in the UI or saving anywhere the Goal Amount and WorkoutType (ie 20 miles ran this goal period)
-         * I also am not showing the finalized Goal Items anywhere. I started a ViewGoal screen but so far its a copy of the CreateGoal screen. I'm not sure if thats what I want to do or what...
-         */
     }
 
     public interface View {
