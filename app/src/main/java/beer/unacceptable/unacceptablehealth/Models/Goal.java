@@ -34,15 +34,26 @@ public class Goal extends ListableObject {
         return Tools.FormatDate(StartDate, DailyLog.LongDateFormat) + " to " + Tools.FormatDate(EndDate, DailyLog.LongDateFormat);
     }
 
-    public String GoalsCompletedLabel() {
-        int goalsCompleted = getGoalsCompleted();
-        return goalsCompleted + "/" + GoalItems.size();
+    public String GoalsCompletedLabel(boolean bCountRestDays) {
+        int goalsCompleted = getGoalsCompleted(bCountRestDays);
+        int goalItemCount = goalItemSize(bCountRestDays);
+        return goalsCompleted + "/" + goalItemCount;
     }
 
-    private int getGoalsCompleted() {
+    private int goalItemSize(boolean bCountRestDays) {
         int i = 0;
         for (GoalItem goalItem : GoalItems) {
-            if (goalItem.Completed)
+            if (!goalItem.WorkoutType.name.equals("Rest") || bCountRestDays)
+                i++;
+        }
+
+        return i;
+    }
+
+    private int getGoalsCompleted(boolean bCountRestDays) {
+        int i = 0;
+        for (GoalItem goalItem : GoalItems) {
+            if (goalItem.Completed && (!goalItem.WorkoutType.name.equals("Rest") || bCountRestDays))
                 i++;
         }
 

@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
@@ -106,7 +107,13 @@ public class ViewGoal
         m_etEndDate.setText(goal.EndDateFormatted());
         m_etBriefDescription.setText(goal.Description);
         m_etGoalAmount.setText(String.valueOf(goal.OverallGoalAmount));
-        m_spGoalAmountType.setSelection(Arrays.asList(m_oController.getWorkoutTypes()).indexOf(goal.OverallGoalAmountType));
+        try {
+            m_spGoalAmountType.setSelection(Arrays.asList(m_oController.getWorkoutTypes()).indexOf(goal.OverallGoalAmountType));
+        } catch (Exception ex) {
+            //quick error checking for now
+            //TODO: Have it try to set this after the workout types are loaded. will need to handle scenario where it loads those first before the Goal though
+            Tools.ShowToast(getApplicationContext(), "Workout Types not loaded quick enough", Toast.LENGTH_SHORT);
+        }
         for(GoalItem goalItem : goal.GoalItems) {
             m_Adapter.add(goalItem);
         }

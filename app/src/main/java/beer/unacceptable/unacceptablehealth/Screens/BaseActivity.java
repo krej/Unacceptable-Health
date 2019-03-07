@@ -3,6 +3,7 @@ package beer.unacceptable.unacceptablehealth.Screens;
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
@@ -34,15 +35,29 @@ public class BaseActivity extends AppCompatActivity {
         DailyLogAlarmReceiver.SetupDailyLogAlarm(this);
 
         //Tools.LoadSharedPrefs(getApplicationContext(), "health");
+        Network.getInstance(this.getApplicationContext()); //start the network singleton
         Preferences.getInstance(getApplicationContext(), "health");
+
+        if (!CheckForServerSetting()) return false;
+
         if (!Tools.LoginTokenExists(this, MainActivity.class)) return false;
 
-        Network.getInstance(this.getApplicationContext()); //start the network singleton
 
         if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
         }
         Thread.setDefaultUncaughtExceptionHandler(new CustomizedExceptionHandler(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getPath()));
+
+        return true;
+    }
+
+    private boolean CheckForServerSetting() {
+        if (!Preferences.ServerSettingExists()) {
+            Intent intent = new Intent(getApplicationContext(), Settings.class);
+            startActivity(intent);
+            Tools.ShowToast(getApplicationContext(), "Select a server to connect to.", Toast.LENGTH_LONG);
+            return false;
+        }
 
         return true;
     }

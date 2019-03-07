@@ -29,7 +29,8 @@ public class GoalAdapterViewControl extends BaseAdapterViewControl {
 
         name.setText(g.name);
         duration.setText(g.DurationLabel());
-        goalsCompleted.setText(g.GoalsCompletedLabel());
+        //TODO: Make bCountRestDays a setting
+        goalsCompleted.setText(g.GoalsCompletedLabel(false));
     }
 
     @Override
