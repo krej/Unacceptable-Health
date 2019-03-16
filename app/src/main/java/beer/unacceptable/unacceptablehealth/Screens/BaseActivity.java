@@ -31,7 +31,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     private boolean InitialAppSetup() {
-        createNotificationChannel();
+        //createNotificationChannel();
         DailyLogAlarmReceiver.SetupDailyLogAlarm(this);
 
         //Tools.LoadSharedPrefs(getApplicationContext(), "health");
