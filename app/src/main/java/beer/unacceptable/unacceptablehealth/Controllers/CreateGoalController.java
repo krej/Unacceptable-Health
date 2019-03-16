@@ -10,6 +10,7 @@ import com.unacceptable.unacceptablelibrary.Tools.Tools;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import beer.unacceptable.unacceptablehealth.Models.DailyLog;
 import beer.unacceptable.unacceptablehealth.Models.Goal;
@@ -48,15 +49,17 @@ public class CreateGoalController extends BaseLogic<CreateGoalController.View> {
 
     public void setDate(Calendar cal, DateType dateType) {
         cal.set(Calendar.HOUR_OF_DAY, 12); //hard code to noon to avoid timezone crap
-        String sDate = Tools.FormatDate(cal.getTime(), DailyLog.LongDateFormat);
+        Date dt = cal.getTime();
+        //Date dt = Tools.setTimeToMidnightUTC(cal.getTime());
+        String sDate = Tools.FormatDate(dt, DailyLog.LongDateFormat);
 
         switch (dateType) {
             case Start:
-                m_oGoal.StartDate = cal.getTime();
+                m_oGoal.StartDate = dt;
                 view.setStartDateText(sDate);
                 break;
             case End:
-                m_oGoal.EndDate = cal.getTime();
+                m_oGoal.EndDate = dt;
                 view.setEndDateText(sDate);
                 break;
         }

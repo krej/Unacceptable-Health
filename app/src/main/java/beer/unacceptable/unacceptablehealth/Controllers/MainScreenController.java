@@ -109,7 +109,7 @@ public class MainScreenController extends BaseLogic<MainScreenController.View> {
     }
 
     public void SetGoalItemDate(Date newDate, final GoalItem goalItem, final NewAdapter adapter, final boolean bShowAllGoalItems) {
-        newDate = Tools.setTimeToMidnight(newDate);
+        //newDate = Tools.setTimeToMidnight(newDate);
         final GoalItemAction action = new GoalItemAction();
         action.Item = goalItem;
         action.Completed = goalItem.Completed;

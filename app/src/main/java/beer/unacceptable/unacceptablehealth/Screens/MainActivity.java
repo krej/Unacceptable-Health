@@ -77,6 +77,7 @@ public class MainActivity extends BaseActivity
 
         m_oController.LoadTodaysLog();
         LoadGoalItems();
+
     }
 
     public void LoadGoalItems() {

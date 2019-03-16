@@ -1,20 +1,18 @@
 package beer.unacceptable.unacceptablehealth.Adapters;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.unacceptable.unacceptablelibrary.Adapters.BaseAdapterViewControl;
 import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
 import com.unacceptable.unacceptablelibrary.Models.ListableObject;
-import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import java.util.Calendar;
 
@@ -23,7 +21,6 @@ import beer.unacceptable.unacceptablehealth.Controllers.MainScreenController;
 import beer.unacceptable.unacceptablehealth.Models.GoalItem;
 import beer.unacceptable.unacceptablehealth.R;
 import beer.unacceptable.unacceptablehealth.Repositories.Repository;
-import beer.unacceptable.unacceptablehealth.Screens.CreateGoal;
 
 public class GoalItemAdapterViewControl extends BaseAdapterViewControl {
     MainScreenController m_oController = new MainScreenController(new Repository(), new DateLogic());
@@ -63,6 +60,8 @@ public class GoalItemAdapterViewControl extends BaseAdapterViewControl {
 
     @Override
     public void onItemLongPress(final View v, ListableObject i) {
+        v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+
         final GoalItem goalItem = (GoalItem)i;
         String[] options;
         if (m_bAllowDelete)
@@ -104,6 +103,9 @@ public class GoalItemAdapterViewControl extends BaseAdapterViewControl {
                 cal.set(Calendar.YEAR, year);
                 cal.set(Calendar.MONTH, month);
                 cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                cal.set(Calendar.HOUR_OF_DAY, 12); //hard code to 12 to ignore timezones
+                cal.set(Calendar.MINUTE, 0);
+                cal.set(Calendar.SECOND, 0);
                 m_oController.SetGoalItemDate(cal.getTime(), goalItem, m_Adapter, m_bShowAllGoalItems);
                 //m_oController.setDate(cal, dateType);
             }
