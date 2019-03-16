@@ -1,5 +1,7 @@
 package beer.unacceptable.unacceptablehealth.Models;
 
+import android.graphics.Color;
+
 import com.google.gson.annotations.Expose;
 import com.unacceptable.unacceptablelibrary.Models.ListableObject;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
@@ -34,5 +36,18 @@ public class GoalItem extends ListableObject {
 
     public String CompletedDisplay() {
         return Completed ? "Complete" : "Incomplete";
+    }
+
+    public int getCompletedTextColor() {
+        Date dt = new Date();
+        if (Completed) {
+            return Color.GREEN;
+        } else {
+            if (Date.after(dt) || Tools.CompareDatesWithoutTime(dt, Date)) {
+                return Color.BLUE;
+            } else {
+                return Color.RED;
+            }
+        }
     }
 }

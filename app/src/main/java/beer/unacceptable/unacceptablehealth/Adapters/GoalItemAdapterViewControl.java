@@ -5,14 +5,17 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.unacceptable.unacceptablelibrary.Adapters.BaseAdapterViewControl;
 import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
 import com.unacceptable.unacceptablelibrary.Models.ListableObject;
+import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import java.util.Calendar;
 
@@ -50,7 +53,8 @@ public class GoalItemAdapterViewControl extends BaseAdapterViewControl {
         date.setText(goalItem.DateFormatted());
         workoutType.setText(goalItem.WorkoutType.name);
         completed.setText(goalItem.CompletedDisplay());
-
+        completed.setTextColor(goalItem.getCompletedTextColor());
+        completed.setShadowLayer(1, 1, 1, Color.BLACK);
     }
 
     @Override
@@ -88,6 +92,7 @@ public class GoalItemAdapterViewControl extends BaseAdapterViewControl {
                         break;
                     case 2:
                         m_oController.DeleteGoalItem(goalItem, m_Adapter);
+                        ShowRefreshToast(v.getContext());
                         break;
                 }
             }
@@ -95,7 +100,11 @@ public class GoalItemAdapterViewControl extends BaseAdapterViewControl {
         builder.show();
     }
 
-    private void ShowCalendar(Context context, final GoalItem goalItem) {
+    private void ShowRefreshToast(Context context) {
+        Tools.ShowToast(context, "Please Refresh Screen to update all Goal Item Tabs.", Toast.LENGTH_LONG);
+    }
+
+    private void ShowCalendar(final Context context, final GoalItem goalItem) {
         final Calendar cal = Calendar.getInstance();
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -107,6 +116,8 @@ public class GoalItemAdapterViewControl extends BaseAdapterViewControl {
                 cal.set(Calendar.MINUTE, 0);
                 cal.set(Calendar.SECOND, 0);
                 m_oController.SetGoalItemDate(cal.getTime(), goalItem, m_Adapter, m_bShowAllGoalItems);
+
+                ShowRefreshToast(context);
                 //m_oController.setDate(cal, dateType);
             }
         };

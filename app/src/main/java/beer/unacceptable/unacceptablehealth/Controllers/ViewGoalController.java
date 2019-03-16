@@ -19,12 +19,12 @@ public class ViewGoalController extends BaseLogic<ViewGoalController.View> {
         m_Repository = repository;
     }
 
-    public void loadGoal(String sIdString) {
+    public void loadGoal(String sIdString, final boolean bRefreshing) {
         m_Repository.LoadGoal(sIdString, new RepositoryCallback() {
             @Override
             public void onSuccess(String t) {
                 Goal goal = Tools.convertJsonResponseToObject(t, Goal.class);
-                view.PopulateScreen(goal);
+                view.PopulateScreen(goal, bRefreshing);
             }
 
             @Override
@@ -54,7 +54,7 @@ public class ViewGoalController extends BaseLogic<ViewGoalController.View> {
     }
 
     public interface View {
-        void PopulateScreen(Goal goal);
+        void PopulateScreen(Goal goal, boolean bRefreshing);
         void PopulateWorkoutTypeDropDown(WorkoutType[] workoutTypes);
     }
 }
