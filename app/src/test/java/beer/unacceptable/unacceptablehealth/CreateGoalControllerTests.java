@@ -463,4 +463,31 @@ public class CreateGoalControllerTests {
         Assert.assertEquals("Run", m_oController.getPendingGoalItems().get(5).WorkoutType.name);
         Assert.assertEquals("Run", m_oController.getPendingGoalItems().get(6).WorkoutType.name);
     }
+
+    @Test
+    public void pendingGoalItemsNotBasedOnWeek_Save_GoalSaves() {
+        m_oController.setDate(createDate(Calendar.APRIL, 1, 2019), CreateGoalController.DateType.Start);
+        m_oController.setDate(createDate(Calendar.APRIL,30,2019), CreateGoalController.DateType.End);
+
+        ArrayList<ListableObject> pendingGoalItems = new ArrayList<>();
+        PendingGoalItem p = new PendingGoalItem();
+        p.WorkoutType = arms;
+        pendingGoalItems.add(p);
+
+        p = new PendingGoalItem();
+        p.WorkoutType = abs;
+        pendingGoalItems.add(p);
+
+        p = new PendingGoalItem();
+        p.WorkoutType = arms;
+        pendingGoalItems.add(p);
+
+        p = new PendingGoalItem();
+        p.WorkoutType = rest;
+        pendingGoalItems.add(p);
+
+        m_oController.saveGoal("Test goal", "Test description", false, pendingGoalItems, 0, null);
+
+        verify(m_libraryRepo).Save(anyString(), any(byte[].class), any(RepositoryCallback.class));
+    }
 }

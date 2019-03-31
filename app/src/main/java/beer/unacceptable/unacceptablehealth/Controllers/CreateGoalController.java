@@ -240,6 +240,9 @@ public class CreateGoalController extends BaseLogic<CreateGoalController.View> {
 
         if (!bContinue) return;
 
+        //store pending goal items from the UI
+        setPendingGoalItemsFromAdapter(dataset);
+
         m_oGoal.name = sName;
         m_oGoal.Description = sDescription;
         createGoalItems(bBasedOnWeek);
