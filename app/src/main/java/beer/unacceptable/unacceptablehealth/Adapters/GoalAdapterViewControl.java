@@ -24,6 +24,7 @@ public class GoalAdapterViewControl extends BaseAdapterViewControl {
         TextView name = view.view.findViewById(R.id.goal_name);
         TextView duration = view.view.findViewById(R.id.goal_duration);
         TextView goalsCompleted = view.view.findViewById(R.id.goal_items_completed);
+        TextView goalsCompletedPercent = view.view.findViewById(R.id.goal_items_completed_percent);
 
         Goal g = (Goal)i;
 
@@ -31,6 +32,7 @@ public class GoalAdapterViewControl extends BaseAdapterViewControl {
         duration.setText(g.DurationLabel());
         //TODO: Make bCountRestDays a setting
         goalsCompleted.setText(g.GoalsCompletedLabel(false));
+        goalsCompletedPercent.setText(g.GoalsCompletedPercent(false) + "%");
     }
 
     @Override

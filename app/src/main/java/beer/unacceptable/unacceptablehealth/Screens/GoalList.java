@@ -3,6 +3,7 @@ package beer.unacceptable.unacceptablehealth.Screens;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -12,6 +13,7 @@ import com.android.volley.VolleyError;
 import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
 import com.unacceptable.unacceptablelibrary.Repositories.RepositoryCallback;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
+import com.unacceptable.unacceptablelibrary.Tools.VerticalSpaceItemDecoration;
 
 import beer.unacceptable.unacceptablehealth.Adapters.GoalAdapterViewControl;
 import beer.unacceptable.unacceptablehealth.Models.Goal;
@@ -37,7 +39,9 @@ public class GoalList extends BaseActivity {
 
         FindUIItems();
 
-        m_Adapter = Tools.setupRecyclerView(m_rvGoalList, getApplicationContext(), R.layout.list_goal, 0, false, new GoalAdapterViewControl());
+        m_Adapter = Tools.setupRecyclerView(m_rvGoalList, getApplicationContext(), R.layout.list_goal, 0, false, new GoalAdapterViewControl(), true);
+        VerticalSpaceItemDecoration verticalSpaceItemDecoration = new VerticalSpaceItemDecoration(20, true);
+        m_rvGoalList.addItemDecoration(verticalSpaceItemDecoration);
 
         m_Repository.LoadAllGoals(new RepositoryCallback() {
             @Override

@@ -40,6 +40,15 @@ public class Goal extends ListableObject {
         return goalsCompleted + "/" + goalItemCount;
     }
 
+    public String GoalsCompletedPercent(boolean bCountRestDays) {
+        int goalsCompleted = getGoalsCompleted(bCountRestDays);
+        int goalItemCount = goalItemSize(bCountRestDays);
+        double result = (double)goalsCompleted / (double)goalItemCount;
+        result *= 100;
+        int iResult = (int)result;
+        return Integer.toString(iResult);
+    }
+
     private int goalItemSize(boolean bCountRestDays) {
         int i = 0;
         for (GoalItem goalItem : GoalItems) {
