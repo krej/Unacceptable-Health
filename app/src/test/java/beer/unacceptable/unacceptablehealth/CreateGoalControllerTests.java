@@ -58,6 +58,38 @@ public class CreateGoalControllerTests {
 
         rest = new WorkoutType();
         rest.name = "Rest";
+
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                RepositoryCallback callback = invocation.getArgument(0);
+                callback.onSuccess("[\n" +
+                        "    {\n" +
+                        "        \"Id\": \"5c6f8777f293eb1db4da1e61\",\n" +
+                        "        \"idString\": \"5c6f8777f293eb1db4da1e61\",\n" +
+                        "        \"name\": \"Run\"\n" +
+                        "    },\n" +
+                        "    {\n" +
+                        "        \"Id\": \"5c6f8938f293eb1db4da1e62\",\n" +
+                        "        \"idString\": \"5c6f8938f293eb1db4da1e62\",\n" +
+                        "        \"name\": \"Arms\"\n" +
+                        "    },\n" +
+                        "    {\n" +
+                        "        \"Id\": \"5c6f89a7f293eb1db4da1e63\",\n" +
+                        "        \"idString\": \"5c6f89a7f293eb1db4da1e63\",\n" +
+                        "        \"name\": \"Abs\"\n" +
+                        "    },\n" +
+                        "    {\n" +
+                        "        \"Id\": \"5c73423c230acd3cf8f11aec\",\n" +
+                        "        \"idString\": \"5c73423c230acd3cf8f11aec\",\n" +
+                        "        \"name\": \"Rest Day\"\n" +
+                        "    }\n" +
+                        "]");
+                return null;
+            }
+        }).when(m_repo).LoadAllWorkoutTypes(any(RepositoryCallback.class));
+
+        m_oController.loadWorkoutTypes();
     }
 
     private Calendar getHardCodedDate() {
@@ -420,37 +452,6 @@ public class CreateGoalControllerTests {
     public void noPendingGoalItems_SwitchToWeekBased_AllPendingGoalItemsHaveWorkoutType() {
         ArrayList<PendingGoalItem> pgi = new ArrayList<>();
 
-        doAnswer(new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
-                RepositoryCallback callback = invocation.getArgument(0);
-                callback.onSuccess("[\n" +
-                        "    {\n" +
-                        "        \"Id\": \"5c6f8777f293eb1db4da1e61\",\n" +
-                        "        \"idString\": \"5c6f8777f293eb1db4da1e61\",\n" +
-                        "        \"name\": \"Run\"\n" +
-                        "    },\n" +
-                        "    {\n" +
-                        "        \"Id\": \"5c6f8938f293eb1db4da1e62\",\n" +
-                        "        \"idString\": \"5c6f8938f293eb1db4da1e62\",\n" +
-                        "        \"name\": \"Arms\"\n" +
-                        "    },\n" +
-                        "    {\n" +
-                        "        \"Id\": \"5c6f89a7f293eb1db4da1e63\",\n" +
-                        "        \"idString\": \"5c6f89a7f293eb1db4da1e63\",\n" +
-                        "        \"name\": \"Abs\"\n" +
-                        "    },\n" +
-                        "    {\n" +
-                        "        \"Id\": \"5c73423c230acd3cf8f11aec\",\n" +
-                        "        \"idString\": \"5c73423c230acd3cf8f11aec\",\n" +
-                        "        \"name\": \"Rest Day\"\n" +
-                        "    }\n" +
-                        "]");
-                return null;
-            }
-        }).when(m_repo).LoadAllWorkoutTypes(any(RepositoryCallback.class));
-
-        m_oController.loadWorkoutTypes();
         m_oController.setPendingGoalItems(pgi);
         m_oController.changeGoalType(true);
 
