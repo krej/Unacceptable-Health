@@ -3,6 +3,7 @@ package beer.unacceptable.unacceptablehealth.Controllers;
 import com.android.volley.VolleyError;
 import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
 import com.unacceptable.unacceptablelibrary.Logic.BaseLogic;
+import com.unacceptable.unacceptablelibrary.Models.Response;
 import com.unacceptable.unacceptablelibrary.Repositories.RepositoryCallback;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
@@ -96,14 +97,21 @@ public class MainScreenController extends BaseLogic<MainScreenController.View> {
         m_repo.ModifyGoalItem(action, new RepositoryCallback() {
             @Override
             public void onSuccess(String t) {
-                //TODO: Update the screen somehow
-                goalItem.Completed = action.Completed;
-                adapter.notifyDataSetChanged();
+                Response r = Tools.convertJsonResponseToObject(t, Response.class);
+                if (r.Success) {
+                    //TODO: Update the screen somehow
+                    goalItem.Completed = action.Completed;
+                    if (adapter != null) adapter.notifyDataSetChanged();
+                } else {
+                     view.showToast(r.Message);
+                }
+
             }
 
             @Override
             public void onError(VolleyError error) {
-
+                Response response = Tools.convertJsonResponseToObject(error.getMessage(), Response.class);
+                view.showToast(response.Message);
             }
         });
     }
@@ -165,5 +173,6 @@ public class MainScreenController extends BaseLogic<MainScreenController.View> {
         void populateTodaysGoalItems(GoalItem[] goalItems);
         void setGoalItemsVisibility(boolean bVisible);
         void setNoGoalLabelVisibility(boolean bVisible);
+        void showToast(String sMessage);
     }
 }

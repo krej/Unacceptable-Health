@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.Date;
 
 import beer.unacceptable.unacceptablehealth.Adapters.GoalItemAdapterViewControl;
+import beer.unacceptable.unacceptablehealth.Controllers.MainScreenController;
 import beer.unacceptable.unacceptablehealth.Controllers.ViewGoalController;
 import beer.unacceptable.unacceptablehealth.Models.DailyLog;
 import beer.unacceptable.unacceptablehealth.Models.Goal;
@@ -44,7 +45,8 @@ import beer.unacceptable.unacceptablehealth.Repositories.Repository;
 
 public class ViewGoal
         extends BaseActivity
-        implements ViewGoalController.View {
+    implements ViewGoalController.View
+        {
 
     //A lot of this is copy and pasted from CreateGoal. Maybe I should combine these? I don't know...
     TextView m_etStartDate;
@@ -157,7 +159,8 @@ public class ViewGoal
         m_spGoalAmountType.setAdapter(aa);
     }
 
-    /**** tab stuff here ***/
+
+            /**** tab stuff here ***/
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         GoalItemsFragment m_oUpcomingFragment;
@@ -211,7 +214,8 @@ public class ViewGoal
         }
     }
 
-    public static class GoalItemsFragment extends Fragment {
+    public static class GoalItemsFragment extends Fragment
+    implements MainScreenController.View{
         private RecyclerView m_rvGoalItems;
         private NewAdapter m_Adapter;
 
@@ -230,7 +234,7 @@ public class ViewGoal
             View rootView = inflater.inflate(R.layout.content_daily_log_list, container, false);
 
             m_rvGoalItems = rootView.findViewById(R.id.dailyLogList);
-            m_Adapter = Tools.setupRecyclerView(m_rvGoalItems, rootView.getContext(), R.layout.list_goal_item, 0, false, new GoalItemAdapterViewControl(true, true));
+            m_Adapter = Tools.setupRecyclerView(m_rvGoalItems, rootView.getContext(), R.layout.list_goal_item, 0, false, new GoalItemAdapterViewControl(true, true, this));
 
             return rootView;
         }
@@ -247,6 +251,46 @@ public class ViewGoal
 
         public void ClearGoalItems() {
             m_Adapter.clear();
+        }
+
+        @Override
+        public void showTodaysLog(boolean b) {
+
+        }
+
+        @Override
+        public void showNewLogButton(boolean b) {
+
+        }
+
+        @Override
+        public void populateTodaysLog(DailyLog dl) {
+
+        }
+
+        @Override
+        public void showDailyLogError() {
+
+        }
+
+        @Override
+        public void populateTodaysGoalItems(GoalItem[] goalItems) {
+
+        }
+
+        @Override
+        public void setGoalItemsVisibility(boolean bVisible) {
+
+        }
+
+        @Override
+        public void setNoGoalLabelVisibility(boolean bVisible) {
+
+        }
+
+        @Override
+        public void showToast(String sMessage) {
+            Tools.ShowToast(getContext(), sMessage, Toast.LENGTH_LONG);
         }
     }
 }

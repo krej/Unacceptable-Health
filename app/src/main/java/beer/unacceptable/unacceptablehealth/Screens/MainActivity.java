@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
 import com.unacceptable.unacceptablelibrary.Repositories.LibraryRepository;
@@ -77,7 +78,7 @@ public class MainActivity extends BaseActivity
         FindUIElements();
         SetupOnClickListeners();
 
-        m_GoalItemsAdapter = Tools.setupRecyclerView(m_rvGoalItems, getApplicationContext(), R.layout.list_goal_item, 0, true, new GoalItemAdapterViewControl(false, false));
+        m_GoalItemsAdapter = Tools.setupRecyclerView(m_rvGoalItems, getApplicationContext(), R.layout.list_goal_item, 0, true, new GoalItemAdapterViewControl(false, false, this));
 
         m_oController.LoadTodaysLog();
         LoadGoalItems();
@@ -270,6 +271,11 @@ public class MainActivity extends BaseActivity
             m_tvNoGoalItems.setVisibility(View.VISIBLE);
         else
             m_tvNoGoalItems.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showToast(String sMessage) {
+        Tools.ShowToast(getApplicationContext(), sMessage, Toast.LENGTH_LONG);
     }
 
     private void createNotificationChannel() {

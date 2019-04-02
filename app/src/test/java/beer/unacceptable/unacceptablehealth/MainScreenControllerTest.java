@@ -1,6 +1,7 @@
 package beer.unacceptable.unacceptablehealth;
 
 import com.android.volley.VolleyError;
+import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
 import com.unacceptable.unacceptablelibrary.Repositories.RepositoryCallback;
 
 import org.junit.Before;
@@ -14,6 +15,9 @@ import java.util.Date;
 import beer.unacceptable.unacceptablehealth.Controllers.IDateLogic;
 import beer.unacceptable.unacceptablehealth.Controllers.MainScreenController;
 import beer.unacceptable.unacceptablehealth.Models.DailyLog;
+import beer.unacceptable.unacceptablehealth.Models.GoalItem;
+import beer.unacceptable.unacceptablehealth.Models.GoalItemAction;
+import beer.unacceptable.unacceptablehealth.Models.WorkoutType;
 import beer.unacceptable.unacceptablehealth.Repositories.IRepository;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -140,5 +144,30 @@ public class MainScreenControllerTest {
     @Test
     public void screenLoads_LoadTodaysGoalItems_SuccessPopulatesScreen() {
 
+    }
+
+    @Test
+    public void setGoalCompleted_APIRespondsWithFailure_ShowToast() {
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                RepositoryCallback callback = invocation.getArgument(1);
+                //callback.onError(new VolleyError("{\"Success\":false,\"Message\":\"No GoalItems Completed\"}"));
+                callback.onSuccess("{\"Success\":false,\"Message\":\"No GoalItems Completed\"}");
+                return null;
+            }
+        }).when(m_repo).ModifyGoalItem(any(GoalItemAction.class), any(RepositoryCallback.class));
+
+        WorkoutType workoutType = new WorkoutType();
+        workoutType.name = "Arms";
+
+        GoalItem goalItem = new GoalItem();
+        goalItem.Completed = false;
+        goalItem.WorkoutType = workoutType;
+        goalItem.Date = getHardCodedDate();
+
+        m_oController.ToggleGoalItemComplete(goalItem, null);
+
+        verify(view).showToast(eq("No GoalItems Completed"));
     }
 }
