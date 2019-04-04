@@ -55,4 +55,9 @@ public class Repository implements IRepository {
 
         Network.WebRequest(Request.Method.POST, Preferences.HealthAPIURL() + "/goal/ModifyGoalItem", data, callback, true);
     }
+
+    @Override
+    public void LoadCollection(String sCollection, RepositoryCallback callback) {
+        Network.WebRequest(Request.Method.GET, Preferences.HealthAPIURL() + "/" + sCollection + "/", null, callback, true);
+    }
 }

@@ -1,9 +1,9 @@
 package beer.unacceptable.unacceptablehealth;
 
-import android.app.Dialog;
 import android.content.Context;
 
 import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
+import com.unacceptable.unacceptablelibrary.Models.ListableObject;
 import com.unacceptable.unacceptablelibrary.Repositories.ILibraryRepository;
 import com.unacceptable.unacceptablelibrary.Repositories.RepositoryCallback;
 
@@ -14,32 +14,30 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import beer.unacceptable.unacceptablehealth.Controllers.WorkoutTypeController;
+import beer.unacceptable.unacceptablehealth.Controllers.SingleItemListController;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutType;
 import beer.unacceptable.unacceptablehealth.Repositories.IRepository;
-import beer.unacceptable.unacceptablehealth.Repositories.Repository;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 public class WorkoutTypeControllerTests {
-    private WorkoutTypeController m_oController;
+    private SingleItemListController m_oController;
     private IRepository m_repo;
     private ILibraryRepository m_libraryRepo;
-    private WorkoutTypeController.View m_view;
+    private SingleItemListController.View m_view;
 
     @Before
     public void setup() {
         m_repo = mock(IRepository.class);
         m_libraryRepo = mock(ILibraryRepository.class);
-        m_view = mock(WorkoutTypeController.View.class);
-        m_oController = new WorkoutTypeController(m_repo, m_libraryRepo);
+        m_view = mock(SingleItemListController.View.class);
+        m_oController = new SingleItemListController(m_repo, m_libraryRepo, "WorkoutType");
         m_oController.attachView(m_view);
     }
 
@@ -83,5 +81,43 @@ public class WorkoutTypeControllerTests {
 
         verify(m_libraryRepo).Save(anyString(), any(byte[].class), any(RepositoryCallback.class));
         Assert.assertTrue(result);
+    }
+
+    @Test
+    public void musclePassedIn_CallLoadCollection_MuscleCollectionLoaded() {
+        String sCollection = "Muscle";
+        m_oController.LoadCollection(sCollection);
+
+        verify(m_repo).LoadCollection(eq("Muscle"), any(RepositoryCallback.class));
+    }
+
+    @Test
+    public void workouttypePassedIn_CallLoadCollection_WorkoutTypeCollectionLoaded() {
+        String sCollection = "WorkoutType";
+        m_oController.LoadCollection(sCollection);
+
+        verify(m_repo).LoadCollection(eq("WorkoutType"), any(RepositoryCallback.class));
+    }
+
+    @Test
+    public void workouttypePassedIn_SaveNewObject_SavedToWorkoutTypeCollection() {
+        String sCollection = "WorkoutType";
+        ListableObject i = new ListableObject();
+        i.name = "rest day";
+
+        i.Save(m_libraryRepo, sCollection);
+
+        verify(m_libraryRepo).Save(eq("WorkoutType/"), any(byte[].class), any(RepositoryCallback.class));
+    }
+
+    @Test
+    public void musclePassedIn_SaveNewObject_SavedToMuscleCollection() {
+        String sCollection = "Muscle";
+        ListableObject i = new ListableObject();
+        i.name = "Bicep";
+
+        i.Save(m_libraryRepo, sCollection);
+
+        verify(m_libraryRepo).Save(eq("Muscle/"), any(byte[].class), any(RepositoryCallback.class));
     }
 }

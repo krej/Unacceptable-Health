@@ -10,12 +10,12 @@ import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
 import com.unacceptable.unacceptablelibrary.Models.ListableObject;
 
 import beer.unacceptable.unacceptablehealth.R;
-import beer.unacceptable.unacceptablehealth.Screens.WorkoutTypeList;
+import beer.unacceptable.unacceptablehealth.Screens.SingleItemList;
 
 
 public class ExerciseDatabaseViewControl extends BaseAdapterViewControl {
     public ExerciseDatabaseViewControl() {
-        m_bAlternateRowColors = true;
+        m_bAlternateRowColors = false;
         m_sAlternateRowBackgroundColor = "#dbdbdb";
     }
 
@@ -33,14 +33,23 @@ public class ExerciseDatabaseViewControl extends BaseAdapterViewControl {
     @Override
     public void onItemClick(View v, ListableObject i) {
         Class<?> classToLaunch = null;
+        String sCollectionName = "";
         switch(i.name) {
             case "Workout Types":
-                classToLaunch = WorkoutTypeList.class;
+                classToLaunch = SingleItemList.class;
+                sCollectionName = "workouttype";
+                break;
+            case "Exercises":
+                break;
+            case "Muscles":
+                classToLaunch = SingleItemList.class;
+                sCollectionName = "muscle";
                 break;
         }
 
-        if (classToLaunch != null) {
+        if (classToLaunch != null && sCollectionName.length() > 0) {
             Intent intent = new Intent(v.getContext(), classToLaunch);
+            intent.putExtra("collectionName", sCollectionName);
             v.getContext().startActivity(intent);
         }
     }

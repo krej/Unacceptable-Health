@@ -43,7 +43,7 @@
                 android:value="beer.unacceptable.unacceptablehealth.Screens.MainActivity"/>
         </activity>
         <activity
-            android:name=".Screens.WorkoutTypeList"
+            android:name=".Screens.SingleItemList"
             android:label="@string/title_activity_workout_type_list"
             android:parentActivityName=".Screens.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">

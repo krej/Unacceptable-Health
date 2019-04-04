@@ -1,7 +1,6 @@
 package beer.unacceptable.unacceptablehealth.Controllers;
 
 import android.content.Context;
-import android.text.Editable;
 
 import com.android.volley.VolleyError;
 import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
@@ -14,15 +13,34 @@ import com.unacceptable.unacceptablelibrary.Tools.Tools;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutType;
 import beer.unacceptable.unacceptablehealth.Repositories.IRepository;
 
-public class WorkoutTypeController extends BaseLogic<WorkoutTypeController.View> {
+public class SingleItemListController extends BaseLogic<SingleItemListController.View> {
 
     private IRepository m_repository;
     private ILibraryRepository m_LibraryRepository;
+    private String m_sCollectionName;
 
-    public WorkoutTypeController(IRepository repository, ILibraryRepository libraryRepository) {
+    public SingleItemListController(IRepository repository, ILibraryRepository libraryRepository, String sCollectionName) {
         m_repository = repository;
         m_LibraryRepository = libraryRepository;
+        m_sCollectionName = sCollectionName;
     }
+
+    public void LoadCollection(String sCollection) {
+        m_repository.LoadCollection(sCollection, new RepositoryCallback() {
+            @Override
+            public void onSuccess(String t) {
+                ListableObject[] results = Tools.convertJsonResponseToObject(t, ListableObject[].class);
+                view.PopulateWorkoutTypes(results);
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+                String sMessage = Tools.ParseVolleyError(error);
+                view.ShowToast(sMessage);
+            }
+        });
+    }
+
 
     public void LoadAllWorkoutTypes() {
         m_repository.LoadAllWorkoutTypes(new RepositoryCallback() {
@@ -45,16 +63,20 @@ public class WorkoutTypeController extends BaseLogic<WorkoutTypeController.View>
             return false;
         }
 
-        WorkoutType workoutType = (WorkoutType)i;
-        if (workoutType == null)
-            workoutType = new WorkoutType();
+        boolean bNew = i == null;
 
-        workoutType.name = sName;
 
-        workoutType.Save(m_LibraryRepository);
+        //WorkoutType workoutType = (WorkoutType)i;
+        if (i == null) {
+            i = new ListableObject();
+        }
 
-        if (i == null)
-            m_adapter.add(workoutType);
+        i.name = sName;
+
+        i.Save(m_LibraryRepository, m_sCollectionName);
+
+        if (bNew)
+            m_adapter.add(i);
 
 
         return true;
@@ -65,6 +87,8 @@ public class WorkoutTypeController extends BaseLogic<WorkoutTypeController.View>
     }
 
     public interface View {
-        void PopulateWorkoutTypes(WorkoutType[] workoutTypes);
+        //void PopulateWorkoutTypes(WorkoutType[] workoutTypes);
+        void PopulateWorkoutTypes(ListableObject[] objects);
+        void ShowToast(String sMessage);
     }
 }

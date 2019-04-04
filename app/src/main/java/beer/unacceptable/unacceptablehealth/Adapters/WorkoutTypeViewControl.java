@@ -10,16 +10,16 @@ import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
 import com.unacceptable.unacceptablelibrary.Models.ListableObject;
 import com.unacceptable.unacceptablelibrary.Repositories.LibraryRepository;
 
-import beer.unacceptable.unacceptablehealth.Controllers.WorkoutTypeController;
+import beer.unacceptable.unacceptablehealth.Controllers.SingleItemListController;
 import beer.unacceptable.unacceptablehealth.R;
 import beer.unacceptable.unacceptablehealth.Repositories.Repository;
 
 public class WorkoutTypeViewControl extends BaseAdapterViewControl {
-    private WorkoutTypeController m_oController;
-    public WorkoutTypeViewControl() {
-        m_bAlternateRowColors = true;
+    private SingleItemListController m_oController;
+    public WorkoutTypeViewControl(String sCollectionName) {
+        m_bAlternateRowColors = false;
         m_sAlternateRowBackgroundColor = "#dbdbdb";
-        m_oController = new WorkoutTypeController(new Repository(), new LibraryRepository());
+        m_oController = new SingleItemListController(new Repository(), new LibraryRepository(), sCollectionName);
     }
 
     @Override

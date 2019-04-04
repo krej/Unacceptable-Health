@@ -251,4 +251,5 @@
     <string name="current_goalitems">Today\'s Goals</string>
     <string name="no_goals_today">No goals today! Enjoy it!</string>
     <string name="goals_completed_percent_label">Goal % Completed:</string>
+    <string name="muscles">Muscles</string>
 </resources>
