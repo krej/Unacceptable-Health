@@ -234,7 +234,8 @@ public class ViewGoal
             View rootView = inflater.inflate(R.layout.content_daily_log_list, container, false);
 
             m_rvGoalItems = rootView.findViewById(R.id.dailyLogList);
-            m_Adapter = Tools.setupRecyclerView(m_rvGoalItems, rootView.getContext(), R.layout.list_goal_item, 0, false, new GoalItemAdapterViewControl(true, true, this));
+            //TODO: I don't know why this doesnt' go to the end of the screen and it annoys me
+            m_Adapter = Tools.setupRecyclerView(m_rvGoalItems, rootView.getContext(), R.layout.list_goal_item, 0, false, new GoalItemAdapterViewControl(true, true, this), true);
 
             return rootView;
         }

@@ -152,7 +152,6 @@ public class MainScreenController extends BaseLogic<MainScreenController.View> {
             @Override
             public void onSuccess(String t) {
                 adapter.remove(goalItem);
-                adapter.notifyDataSetChanged(); //TODO: This is needed only because it resets the background colors of all rows. Without it, it looks cool cause it scrolls the rows up. I should figure out how to make this look good, no alternating colors
             }
 
             @Override

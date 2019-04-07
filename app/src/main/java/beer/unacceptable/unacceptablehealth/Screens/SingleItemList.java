@@ -53,7 +53,7 @@ implements SingleItemListController.View {
 
         m_rvList = findViewById(R.id.list);
 
-        m_Adapter = Tools.setupRecyclerView(m_rvList, getApplicationContext(), R.layout.one_line_list, R.layout.dialog_edit_ingredient, false, viewControl, true, true);
+        m_Adapter = Tools.setupRecyclerView(m_rvList, getApplicationContext(), R.layout.one_line_list, R.layout.dialog_edit_ingredient, false, viewControl, true);
 
         m_oController.LoadCollection(sCollectionName);
     }

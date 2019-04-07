@@ -31,7 +31,7 @@ public class GoalItemAdapterViewControl extends BaseAdapterViewControl {
     boolean m_bAllowDelete;
 
     public GoalItemAdapterViewControl(boolean bShowAllGoalItems, boolean bAllowDelete, MainScreenController.View view) {
-        m_bAlternateRowColors = true;
+        m_bAlternateRowColors = false;
         m_sAlternateRowBackgroundColor = "#dbdbdb";
         m_bShowAllGoalItems = bShowAllGoalItems;
         m_bAllowDelete = bAllowDelete;

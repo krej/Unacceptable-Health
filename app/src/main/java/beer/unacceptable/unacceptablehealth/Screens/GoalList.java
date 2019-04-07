@@ -41,7 +41,7 @@ public class GoalList extends BaseActivity {
 
         m_Adapter = Tools.setupRecyclerView(m_rvGoalList, getApplicationContext(), R.layout.list_goal, 0, false, new GoalAdapterViewControl(), true);
         VerticalSpaceItemDecoration verticalSpaceItemDecoration = new VerticalSpaceItemDecoration(20, true);
-        m_rvGoalList.addItemDecoration(verticalSpaceItemDecoration);
+        //m_rvGoalList.addItemDecoration(verticalSpaceItemDecoration);
 
         m_Repository.LoadAllGoals(new RepositoryCallback() {
             @Override

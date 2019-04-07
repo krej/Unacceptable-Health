@@ -35,7 +35,7 @@ public class ExerciseDatabase extends BaseActivity {
 
         m_rvSetup = (RecyclerView)findViewById(R.id.exercise_setup);
         m_Adapter = Tools.setupRecyclerView(m_rvSetup, getApplicationContext(), R.layout.one_line_list, 0, false, new ExerciseDatabaseViewControl(), true);
-        m_rvSetup.addItemDecoration(new HoriztonalSpaceItemDecoration(Tools.SAMSUNG_CURVED_SCREEN_PADDING));
+        //m_rvSetup.addItemDecoration(new HoriztonalSpaceItemDecoration(Tools.SAMSUNG_CURVED_SCREEN_PADDING));
 
         LoadSetupItems();
     }
