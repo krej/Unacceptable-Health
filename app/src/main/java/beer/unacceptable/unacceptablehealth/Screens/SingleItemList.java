@@ -2,6 +2,7 @@ package beer.unacceptable.unacceptablehealth.Screens;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -24,6 +25,7 @@ implements SingleItemListController.View {
     private RecyclerView m_rvList;
     private NewAdapter m_Adapter;
     private SingleItemListController m_oController;
+    private SwipeRefreshLayout m_SwipeRefresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,7 @@ implements SingleItemListController.View {
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        String sCollectionName = getIntent().getStringExtra("collectionName");
+        final String sCollectionName = getIntent().getStringExtra("collectionName");
         String sTitle = getIntent().getStringExtra("title");
 
         BaseAdapterViewControl viewControl = (BaseAdapterViewControl)getIntent().getSerializableExtra("viewControl");
@@ -52,16 +54,30 @@ implements SingleItemListController.View {
         m_oController.attachView(this);
 
         m_rvList = findViewById(R.id.list);
+        m_SwipeRefresh = findViewById(R.id.swiperefresh);
 
         m_Adapter = Tools.setupRecyclerView(m_rvList, getApplicationContext(), R.layout.one_line_list, R.layout.dialog_edit_ingredient, false, viewControl, true);
 
-        m_oController.LoadCollection(sCollectionName);
+        m_SwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                m_oController.LoadCollection(sCollectionName, true);
+            }
+        });
+
+        m_oController.LoadCollection(sCollectionName, false);
     }
 
     @Override
-    public void PopulateWorkoutTypes(ListableObject[] objects) {
+    public void PopulateList(ListableObject[] objects, boolean bRefreshing) {
+        m_Adapter.clear();
+
         for (ListableObject t : objects) {
             m_Adapter.add(t);
+        }
+
+        if (bRefreshing) {
+            m_SwipeRefresh.setRefreshing(false);
         }
     }
 

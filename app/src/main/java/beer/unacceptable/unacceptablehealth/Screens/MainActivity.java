@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -54,6 +55,8 @@ public class MainActivity extends BaseActivity
     RecyclerView m_rvGoalItems;
     NewAdapter m_GoalItemsAdapter;
 
+    SwipeRefreshLayout m_SwipeRefresh;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,12 +83,18 @@ public class MainActivity extends BaseActivity
 
         m_GoalItemsAdapter = Tools.setupRecyclerView(m_rvGoalItems, getApplicationContext(), R.layout.list_goal_item, 0, true, new GoalItemAdapterViewControl(false, false, this));
 
-        m_oController.LoadTodaysLog();
-        LoadGoalItems();
+        LoadScreen();
 
+        m_SwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                LoadScreen();
+            }
+        });
     }
 
-    public void LoadGoalItems() {
+    public void LoadScreen() {
+        m_oController.LoadTodaysLog();
         m_oController.LoadTodaysGoalItems();
     }
 
@@ -128,6 +137,7 @@ public class MainActivity extends BaseActivity
         m_ll = findViewById(R.id.linear_layout);
         m_rvGoalItems = findViewById(R.id.current_goal_items);
         m_tvNoGoalItems = findViewById(R.id.no_goals_label);
+        m_SwipeRefresh = findViewById(R.id.swiperefresh);
     }
 
     @Override
@@ -241,6 +251,7 @@ public class MainActivity extends BaseActivity
         m_tvDailyLogHeader.setText(m_oDailyLogController.getLongDate(dl));
         m_rbOverallRating.setRating(m_oDailyLogController.getDaysAverageRating(dl));
         m_tvIdString.setText(dl.idString);
+        m_SwipeRefresh.setRefreshing(false);
     }
 
     @Override
@@ -252,9 +263,12 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void populateTodaysGoalItems(GoalItem[] goalItems) {
+        m_GoalItemsAdapter.clear();
+
         for (GoalItem goalItem : goalItems) {
             m_GoalItemsAdapter.add(goalItem);
         }
+        m_SwipeRefresh.setRefreshing(false);
     }
 
     @Override

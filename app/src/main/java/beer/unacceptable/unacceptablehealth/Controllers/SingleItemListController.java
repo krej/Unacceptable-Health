@@ -25,12 +25,12 @@ public class SingleItemListController extends BaseLogic<SingleItemListController
         m_sCollectionName = sCollectionName;
     }
 
-    public void LoadCollection(String sCollection) {
+    public void LoadCollection(String sCollection, final boolean bRefreshing) {
         m_repository.LoadCollection(sCollection, new RepositoryCallback() {
             @Override
             public void onSuccess(String t) {
                 ListableObject[] results = Tools.convertJsonResponseToObject(t, ListableObject[].class);
-                view.PopulateWorkoutTypes(results);
+                view.PopulateList(results, bRefreshing);
             }
 
             @Override
@@ -42,12 +42,12 @@ public class SingleItemListController extends BaseLogic<SingleItemListController
     }
 
 
-    public void LoadAllWorkoutTypes() {
+    /*public void LoadAllWorkoutTypes() {
         m_repository.LoadAllWorkoutTypes(new RepositoryCallback() {
             @Override
             public void onSuccess(String t) {
                 WorkoutType[] workoutTypes = Tools.convertJsonResponseToObject(t, WorkoutType[].class);
-                view.PopulateWorkoutTypes(workoutTypes);
+                view.PopulateList(workoutTypes);
             }
 
             @Override
@@ -55,7 +55,7 @@ public class SingleItemListController extends BaseLogic<SingleItemListController
 
             }
         });
-    }
+    }*/
 
     public boolean save(Context context, NewAdapter m_adapter, ListableObject i, String sName) {
         if (!allInfoEntered(sName)) {
@@ -87,8 +87,8 @@ public class SingleItemListController extends BaseLogic<SingleItemListController
     }
 
     public interface View {
-        //void PopulateWorkoutTypes(WorkoutType[] workoutTypes);
-        void PopulateWorkoutTypes(ListableObject[] objects);
+        //void PopulateList(WorkoutType[] workoutTypes);
+        void PopulateList(ListableObject[] objects, boolean bRefreshing);
         void ShowToast(String sMessage);
     }
 }
