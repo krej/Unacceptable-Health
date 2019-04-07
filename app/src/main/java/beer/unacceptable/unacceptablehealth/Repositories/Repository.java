@@ -8,11 +8,12 @@ import com.unacceptable.unacceptablelibrary.Tools.Network;
 import com.unacceptable.unacceptablelibrary.Tools.Preferences;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import beer.unacceptable.unacceptablehealth.Models.GoalItemAction;
 
-public class Repository implements IRepository {
+public class Repository implements IRepository, Serializable {
     public void LoadDailyLog(String sStringID, RepositoryCallback callback) {
         Network.WebRequest(Request.Method.GET, Preferences.HealthAPIURL() + "/dailylog/" + sStringID, null, callback, true);
     }
@@ -59,5 +60,10 @@ public class Repository implements IRepository {
     @Override
     public void LoadCollection(String sCollection, RepositoryCallback callback) {
         Network.WebRequest(Request.Method.GET, Preferences.HealthAPIURL() + "/" + sCollection + "/", null, callback, true);
+    }
+
+    @Override
+    public void LoadExercise(String idString, RepositoryCallback callback) {
+        Network.WebRequest(Request.Method.GET, Preferences.HealthAPIURL() + "/exercise/" + idString, null, callback, true);
     }
 }

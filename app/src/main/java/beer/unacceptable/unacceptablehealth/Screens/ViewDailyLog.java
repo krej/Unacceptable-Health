@@ -90,7 +90,7 @@ public class ViewDailyLog extends BaseActivity implements DailyLogLogic.View {
     }
 
     public void setScreenTitle(String sTitle) {
-        //setTitle(sTitle);
+        //setScreenTitle(sTitle);
         tvTitle.setText(sTitle);
     }
 

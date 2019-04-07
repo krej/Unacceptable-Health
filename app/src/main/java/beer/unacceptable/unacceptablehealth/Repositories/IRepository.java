@@ -15,4 +15,5 @@ public interface IRepository {
     void LoadGoalItemsByDate(String sDate, RepositoryCallback callback);
     void ModifyGoalItem(GoalItemAction action, RepositoryCallback callback);
     void LoadCollection(String sCollection, RepositoryCallback callback);
+    void LoadExercise(String idString, RepositoryCallback callback);
 }

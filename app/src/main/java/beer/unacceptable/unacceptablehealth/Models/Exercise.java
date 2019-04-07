@@ -7,5 +7,5 @@ import java.util.ArrayList;
 
 public class Exercise extends ListableObject {
     @Expose
-    ArrayList<Muscle> Muscles;
+    public ArrayList<Muscle> Muscles;
 }

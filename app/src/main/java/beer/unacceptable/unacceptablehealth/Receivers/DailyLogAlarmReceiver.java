@@ -41,6 +41,7 @@ public class DailyLogAlarmReceiver extends BroadcastReceiver {
             public void onError(VolleyError error) {
                 //TODO: Maybe send a notification here to go to the daily log list screen?
                 Tools.ShowToast(context, "Error checking for daily log.", Toast.LENGTH_SHORT);
+                sendNotification(context, "");
             }
         });
 

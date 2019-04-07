@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".Screens.SingleItemList"
-    tools:showIn="@layout/activity_workout_type_list">
+    tools:showIn="@layout/activity_single_item_list">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list"

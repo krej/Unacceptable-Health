@@ -8,53 +8,53 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
+import com.unacceptable.unacceptablelibrary.Adapters.BaseAdapterViewControl;
 import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
 import com.unacceptable.unacceptablelibrary.Models.ListableObject;
 import com.unacceptable.unacceptablelibrary.Repositories.LibraryRepository;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
-import java.util.List;
-
-import beer.unacceptable.unacceptablehealth.Adapters.WorkoutTypeViewControl;
 import beer.unacceptable.unacceptablehealth.Controllers.SingleItemListController;
-import beer.unacceptable.unacceptablehealth.Models.WorkoutType;
 import beer.unacceptable.unacceptablehealth.R;
 import beer.unacceptable.unacceptablehealth.Repositories.Repository;
 
 public class SingleItemList extends AppCompatActivity
 implements SingleItemListController.View {
 
-    private RecyclerView m_rvWorkoutTypes;
+    private RecyclerView m_rvList;
     private NewAdapter m_Adapter;
-    private RecyclerView.LayoutManager m_LayoutManager;
     private SingleItemListController m_oController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_workout_type_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setContentView(R.layout.activity_single_item_list);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                m_Adapter.showAddItemDialog(m_rvWorkoutTypes.getContext(), null);
+                m_Adapter.showAddItemDialog(m_rvList.getContext(), null);
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         String sCollectionName = getIntent().getStringExtra("collectionName");
+        String sTitle = getIntent().getStringExtra("title");
+
+        BaseAdapterViewControl viewControl = (BaseAdapterViewControl)getIntent().getSerializableExtra("viewControl");
+
+        setTitle(sTitle);
 
         m_oController = new SingleItemListController(new Repository(), new LibraryRepository(), sCollectionName);
         m_oController.attachView(this);
 
-        m_rvWorkoutTypes = (RecyclerView)findViewById(R.id.list);
+        m_rvList = findViewById(R.id.list);
 
-        m_Adapter = Tools.setupRecyclerView(m_rvWorkoutTypes, getApplicationContext(), R.layout.one_line_list, R.layout.dialog_edit_ingredient, false, new WorkoutTypeViewControl(sCollectionName), true, true);
+        m_Adapter = Tools.setupRecyclerView(m_rvList, getApplicationContext(), R.layout.one_line_list, R.layout.dialog_edit_ingredient, false, viewControl, true, true);
 
-        //m_oController.LoadAllWorkoutTypes();
         m_oController.LoadCollection(sCollectionName);
     }
 

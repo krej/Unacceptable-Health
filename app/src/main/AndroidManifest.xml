@@ -16,6 +16,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".Screens.AddExercise"
+            android:label="@string/title_activity_add_exercise"
+            android:parentActivityName=".Screens.BaseActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="beer.unacceptable.unacceptablehealth.Screens.BaseActivity"/>
+        </activity>
+        <activity
             android:name=".Screens.GoalList"
             android:label="@string/title_activity_goal_list_scrolling"
             android:parentActivityName=".Screens.MainActivity"

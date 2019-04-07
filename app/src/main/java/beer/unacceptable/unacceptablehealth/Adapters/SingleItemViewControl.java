@@ -10,16 +10,21 @@ import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
 import com.unacceptable.unacceptablelibrary.Models.ListableObject;
 import com.unacceptable.unacceptablelibrary.Repositories.LibraryRepository;
 
+import java.io.Serializable;
+
 import beer.unacceptable.unacceptablehealth.Controllers.SingleItemListController;
 import beer.unacceptable.unacceptablehealth.R;
 import beer.unacceptable.unacceptablehealth.Repositories.Repository;
 
-public class WorkoutTypeViewControl extends BaseAdapterViewControl {
+public class SingleItemViewControl extends BaseAdapterViewControl {
     private SingleItemListController m_oController;
-    public WorkoutTypeViewControl(String sCollectionName) {
+    private String m_sTitle;
+
+    public SingleItemViewControl(String sCollectionName, String sTitle) {
         m_bAlternateRowColors = false;
         m_sAlternateRowBackgroundColor = "#dbdbdb";
         m_oController = new SingleItemListController(new Repository(), new LibraryRepository(), sCollectionName);
+        m_sTitle = sTitle;
     }
 
     @Override
@@ -27,10 +32,12 @@ public class WorkoutTypeViewControl extends BaseAdapterViewControl {
         TextView header = root.findViewById(R.id.add_ingredient_header);
         EditText name = root.findViewById(R.id.ingredient_name);
 
-        header.setText("Workout Type");
 
         if (i != null) {
+            header.setText("Edit " + m_sTitle);
             name.setText(i.name);
+        } else {
+            header.setText("Add " + m_sTitle);
         }
     }
 

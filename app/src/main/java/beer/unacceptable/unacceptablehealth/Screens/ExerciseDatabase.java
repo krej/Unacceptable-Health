@@ -42,7 +42,7 @@ public class ExerciseDatabase extends BaseActivity {
 
     private void LoadSetupItems() {
         m_Adapter.add(new ListableObject(getString(R.string.workout_types)));
-        m_Adapter.add(new ListableObject("Exercises"));
+        m_Adapter.add(new ListableObject(getString(R.string.exercises)));
         m_Adapter.add(new ListableObject(getString(R.string.muscles)));
     }
 }

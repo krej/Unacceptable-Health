@@ -252,4 +252,7 @@
     <string name="no_goals_today">No goals today! Enjoy it!</string>
     <string name="goals_completed_percent_label">Goal % Completed:</string>
     <string name="muscles">Muscles</string>
+    <string name="title_activity_add_exercise">AddExercise</string>
+    <string name="add">Add</string>
+    <string name="exercises">Exercises</string>
 </resources>
