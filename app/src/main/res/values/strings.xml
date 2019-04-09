@@ -255,4 +255,14 @@
     <string name="title_activity_add_exercise">AddExercise</string>
     <string name="add">Add</string>
     <string name="exercises">Exercises</string>
+    <string name="exercise_label">Exercise</string>
+    <string name="exerciseplan">Exercise Plan</string>
+    <string name="reps_label">Reps</string>
+    <string name="weight_label">Weight</string>
+    <string name="time_label">Time</string>
+    <string name="title_activity_view_workout_plan">ViewWorkoutPlan</string>
+    <string name="workouttype_label">Workout Type</string>
+    <string name="exerciseplan_label">Exercise Plans</string>
+    <string name="workoutplan_name">Name</string>
+    <string name="sets">Sets</string>
 </resources>

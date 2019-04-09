@@ -68,6 +68,7 @@ public class AddExerciseController extends BaseLogic<AddExerciseController.View>
         return "Exercise: " + exercise.name;
     }
 
+    //TODO: Convert to Tools.ConvertToStrongTypedList
     private ArrayList<Muscle> convertToMuscleArrayList(ArrayList<ListableObject> muscles) {
         ArrayList<Muscle> muscleArrayList = new ArrayList<>();
         for (ListableObject listableObject : muscles) {

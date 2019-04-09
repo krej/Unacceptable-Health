@@ -26,11 +26,14 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.unacceptable.unacceptablelibrary.Adapters.BaseAdapterViewControl;
+import com.unacceptable.unacceptablelibrary.Adapters.IAdapterViewControl;
 import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
 import com.unacceptable.unacceptablelibrary.Repositories.LibraryRepository;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import beer.unacceptable.unacceptablehealth.Adapters.GoalItemAdapterViewControl;
+import beer.unacceptable.unacceptablehealth.Adapters.WorkoutPlanAdapterViewControl;
 import beer.unacceptable.unacceptablehealth.Controllers.DailyLogLogic;
 import beer.unacceptable.unacceptablehealth.Controllers.DateLogic;
 import beer.unacceptable.unacceptablehealth.Controllers.MainScreenController;
@@ -189,10 +192,14 @@ public class MainActivity extends BaseActivity
         int id = item.getItemId();
 
         Class<?> classToLaunch = null;
-
+        Bundle b = new Bundle();
 
         switch (id) {
             case R.id.nav_exercise:
+                classToLaunch = SingleItemList.class;
+                b.putString("collectionName", "workoutplan");
+                b.putSerializable("viewControl", new WorkoutPlanAdapterViewControl());
+                b.putString("title", "Workout Plans");
                 break;
             case R.id.nav_nutrition:
                 break;
@@ -219,6 +226,7 @@ public class MainActivity extends BaseActivity
 
         if (classToLaunch != null) {
             Intent intent = new Intent(getApplicationContext(), classToLaunch);
+            intent.putExtra("bundle", b);
             startActivity(intent);
             //overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         }

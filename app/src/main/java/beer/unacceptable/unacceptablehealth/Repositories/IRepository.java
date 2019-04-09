@@ -16,4 +16,5 @@ public interface IRepository {
     void ModifyGoalItem(GoalItemAction action, RepositoryCallback callback);
     void LoadCollection(String sCollection, RepositoryCallback callback);
     void LoadExercise(String idString, RepositoryCallback callback);
+    void LoadWorkoutPlanWithExtras(String idString, RepositoryCallback callback);
 }

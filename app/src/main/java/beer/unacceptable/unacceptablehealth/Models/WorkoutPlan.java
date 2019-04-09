@@ -7,11 +7,11 @@ import java.util.ArrayList;
 
 public class WorkoutPlan extends ListableObject {
     @Expose
-    WorkoutType WorkoutType;
+    public WorkoutType WorkoutType;
     @Expose
-    ArrayList<ExercisePlan> ExercisePlans;
+    public ArrayList<ExercisePlan> ExercisePlans;
     @Expose
-    ArrayList<CalorieLog> CalorieLog;
+    public ArrayList<CalorieLog> CalorieLog;
     @Expose
-    int TotalCalories;
+    public int TotalCalories;
 }

@@ -13,13 +13,12 @@ import com.unacceptable.unacceptablelibrary.Models.ListableObject;
 import java.util.Arrays;
 
 import beer.unacceptable.unacceptablehealth.Controllers.CreateGoalController;
-import beer.unacceptable.unacceptablehealth.Models.GoalItem;
 import beer.unacceptable.unacceptablehealth.Models.PendingGoalItem;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutType;
 import beer.unacceptable.unacceptablehealth.R;
 
 public class PendingGoalItemAdapterViewControl extends BaseAdapterViewControl {
-    private WorkoutType[] m_oWorkouTypes;
+    private WorkoutType[] m_oWorkoutTypes;
     private boolean m_bShowDay;
 
     public PendingGoalItemAdapterViewControl() {
@@ -42,7 +41,7 @@ public class PendingGoalItemAdapterViewControl extends BaseAdapterViewControl {
 
         spDay.setSelection(Arrays.asList(CreateGoalController.days).indexOf(p.Day));
         if (p.WorkoutType != null)
-            spWorkoutType.setSelection(Arrays.asList(m_oWorkouTypes).indexOf(p.WorkoutType));
+            spWorkoutType.setSelection(Arrays.asList(m_oWorkoutTypes).indexOf(p.WorkoutType));
 
         if (m_bShowDay)
             spDay.setVisibility(View.VISIBLE);
@@ -51,7 +50,7 @@ public class PendingGoalItemAdapterViewControl extends BaseAdapterViewControl {
     }
 
     private void SetItemSelectedListeners(NewAdapter.ViewHolder view, final PendingGoalItem p, Spinner spDay, Spinner spWorkoutType) {
-        ArrayAdapter<WorkoutType> aa = new ArrayAdapter<>(view.view.getContext(), android.R.layout.simple_spinner_dropdown_item, m_oWorkouTypes);
+        ArrayAdapter<WorkoutType> aa = new ArrayAdapter<>(view.view.getContext(), android.R.layout.simple_spinner_dropdown_item, m_oWorkoutTypes);
         spWorkoutType.setAdapter(aa);
         //spDay.setEnabled(false);
 
@@ -70,7 +69,7 @@ public class PendingGoalItemAdapterViewControl extends BaseAdapterViewControl {
         spWorkoutType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                p.WorkoutType = m_oWorkouTypes[position];
+                p.WorkoutType = m_oWorkoutTypes[position];
             }
 
             @Override
@@ -95,7 +94,7 @@ public class PendingGoalItemAdapterViewControl extends BaseAdapterViewControl {
     }
 
     public void setWorkoutTypes(WorkoutType[] types) {
-        m_oWorkouTypes = types;
+        m_oWorkoutTypes = types;
     }
 
     public void setDayVisibility(boolean bVisible) {

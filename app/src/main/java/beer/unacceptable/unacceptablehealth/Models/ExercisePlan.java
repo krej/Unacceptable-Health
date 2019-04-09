@@ -5,14 +5,16 @@ import com.unacceptable.unacceptablelibrary.Models.ListableObject;
 
 public class ExercisePlan extends ListableObject {
     @Expose
-    Exercise Exercise;
+    public Exercise Exercise;
     @Expose
-    int Order;
+    int Order; //TODO: ??? What was this?
     @Expose
-    int Reps;
+    public int Reps;
     @Expose
-    double Weight;
+    public int Sets;
+    @Expose
+    public double Weight;
     //Time to do a rep. Stored in seconds
     @Expose
-    int Seconds;
+    public int Seconds;
 }

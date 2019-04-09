@@ -66,4 +66,8 @@ public class Repository implements IRepository, Serializable {
     public void LoadExercise(String idString, RepositoryCallback callback) {
         Network.WebRequest(Request.Method.GET, Preferences.HealthAPIURL() + "/exercise/" + idString, null, callback, true);
     }
+    @Override
+    public void LoadWorkoutPlanWithExtras(String idString, RepositoryCallback callback) {
+        Network.WebRequest(Request.Method.GET, Preferences.HealthAPIURL() + "/workoutplan/withextras/" + idString, null, callback, true, true);
+    }
 }

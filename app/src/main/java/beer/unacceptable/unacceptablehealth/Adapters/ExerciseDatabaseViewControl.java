@@ -36,41 +36,34 @@ public class ExerciseDatabaseViewControl extends BaseAdapterViewControl {
     @Override
     public void onItemClick(View v, ListableObject i) {
         Class<?> classToLaunch = SingleItemList.class;
-        String sCollectionName = "";
-        String sTitle = "";
-        String sShortName = "";
-        BaseAdapterViewControl viewControl = null;
+        Bundle b = new Bundle();
 
         //TODO: Find a less copy/paste way to do this switch statement
         switch(i.name) {
             case "Workout Types":
-                sCollectionName = "workouttype";
-                sTitle = "Workout Types";
-                sShortName = "Workout Type";
-                viewControl = new SingleItemViewControl(sCollectionName, sShortName);
+                b.putString("collectionName", "workouttype");
+                b.putString("title", "Workout Types");
+                b.putString("shortName", "Workout Type");
+                b.putSerializable("viewControl", new SingleItemViewControl(b.getString("collectionName"), b.getString("shortName")));
                 break;
             case "Exercises":
-                sCollectionName = "exercise";
-                sTitle = "Exercises";
-                sShortName = "Exercise";
-                viewControl = new ExerciseListAdapterViewControl();
+                b.putString("collectionName", "exercise");
+                b.putString("title", "Exercises");
+                b.putString("shortName", "Exercise");
+                b.putSerializable("viewControl", new ExerciseListAdapterViewControl());
                 break;
             case "Muscles":
-                sCollectionName = "muscle";
-                sTitle = "Muscles";
-                sShortName = "Muscle";
-                viewControl = new SingleItemViewControl(sCollectionName, sShortName);
+                b.putString("collectionName", "muscle");
+                b.putString("title", "Muscles");
+                b.putString("shortName", "Muscle");
+                b.putSerializable("viewControl", new SingleItemViewControl(b.getString("collectionName"), b.getString("shortName")));
                 break;
         }
 
-        if (sCollectionName.length() > 0 && viewControl != null) {
-            Intent intent = new Intent(v.getContext(), classToLaunch);
-            intent.putExtra("collectionName", sCollectionName);
-            intent.putExtra("title", sTitle);
-            intent.putExtra("shortName", sShortName);
-            intent.putExtra("viewControl", viewControl);
-            v.getContext().startActivity(intent);
-        }
+        Intent intent = new Intent(v.getContext(), classToLaunch);
+
+        intent.putExtra("bundle", b);
+        v.getContext().startActivity(intent);
     }
 
     @Override

@@ -43,10 +43,13 @@ implements SingleItemListController.View {
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final String sCollectionName = getIntent().getStringExtra("collectionName");
-        String sTitle = getIntent().getStringExtra("title");
+        Bundle bundle = getIntent().getBundleExtra("bundle");
+        final String sCollectionName = bundle.getString("collectionName");
+        int iDialogLayout = bundle.getInt("dialogLayout", R.layout.dialog_edit_ingredient);
 
-        BaseAdapterViewControl viewControl = (BaseAdapterViewControl)getIntent().getSerializableExtra("viewControl");
+        String sTitle = bundle.getString("title");
+
+        BaseAdapterViewControl viewControl = (BaseAdapterViewControl) bundle.getSerializable("viewControl");
 
         setTitle(sTitle);
 
@@ -56,7 +59,7 @@ implements SingleItemListController.View {
         m_rvList = findViewById(R.id.list);
         m_SwipeRefresh = findViewById(R.id.swiperefresh);
 
-        m_Adapter = Tools.setupRecyclerView(m_rvList, getApplicationContext(), R.layout.one_line_list, R.layout.dialog_edit_ingredient, false, viewControl, true);
+        m_Adapter = Tools.setupRecyclerView(m_rvList, getApplicationContext(), R.layout.one_line_list, iDialogLayout, false, viewControl, true);
 
         m_SwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
