@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
@@ -34,6 +35,9 @@ public class AddExercise extends BaseActivity implements AddExerciseController.V
     private Button m_btnAddMuscle;
     private EditText m_etName;
     private Exercise m_Exercise;
+    private Switch m_swShowWeight;
+    private Switch m_swShowTime;
+    private Switch m_swShowReps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +56,7 @@ public class AddExercise extends BaseActivity implements AddExerciseController.V
         m_muscleAdapterViewControl = new MuscleAdapterViewControl();
         m_adpMuscles = Tools.setupRecyclerView(m_rvMuscles, getApplicationContext(), R.layout.list_dropdown_with_remove_button, 0, false, m_muscleAdapterViewControl, true, true);
 
-        m_oController.LoadMuscles();
+        //m_oController.LoadMuscles();
         SetupButtonClickEvents();
 
         String idString = getIntent().getStringExtra("exercise");
@@ -63,6 +67,9 @@ public class AddExercise extends BaseActivity implements AddExerciseController.V
         m_rvMuscles = findViewById(R.id.muscleList);
         m_btnAddMuscle = findViewById(R.id.addMuscle);
         m_etName = findViewById(R.id.name_entry);
+        m_swShowTime = findViewById(R.id.swShowTime);
+        m_swShowWeight = findViewById(R.id.sw_showWeight);
+        m_swShowReps = findViewById(R.id.sw_showReps);
     }
 
     private void SetupButtonClickEvents() {
@@ -70,7 +77,7 @@ public class AddExercise extends BaseActivity implements AddExerciseController.V
             @Override
             public void onClick(View v) {
                 Muscle muscle = new Muscle();
-                muscle.name = "Test";
+                muscle.name = "Starting Muscle";
                 m_adpMuscles.add(muscle);
             }
         });
@@ -96,9 +103,11 @@ public class AddExercise extends BaseActivity implements AddExerciseController.V
         String idString = m_Exercise == null ? "" : m_Exercise.idString;
         String sName = m_etName.getText().toString();
         ArrayList<ListableObject> muscles = m_adpMuscles.Dataset();
+        boolean bShowWeight = m_swShowWeight.isChecked();
+        boolean bShowTime = m_swShowTime.isChecked();
+        boolean bShowReps = m_swShowReps.isChecked();
 
-
-        m_oController.Save(idString, sName, muscles);
+        m_oController.Save(idString, sName, muscles, bShowWeight, bShowTime, bShowReps);
     }
 
     @Override
@@ -109,6 +118,7 @@ public class AddExercise extends BaseActivity implements AddExerciseController.V
     @Override
     public void PopulateMuscleList(Muscle[] muscles) {
         m_muscleAdapterViewControl.PopulateMuscleList(muscles);
+        m_btnAddMuscle.setEnabled(m_oController.AddMuscleButtonEnabled(muscles));
     }
 
     @Override
@@ -131,5 +141,8 @@ public class AddExercise extends BaseActivity implements AddExerciseController.V
         m_etName.setText(exercise.name);
         Tools.PopulateAdapter(m_adpMuscles, exercise.Muscles);
         m_Exercise = exercise;
+        m_swShowWeight.setChecked(exercise.ShowWeight);
+        m_swShowTime.setChecked(exercise.ShowTime);
+        m_swShowReps.setChecked(exercise.ShowReps);
     }
 }

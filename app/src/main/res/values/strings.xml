@@ -260,9 +260,14 @@
     <string name="reps_label">Reps</string>
     <string name="weight_label">Weight</string>
     <string name="time_label">Time</string>
-    <string name="title_activity_view_workout_plan">ViewWorkoutPlan</string>
+    <string name="title_activity_view_workout_plan">View Workout Plan</string>
     <string name="workouttype_label">Workout Type</string>
     <string name="exerciseplan_label">Exercise Plans</string>
     <string name="workoutplan_name">Name</string>
     <string name="sets">Sets</string>
+    <string name="seconds_label">Seconds</string>
+    <string name="exercise_count_label"># of Exercises:</string>
+    <string name="show_weight">Show Weight</string>
+    <string name="show_time">Show Time</string>
+    <string name="show_reps">Show Reps</string>
 </resources>

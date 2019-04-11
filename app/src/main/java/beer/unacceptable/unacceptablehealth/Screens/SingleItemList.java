@@ -46,6 +46,7 @@ implements SingleItemListController.View {
         Bundle bundle = getIntent().getBundleExtra("bundle");
         final String sCollectionName = bundle.getString("collectionName");
         int iDialogLayout = bundle.getInt("dialogLayout", R.layout.dialog_edit_ingredient);
+        int iItemLayout = bundle.getInt("itemLayout", R.layout.one_line_list);
 
         String sTitle = bundle.getString("title");
 
@@ -59,7 +60,7 @@ implements SingleItemListController.View {
         m_rvList = findViewById(R.id.list);
         m_SwipeRefresh = findViewById(R.id.swiperefresh);
 
-        m_Adapter = Tools.setupRecyclerView(m_rvList, getApplicationContext(), R.layout.one_line_list, iDialogLayout, false, viewControl, true);
+        m_Adapter = Tools.setupRecyclerView(m_rvList, getApplicationContext(), iItemLayout, iDialogLayout, false, viewControl, true);
 
         m_SwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

@@ -19,6 +19,7 @@ import beer.unacceptable.unacceptablehealth.Repositories.IRepository;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
@@ -38,11 +39,30 @@ public class AddExerciseControllerTests {
         libraryRepository = mock(ILibraryRepository.class);
         m_oController = new AddExerciseController(repo, libraryRepository);
         m_oController.attachView(view);
+
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                RepositoryCallback callback = invocation.getArgument(1);
+                callback.onSuccess(
+                        "{\"Exercise\":{\"idString\":\"5caa95026063b146b8ab550a\",\"name\":\"Tricep Dips\",\"Muscles\":[{\"idString\":\"5ca6c912f8d26a41943b9186\",\"name\":\"Tricep\"}],\"Id\":\"5caa95026063b146b8ab550a\"},\"Muscles\":[{\"idString\":\"5ca692cf81005e41b045712f\",\"name\":\"Bicep\",\"Id\":\"5ca692cf81005e41b045712f\"},{\"idString\":\"5ca6c912f8d26a41943b9186\",\"name\":\"Tricep\",\"Id\":\"5ca6c912f8d26a41943b9186\"}]}");
+                return null;
+            }
+        }).when(repo).LoadExerciseWithMuscles(eq("123"), any(RepositoryCallback.class));
+
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                RepositoryCallback callback = invocation.getArgument(1);
+                callback.onSuccess("{\"Exercise\":null,\"Muscles\":[{\"idString\":\"5ca692cf81005e41b045712f\",\"name\":\"Bicep\",\"Id\":\"5ca692cf81005e41b045712f\"},{\"idString\":\"5ca6c912f8d26a41943b9186\",\"name\":\"Tricep\",\"Id\":\"5ca6c912f8d26a41943b9186\"},{\"idString\":\"5cae7985089abb0de8c5f9b1\",\"name\":\"Chest\",\"Id\":\"5cae7985089abb0de8c5f9b1\"},{\"idString\":\"5cae7993089abb0de8c5f9b2\",\"name\":\"Abs\",\"Id\":\"5cae7993089abb0de8c5f9b2\"}]}");
+                return null;
+            }
+        }).when(repo).LoadExerciseWithMuscles(eq(""), any(RepositoryCallback.class));
     }
 
     @Test
     public void emptyScreen_SaveClicked_ErrorsShown() {
-        m_oController.Save("","", new ArrayList<ListableObject>());
+        m_oController.Save("","", new ArrayList<ListableObject>(), false, false, false);
 
         verify(view).SetNameError(anyString());
         verify(view).ShowToast(anyString());
@@ -56,7 +76,7 @@ public class AddExerciseControllerTests {
         m.name = "Bicep";
         muscles.add(m);
 
-        m_oController.Save("123","Test", muscles);
+        m_oController.Save("123","Test", muscles, false, false, false);
 
         verify(view, never()).SetNameError(anyString());
         verify(libraryRepository).Save(anyString(), any(byte[].class), any(RepositoryCallback.class));
@@ -65,11 +85,11 @@ public class AddExerciseControllerTests {
 
     @Test
     public void emptyScreen_ErrorsShow_FixError_ErrorCleared() {
-        m_oController.Save("","", null);
+        m_oController.Save("","", null, false, false, false);
 
         verify(view).SetNameError(anyString());
 
-        m_oController.Save("", "Test", new ArrayList<ListableObject>());
+        m_oController.Save("", "Test", new ArrayList<ListableObject>(), false, false, false);
 
         verify(view, atLeastOnce()).ClearErrors();
     }
@@ -80,32 +100,17 @@ public class AddExerciseControllerTests {
 
         verify(view).setScreenTitle(eq("Add Exercise"));
         verify(view, never()).PopulateScreen(any(Exercise.class));
-        verify(repo, never()).LoadExercise(anyString(), any(RepositoryCallback.class));
+        verify(view, never()).PopulateScreen((Exercise)isNull());
+        verify(repo).LoadExerciseWithMuscles(anyString(), any(RepositoryCallback.class));
+        verify(view).PopulateMuscleList(any(Muscle[].class));
     }
 
     @Test
     public void exercisePassedIn_TitleSetToEdit_PopulateScreen() {
-        doAnswer(new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
-                RepositoryCallback callback = invocation.getArgument(1);
-                callback.onSuccess(
-                        "{\n" +
-                        "  \"_id\": \"5caa3d16b6ca661f646ee0c2\",\n" +
-                        "  \"name\": \"Bicep Curl\",\n" +
-                        "  \"Muscles\": [\n" +
-                        "    {\n" +
-                        "      \"name\": \"Bicep\"\n" +
-                        "    }\n" +
-                        "  ]\n" +
-                        "}");
-                return null;
-            }
-        }).when(repo).LoadExercise(eq("123"), any(RepositoryCallback.class));
-
         m_oController.LoadExercise("123");
 
-        verify(view).setScreenTitle(eq("Exercise: Bicep Curl"));
+        verify(view).setScreenTitle(eq("Exercise: Tricep Dips"));
         verify(view).PopulateScreen(any(Exercise.class));
+        verify(view).PopulateMuscleList(any(Muscle[].class));
     }
 }

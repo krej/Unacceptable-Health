@@ -8,4 +8,10 @@ import java.util.ArrayList;
 public class Exercise extends ListableObject {
     @Expose
     public ArrayList<Muscle> Muscles;
+    @Expose
+    public boolean ShowWeight;
+    @Expose
+    public boolean ShowTime;
+    @Expose
+    public boolean ShowReps;
 }

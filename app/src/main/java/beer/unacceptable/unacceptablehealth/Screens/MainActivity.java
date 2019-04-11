@@ -200,6 +200,7 @@ public class MainActivity extends BaseActivity
                 b.putString("collectionName", "workoutplan");
                 b.putSerializable("viewControl", new WorkoutPlanAdapterViewControl());
                 b.putString("title", "Workout Plans");
+                //b.putInt("itemLayout", R.layout.list_workoutplan);
                 break;
             case R.id.nav_nutrition:
                 break;

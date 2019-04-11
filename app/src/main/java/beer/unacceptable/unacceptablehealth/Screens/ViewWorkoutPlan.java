@@ -70,7 +70,7 @@ public class ViewWorkoutPlan extends BaseActivity implements WorkoutPlanControll
         m_oController.attachView(this);
 
         m_vcExercisePlan = new ExercisePlanAdapterViewControl();
-        m_aExercisePlans = Tools.setupRecyclerView(m_rvExercisePlans, getApplicationContext(), R.layout.one_line_list, R.layout.dialog_exerciseplan, false, m_vcExercisePlan, true);
+        m_aExercisePlans = Tools.setupRecyclerView(m_rvExercisePlans, getApplicationContext(), R.layout.list_exerciseplan, R.layout.dialog_exerciseplan, false, m_vcExercisePlan, true);
 
         String idString = getIntent().getStringExtra("idString");
         m_oController.LoadWorkoutPlan(idString);
@@ -107,7 +107,7 @@ public class ViewWorkoutPlan extends BaseActivity implements WorkoutPlanControll
         //int selection = Arrays.asList(m_oWorkoutTypes).indexOf(workoutPlan.WorkoutType);
         int selection = m_oController.getWorkoutTypeSpinnerIndex(m_oWorkoutTypes, workoutPlan.WorkoutType);
         m_spWorkoutType.setSelection(selection);
-        ShowToast(String.valueOf(selection));
+        //ShowToast(String.valueOf(selection));
     }
 
     @Override

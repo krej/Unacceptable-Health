@@ -14,4 +14,8 @@ public class WorkoutPlan extends ListableObject {
     public ArrayList<CalorieLog> CalorieLog;
     @Expose
     public int TotalCalories;
+
+    public int ExerciseCount() {
+        return ExercisePlans.size();
+    }
 }

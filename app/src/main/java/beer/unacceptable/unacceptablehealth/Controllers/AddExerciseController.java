@@ -1,5 +1,8 @@
 package beer.unacceptable.unacceptablehealth.Controllers;
 
+import android.view.View;
+import android.widget.EditText;
+
 import com.android.volley.VolleyError;
 import com.unacceptable.unacceptablelibrary.Logic.BaseLogic;
 import com.unacceptable.unacceptablelibrary.Models.ListableObject;
@@ -9,6 +12,7 @@ import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import java.util.ArrayList;
 
+import beer.unacceptable.unacceptablehealth.Models.CustomReturns.ExerciseWithMuscleList;
 import beer.unacceptable.unacceptablehealth.Models.Exercise;
 import beer.unacceptable.unacceptablehealth.Models.Muscle;
 import beer.unacceptable.unacceptablehealth.Repositories.IRepository;
@@ -39,7 +43,7 @@ public class AddExerciseController extends BaseLogic<AddExerciseController.View>
         });
     }
 
-    public void Save(String idString, String sName, ArrayList<ListableObject> muscles) {
+    public void Save(String idString, String sName, ArrayList<ListableObject> muscles, boolean bShowWeight, boolean bShowTime, boolean bShowReps) {
         boolean bQuit = false;
         view.ClearErrors();
 
@@ -59,12 +63,16 @@ public class AddExerciseController extends BaseLogic<AddExerciseController.View>
         exercise.idString = idString;
         exercise.name = sName;
         exercise.Muscles = convertToMuscleArrayList(muscles);
+        exercise.ShowTime = bShowTime;
+        exercise.ShowWeight = bShowWeight;
+        exercise.ShowReps = bShowReps;
 
         exercise.Save(m_LibraryRepo);
         view.setScreenTitle(createScreenTitle(exercise));
     }
 
     private String createScreenTitle(Exercise exercise) {
+        if (exercise == null) return "Add Exercise";
         return "Exercise: " + exercise.name;
     }
 
@@ -82,23 +90,40 @@ public class AddExerciseController extends BaseLogic<AddExerciseController.View>
     }
 
     public void LoadExercise(String idString) {
-        if (Tools.IsEmptyString(idString)) {
-            view.setScreenTitle("Add Exercise");
-        } else {
-            m_repo.LoadExercise(idString, new RepositoryCallback() {
-                @Override
-                public void onSuccess(String t) {
-                    Exercise e = Tools.convertJsonResponseToObject(t, Exercise.class);
-                    view.setScreenTitle(createScreenTitle(e));
-                    view.PopulateScreen(e);
-                }
+        if (idString == null) idString = "";
 
-                @Override
-                public void onError(VolleyError error) {
-                    view.ShowToast(Tools.ParseVolleyError(error));
-                }
-            });
-        }
+        m_repo.LoadExerciseWithMuscles(idString, new RepositoryCallback() {
+            @Override
+            public void onSuccess(String t) {
+                ExerciseWithMuscleList oResult = Tools.convertJsonResponseToObject(t, ExerciseWithMuscleList.class);
+                Exercise e = oResult.Exercise;
+                Muscle[] muscles = oResult.Muscles;
+
+                view.setScreenTitle(createScreenTitle(e));
+                view.PopulateMuscleList(muscles);
+                if (e != null) view.PopulateScreen(e);
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+                view.ShowToast(Tools.ParseVolleyError(error));
+            }
+        });
+    }
+
+    public boolean AddMuscleButtonEnabled(Muscle[] muscles) {
+        return muscles.length > 0;
+    }
+
+    public int getVisibility(boolean bVisible) {
+        if (bVisible)
+            return android.view.View.VISIBLE;
+        return android.view.View.GONE;
+    }
+
+    public void ClearValueBasedOnVisibility(EditText editText, boolean bVisible) {
+        if (!bVisible)
+            Tools.SetText(editText, "");
     }
 
     public interface View {

@@ -34,6 +34,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+        <Switch
+            android:id="@+id/sw_showReps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/show_reps"
+            android:paddingHorizontal="10dp"/>
+
+        <Switch
+            android:id="@+id/sw_showWeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:text="@string/show_weight"/>
+
+        <Switch
+            android:id="@+id/swShowTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:text="@string/show_time"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -52,6 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:enabled="false"
                 android:text="@string/add"/>
         </LinearLayout>
 

@@ -10,6 +10,9 @@ import android.widget.Spinner;
 import com.unacceptable.unacceptablelibrary.Adapters.BaseAdapterViewControl;
 import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
 import com.unacceptable.unacceptablelibrary.Models.ListableObject;
+import com.unacceptable.unacceptablelibrary.Tools.Tools;
+
+import java.util.Arrays;
 
 import beer.unacceptable.unacceptablehealth.Models.Muscle;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutType;
@@ -30,8 +33,11 @@ public class MuscleAdapterViewControl extends BaseAdapterViewControl {
         Spinner spMuscle = view.view.findViewById(R.id.dropdown);
         Button btnRemove = view.view.findViewById(R.id.btn_remove);
 
-        ArrayAdapter<Muscle> aa = new ArrayAdapter<>(view.view.getContext(), android.R.layout.simple_spinner_dropdown_item, m_aMuscles);
-        spMuscle.setAdapter(aa);
+        //ArrayAdapter<Muscle> aa = new ArrayAdapter<>(view.view.getContext(), android.R.layout.simple_spinner_dropdown_item, m_aMuscles);
+        //spMuscle.setAdapter(aa);
+        Tools.PopulateDropDown(spMuscle, view.view.getContext(), m_aMuscles);
+        Tools.SetDropDownSelection(spMuscle, m_aMuscles, m);
+        //spWorkoutType.setSelection(Arrays.asList(m_oWorkoutTypes).indexOf(p.WorkoutType));
 
         spMuscle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

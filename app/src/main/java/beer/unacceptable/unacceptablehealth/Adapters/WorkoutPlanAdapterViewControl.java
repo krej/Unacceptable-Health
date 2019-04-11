@@ -10,7 +10,9 @@ import android.widget.TextView;
 import com.unacceptable.unacceptablelibrary.Adapters.BaseAdapterViewControl;
 import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
 import com.unacceptable.unacceptablelibrary.Models.ListableObject;
+import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
+import beer.unacceptable.unacceptablehealth.Models.WorkoutPlan;
 import beer.unacceptable.unacceptablehealth.R;
 import beer.unacceptable.unacceptablehealth.Screens.SingleItemList;
 import beer.unacceptable.unacceptablehealth.Screens.ViewWorkoutPlan;
@@ -24,7 +26,12 @@ public class WorkoutPlanAdapterViewControl extends BaseAdapterViewControl {
     @Override
     public void SetupViewInList(NewAdapter.ViewHolder view, ListableObject i) {
         TextView textView = view.view.findViewById(R.id.firstLine);
+        //TextView tvExerciseCount = view.view.findViewById(R.id.exercise_count_number);
+
         textView.setText(i.name);
+
+        //WorkoutPlan workoutPlan = (WorkoutPlan)i;
+        //Tools.SetText(tvExerciseCount, workoutPlan.ExerciseCount());
     }
 
     @Override

@@ -21,12 +21,15 @@
             android:ems="10"
             android:inputType="textCapWords"
             android:hint="@string/workoutplan_name"
+            android:paddingHorizontal="10dp"
+            android:textAlignment="center"
             />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp">
 
             <TextView
                 android:id="@+id/workouttype_label"
