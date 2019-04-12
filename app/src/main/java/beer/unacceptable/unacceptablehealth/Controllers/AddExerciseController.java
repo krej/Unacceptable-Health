@@ -115,7 +115,7 @@ public class AddExerciseController extends BaseLogic<AddExerciseController.View>
         return muscles.length > 0;
     }
 
-    public int getVisibility(boolean bVisible) {
+    public static int getVisibility(boolean bVisible) {
         if (bVisible)
             return android.view.View.VISIBLE;
         return android.view.View.GONE;

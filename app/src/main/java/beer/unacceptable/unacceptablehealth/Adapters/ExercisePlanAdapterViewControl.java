@@ -63,15 +63,15 @@ public class ExercisePlanAdapterViewControl extends BaseAdapterViewControl {
         if (i != null) {
             spExercise.setSelection(Arrays.asList(m_oExercises).indexOf(ep.Exercise));
             etReps.setText(String.valueOf(ep.Reps));
-            etReps.setVisibility(m_oController.getVisibility(ep.Exercise.ShowReps));
+            etReps.setVisibility(AddExerciseController.getVisibility(ep.Exercise.ShowReps));
             etSets.setText(String.valueOf(ep.Sets));
 
             etWeight.setText(String.valueOf(ep.Weight));
-            llDialogWeight.setVisibility(m_oController.getVisibility(ep.Exercise.ShowWeight));
+            llDialogWeight.setVisibility(AddExerciseController.getVisibility(ep.Exercise.ShowWeight));
 
 
             etTime.setText(String.valueOf(ep.Seconds));
-            llDialogTime.setVisibility(m_oController.getVisibility(ep.Exercise.ShowTime));
+            llDialogTime.setVisibility(AddExerciseController.getVisibility(ep.Exercise.ShowTime));
 
         }
     }
@@ -82,9 +82,9 @@ public class ExercisePlanAdapterViewControl extends BaseAdapterViewControl {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position >= 0 && position < m_oExercises.length) {
                     Exercise e = m_oExercises[position];
-                    llDialogWeight.setVisibility(m_oController.getVisibility(e.ShowWeight));
-                    llDialogTime.setVisibility(m_oController.getVisibility(e.ShowTime));
-                    llDialogReps.setVisibility(m_oController.getVisibility(e.ShowReps));
+                    llDialogWeight.setVisibility(AddExerciseController.getVisibility(e.ShowWeight));
+                    llDialogTime.setVisibility(AddExerciseController.getVisibility(e.ShowTime));
+                    llDialogReps.setVisibility(AddExerciseController.getVisibility(e.ShowReps));
                     m_oController.ClearValueBasedOnVisibility(etTime, e.ShowTime);
                     m_oController.ClearValueBasedOnVisibility(etWeight, e.ShowWeight);
                     m_oController.ClearValueBasedOnVisibility(etReps, e.ShowReps);
@@ -114,15 +114,15 @@ public class ExercisePlanAdapterViewControl extends BaseAdapterViewControl {
         tvExerciseName.setText(ep.Exercise.name);
 
         Tools.SetText(tvReps, ep.Reps);
-        llWeight.setVisibility(m_oController.getVisibility(ep.Exercise.ShowReps));
+        llReps.setVisibility(AddExerciseController.getVisibility(ep.Exercise.ShowReps));
 
         Tools.SetText(tvSets, ep.Sets);
 
         Tools.SetText(tvWeight, ep.Weight);
-        llWeight.setVisibility(m_oController.getVisibility(ep.Exercise.ShowWeight));
+        llWeight.setVisibility(AddExerciseController.getVisibility(ep.Exercise.ShowWeight));
 
         Tools.SetText(tvTime, ep.Seconds);
-        llTime.setVisibility(m_oController.getVisibility(ep.Exercise.ShowTime));
+        llTime.setVisibility(AddExerciseController.getVisibility(ep.Exercise.ShowTime));
 
 
     }

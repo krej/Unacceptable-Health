@@ -1,5 +1,6 @@
 package beer.unacceptable.unacceptablehealth.Screens;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -43,10 +44,7 @@ public class ViewWorkoutPlan extends BaseActivity implements WorkoutPlanControll
     Spinner m_spWorkoutType;
     EditText m_etName;
 
-    //TODO: 4/8 - For next time: I got this working it looks like! But it kinda looks like shit. I want to clean up the UI
-    //TODO:                     1. Fix the popup so the lines aren't all over the place
-    //TODO:                     1a. Maybe add the checkboxes I was thinking about to hide certain fields
-    //TODO:                     2. Add the deets underneath each exercise in ExercisePlanAdapterViewControl.SetupViewInList
+    String m_IdString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +70,8 @@ public class ViewWorkoutPlan extends BaseActivity implements WorkoutPlanControll
         m_vcExercisePlan = new ExercisePlanAdapterViewControl();
         m_aExercisePlans = Tools.setupRecyclerView(m_rvExercisePlans, getApplicationContext(), R.layout.list_exerciseplan, R.layout.dialog_exerciseplan, false, m_vcExercisePlan, true);
 
-        String idString = getIntent().getStringExtra("idString");
-        m_oController.LoadWorkoutPlan(idString);
+        m_IdString = getIntent().getStringExtra("idString");
+        m_oController.LoadWorkoutPlan(m_IdString);
     }
 
     private void FindUIElements() {
@@ -123,8 +121,10 @@ public class ViewWorkoutPlan extends BaseActivity implements WorkoutPlanControll
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_view_recipe, menu);
-        MenuItem miSave = menu.findItem(R.id.save_recipe);
+        inflater.inflate(R.menu.menu_view_workoutplan, menu);
+        MenuItem miSave = menu.findItem(R.id.save_workoutplan);
+        MenuItem miStartWorkout = menu.findItem(R.id.perform_workout);
+
         miSave.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -132,6 +132,17 @@ public class ViewWorkoutPlan extends BaseActivity implements WorkoutPlanControll
                 return true;
             }
         });
+
+        miStartWorkout.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent i = new Intent(getApplicationContext(), PerformWorkout.class);
+                i.putExtra("idString", m_IdString);
+                startActivity(i);
+                return true;
+            }
+        });
+
         //miSave.setVisible(m_oLogic == null || m_oLogic.canEditLog());
         return true;
     }

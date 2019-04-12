@@ -16,6 +16,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".Screens.WorkoutComplete"
+            android:label="@string/title_activity_workout_complete"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".Screens.PerformWorkout"
+            android:label="@string/title_activity_perform_workout"
+            android:parentActivityName=".Screens.ViewWorkoutPlan"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="beer.unacceptable.unacceptablehealth.Screens.ViewWorkoutPlan"/>
+        </activity>
+        <activity
             android:name=".Screens.ViewWorkoutPlan"
             android:label="@string/title_activity_view_workout_plan"
             android:parentActivityName=".Screens.MainActivity"

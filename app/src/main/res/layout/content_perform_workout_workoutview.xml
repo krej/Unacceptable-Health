@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".Screens.PerformWorkout"
+    tools:showIn="@layout/activity_perform_workout">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_workout_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textSize="48sp"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="50dp"/>
+
+        <LinearLayout
+            android:id="@+id/ll_weight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/weight_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingEnd="5dp"
+                android:text="Weight Number"
+                android:textAlignment="textEnd"
+                android:textSize="32sp"/>
+
+            <TextView
+                android:id="@+id/weight_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/weight_label"
+                android:textSize="32sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_reps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/rep_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingEnd="5dp"
+                android:text="Rep Number"
+                android:textAlignment="textEnd"
+                android:textSize="32sp"/>
+
+            <TextView
+                android:id="@+id/rep_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/reps_label"
+                android:textSize="32sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_sets"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/set_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingEnd="5dp"
+                android:text="Set Number"
+                android:textAlignment="textEnd"
+                android:textSize="32sp"/>
+
+            <TextView
+                android:id="@+id/set_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/sets_remaining"
+                android:textSize="32sp"/>
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/btn_finish_set"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/finish_set"/>
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

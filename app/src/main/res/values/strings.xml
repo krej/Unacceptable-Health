@@ -258,9 +258,9 @@
     <string name="exercise_label">Exercise</string>
     <string name="exerciseplan">Exercise Plan</string>
     <string name="reps_label">Reps</string>
-    <string name="weight_label">Weight</string>
+    <string name="weight_label">lbs</string>
     <string name="time_label">Time</string>
-    <string name="title_activity_view_workout_plan">View Workout Plan</string>
+    <string name="title_activity_view_workout_plan">Workout Plan</string>
     <string name="workouttype_label">Workout Type</string>
     <string name="exerciseplan_label">Exercise Plans</string>
     <string name="workoutplan_name">Name</string>
@@ -270,4 +270,13 @@
     <string name="show_weight">Show Weight</string>
     <string name="show_time">Show Time</string>
     <string name="show_reps">Show Reps</string>
+    <string name="perform_workout">Start Workout</string>
+    <string name="title_activity_perform_workout">Perform Workout</string>
+    <string name="finish_set">Finish Set</string>
+    <string name="rest">Rest Time</string>
+    <string name="finish_rest">Finish Rest</string>
+    <string name="sets_remaining">Sets Remaining</string>
+    <string name="title_activity_workout_complete">Workout Complete!</string>
+    <string name="workout_complete">Workout complete! Congratulations!</string>
+    <string name="complete_workout">Complete Workout</string>
 </resources>
