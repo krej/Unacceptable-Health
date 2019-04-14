@@ -29,4 +29,16 @@ public class ExercisePlan extends ListableObject {
     public int SetsRemaining() {
         return Sets - CompletedSets;
     }
+
+    public String SetsRemainingString() {
+        int iSets = SetsRemaining();
+        String sResult = "";
+
+        if (iSets == 1)
+            sResult = "Final Set";
+        else
+            sResult = String.valueOf(iSets) + " Sets Remaining";
+
+        return String.valueOf(sResult);
+    }
 }

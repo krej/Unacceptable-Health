@@ -96,7 +96,7 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
 
         Tools.SetText(m_tvName, exercisePlan.Exercise.name);
         Tools.SetText(m_tvReps, exercisePlan.Reps);
-        Tools.SetText(m_tvSets, exercisePlan.SetsRemaining());
+        Tools.SetText(m_tvSets, exercisePlan.SetsRemainingString());
         Tools.SetText(m_tvWeights, exercisePlan.Weight);
 
     }
