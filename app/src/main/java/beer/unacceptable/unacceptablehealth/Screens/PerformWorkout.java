@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.LinearLayout;
@@ -40,12 +41,19 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
     Button m_btnFinishRest;
     Chronometer m_Chronometer;
 
+    LinearLayout m_llNextWorkout;
+    LinearLayout m_llNextWeight;
+    TextView m_tvNextWeight;
+    TextView m_tvNextWorkout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SwitchToWorkoutView();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //keep the screen on when you're working out
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -75,6 +83,10 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
     private void FindUIElementsForRestView() {
         m_Chronometer = findViewById(R.id.chronometer);
         m_btnFinishRest = findViewById(R.id.btn_finishRest);
+        m_llNextWorkout = findViewById(R.id.ll_next_workout);
+        m_tvNextWeight = findViewById(R.id.next_weight_number);
+        m_tvNextWorkout = findViewById(R.id.tv_next_workout_name);
+        m_llNextWeight = findViewById(R.id.ll_next_weight);
     }
 
     @Override
@@ -140,5 +152,26 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
     public void CompleteWorkout() {
         Intent intent = new Intent(getApplicationContext(), WorkoutComplete.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void ShowNextExercise(int iVisible) {
+        m_llNextWorkout.setVisibility(iVisible);
+    }
+
+    @Override
+    public void PopulateNextExercise(ExercisePlan next) {
+        Tools.SetText(m_tvNextWorkout, next.Exercise.name);
+        Tools.SetText(m_tvNextWeight, next.Weight);
+    }
+
+    @Override
+    public void ShowNextWeights(int visibility) {
+        m_llNextWeight.setVisibility(visibility);
+    }
+
+    @Override
+    public void onBackPressed() {
+        //don't do anything so i don't accidentally hit back and close the app
     }
 }

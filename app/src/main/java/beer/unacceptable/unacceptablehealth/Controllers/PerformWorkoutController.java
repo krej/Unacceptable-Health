@@ -45,6 +45,16 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
         getCurrentExercisePlan().CompletedSets += 1;
         view.SwitchToRestView();
         view.StartChronometer();
+        
+        //TODO: Unit test
+        ExercisePlan next = getNextExercisePlan();
+        if (getCurrentExercisePlan().SetsRemaining() <= 0 && next != null) {
+            view.ShowNextExercise(AddExerciseController.getVisibility(true));
+            view.ShowNextWeights(AddExerciseController.getVisibility(next.Exercise.ShowWeight));
+            view.PopulateNextExercise(next);
+        } else {
+            view.ShowNextExercise(AddExerciseController.getVisibility(false));
+        }
     }
 
     public void finishRest() {
@@ -68,6 +78,13 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
     private ExercisePlan getCurrentExercisePlan() {
         return m_WorkoutPlan.ExercisePlans.get(m_iCurrentExercisePlan);
     }
+    
+    private ExercisePlan getNextExercisePlan() {
+        if (m_WorkoutPlan.ExercisePlans.size() > m_iCurrentExercisePlan + 1)
+            return m_WorkoutPlan.ExercisePlans.get(m_iCurrentExercisePlan + 1);
+        
+        return null;
+    }
 
 
     public interface View {
@@ -81,5 +98,11 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
 
         void SwitchToWorkoutView();
         void CompleteWorkout();
+
+        void ShowNextExercise(int iVisible);
+
+        void PopulateNextExercise(ExercisePlan next);
+
+        void ShowNextWeights(int visibility);
     }
 }
