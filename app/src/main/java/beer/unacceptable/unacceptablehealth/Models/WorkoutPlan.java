@@ -3,9 +3,10 @@ package beer.unacceptable.unacceptablehealth.Models;
 import com.google.gson.annotations.Expose;
 import com.unacceptable.unacceptablelibrary.Models.ListableObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class WorkoutPlan extends ListableObject {
+public class WorkoutPlan extends ListableObject implements Serializable {
     @Expose
     public WorkoutType WorkoutType;
     @Expose

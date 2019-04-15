@@ -1,5 +1,7 @@
 package beer.unacceptable.unacceptablehealth;
 
+import android.app.NotificationManager;
+
 import com.unacceptable.unacceptablelibrary.Repositories.ILibraryRepository;
 import com.unacceptable.unacceptablelibrary.Repositories.RepositoryCallback;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
@@ -14,6 +16,7 @@ import beer.unacceptable.unacceptablehealth.Models.WorkoutPlan;
 import beer.unacceptable.unacceptablehealth.Repositories.IRepository;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.doAnswer;
@@ -29,13 +32,15 @@ public class PerformWorkoutTests {
     IRepository repository;
     WorkoutPlan m_WorkoutPlan;
     String m_sTestPlan;
+    NotificationManager notificationManager;
 
     @Before
     public void setup() {
         view = mock(PerformWorkoutController.View.class);
         libraryRepository = mock(ILibraryRepository.class);
         repository = mock(IRepository.class);
-        m_oController = new PerformWorkoutController(repository, libraryRepository);
+        notificationManager = mock(NotificationManager.class);
+        m_oController = new PerformWorkoutController(repository, libraryRepository, notificationManager);
         m_oController.attachView(view);
 
         m_sTestPlan = "{\"idString\":\"5cae783ac24c7f33b82a94f1\",\"name\":\"Test Workout 1\",\"WorkoutType\":{\"idString\":\"5c6f8938f293eb1db4da1e62\",\"name\":\"Arms\"},\"ExercisePlans\":[{\"idString\":null,\"name\":\"Bicep Curl\",\"Exercise\":{\"idString\":\"5caa487a60c3331f2cfffcbd\",\"name\":\"Bicep Curl\",\"Muscles\":[{\"idString\":\"5ca692cf81005e41b045712f\",\"name\":\"Bicep\"}],\"ShowWeight\":true,\"ShowTime\":false,\"ShowReps\":true},\"Order\":0,\"Reps\":6,\"Sets\":2,\"Weight\":3.0,\"Seconds\":0},{\"idString\":null,\"name\":\"Tricep Dips\",\"Exercise\":{\"idString\":\"5caa95026063b146b8ab550a\",\"name\":\"Tricep Dips\",\"Muscles\":[{\"idString\":\"5ca6c912f8d26a41943b9186\",\"name\":\"Tricep\"}],\"ShowWeight\":false,\"ShowTime\":false,\"ShowReps\":false},\"Order\":0,\"Reps\":5,\"Sets\":6,\"Weight\":7.0,\"Seconds\":8},{\"idString\":null,\"name\":\"Plank\",\"Exercise\":{\"idString\":\"5cae9cc627ba9d2ab8569e01\",\"name\":\"Plank\",\"Muscles\":[{\"idString\":\"5cae7993089abb0de8c5f9b2\",\"name\":\"Abs\"}],\"ShowWeight\":false,\"ShowTime\":true,\"ShowReps\":false},\"Order\":0,\"Reps\":0,\"Sets\":5,\"Weight\":0.0,\"Seconds\":10}],\"CalorieLogs\":null,\"TotalCalories\":0,\"Id\":\"5cae783ac24c7f33b82a94f1\"}";
@@ -51,6 +56,7 @@ public class PerformWorkoutTests {
                 return null;
             }
         }).when(repository).LoadWorkoutPlan(eq("5cae783ac24c7f33b82a94f1"), any(RepositoryCallback.class));
+
     }
 
     @Test
@@ -64,7 +70,7 @@ public class PerformWorkoutTests {
         m_oController.finishSet();
 
         verify(view).SwitchToRestView();
-        verify(view).StartChronometer();
+        verify(view).StartChronometer(any(long.class));
         verify(view, never()).CompleteWorkout();
         clearInvocations(view);
 
@@ -79,7 +85,7 @@ public class PerformWorkoutTests {
         m_oController.finishSet();
 
         verify(view).SwitchToRestView();
-        verify(view).StartChronometer();
+        verify(view).StartChronometer(any(long.class));
         verify(view, never()).CompleteWorkout();
         clearInvocations(view);
 

@@ -41,4 +41,8 @@ public class ExercisePlan extends ListableObject {
 
         return String.valueOf(sResult);
     }
+
+    public String toString() {
+        return name + " - Sets: " + String.valueOf(CompletedSets) + " / " + String.valueOf(Sets);
+    }
 }
