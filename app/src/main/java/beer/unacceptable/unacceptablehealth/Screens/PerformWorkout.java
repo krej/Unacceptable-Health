@@ -43,6 +43,7 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
     TextView m_tvReps;
     Button m_btnStartWorkoutTimer;
     Chronometer m_chronoWorkout;
+    TextView m_tvExerciseDescription;
 
     Button m_btnFinishSet;
 
@@ -103,6 +104,7 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
 
         m_btnStartWorkoutTimer = findViewById(R.id.workout_timer_button);
         m_chronoWorkout = findViewById(R.id.workout_timer);
+        m_tvExerciseDescription = findViewById(R.id.exercise_description);
     }
 
     private void FindUIElementsForRestView() {
@@ -164,6 +166,7 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
         Tools.SetText(m_tvWeights, exercisePlan.Weight);
         m_chronoWorkout.setBase(SystemClock.elapsedRealtime() + (exercisePlan.timeInMilliseconds() + ExercisePlan.EXERCISE_LEAD_IN_TIME));
         m_chronoWorkout.setCountDown(true);
+        Tools.SetText(m_tvExerciseDescription, exercisePlan.Exercise.Description);
     }
 
     @Override
@@ -241,7 +244,7 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
     public void ShowNextWeights(int visibility) {
         m_llNextWeight.setVisibility(visibility);
     }
-    
+
     @Override
     public void onBackPressed() {
         //don't do anything so i don't accidentally hit back and close the app

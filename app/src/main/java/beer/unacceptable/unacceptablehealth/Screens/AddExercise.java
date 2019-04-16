@@ -38,6 +38,7 @@ public class AddExercise extends BaseActivity implements AddExerciseController.V
     private Switch m_swShowWeight;
     private Switch m_swShowTime;
     private Switch m_swShowReps;
+    private EditText m_etDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +71,7 @@ public class AddExercise extends BaseActivity implements AddExerciseController.V
         m_swShowTime = findViewById(R.id.swShowTime);
         m_swShowWeight = findViewById(R.id.sw_showWeight);
         m_swShowReps = findViewById(R.id.sw_showReps);
+        m_etDescription = findViewById(R.id.exercise_description_text);
     }
 
     private void SetupButtonClickEvents() {
@@ -106,8 +108,9 @@ public class AddExercise extends BaseActivity implements AddExerciseController.V
         boolean bShowWeight = m_swShowWeight.isChecked();
         boolean bShowTime = m_swShowTime.isChecked();
         boolean bShowReps = m_swShowReps.isChecked();
+        String sDescription = m_etDescription.getText().toString();
 
-        m_oController.Save(idString, sName, muscles, bShowWeight, bShowTime, bShowReps);
+        m_oController.Save(idString, sName, muscles, bShowWeight, bShowTime, bShowReps, sDescription);
     }
 
     @Override
@@ -144,5 +147,6 @@ public class AddExercise extends BaseActivity implements AddExerciseController.V
         m_swShowWeight.setChecked(exercise.ShowWeight);
         m_swShowTime.setChecked(exercise.ShowTime);
         m_swShowReps.setChecked(exercise.ShowReps);
+        Tools.SetText(m_etDescription, exercise.Description);
     }
 }

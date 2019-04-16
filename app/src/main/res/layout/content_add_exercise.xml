@@ -78,9 +78,27 @@
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/muscleList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/muscleList"/>
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/exercise_description"
+            android:textAlignment="center"/>
+
+        <EditText
+            android:id="@+id/exercise_description_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textLongMessage|textAutoCorrect|textMultiLine|textCapSentences"
+            android:minHeight="100dp"
+            android:autoSizeTextType="uniform"/>
 
     </LinearLayout>
 

@@ -14,4 +14,6 @@ public class Exercise extends ListableObject {
     public boolean ShowTime;
     @Expose
     public boolean ShowReps;
+    @Expose
+    public String Description;
 }
