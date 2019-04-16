@@ -10,6 +10,7 @@ import android.support.v4.app.NotificationCompat;
 import com.android.volley.VolleyError;
 import com.unacceptable.unacceptablelibrary.Logic.BaseLogic;
 import com.unacceptable.unacceptablelibrary.Repositories.ILibraryRepository;
+import com.unacceptable.unacceptablelibrary.Repositories.ITimeSource;
 import com.unacceptable.unacceptablelibrary.Repositories.RepositoryCallback;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
@@ -30,15 +31,15 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
     private WorkoutPlan m_WorkoutPlan;
     private boolean m_bIsInRestMode;
     private long m_lStartTime; //TODO: store this in a workout object
-    private NotificationManager m_NotificationManager;
+    private ITimeSource m_TimeSource;
 
-    public PerformWorkoutController(IRepository repo, ILibraryRepository libraryRepository, NotificationManager nm) {
+    public PerformWorkoutController(IRepository repo, ILibraryRepository libraryRepository, ITimeSource timeSource) {
         m_Repo = repo;
         m_LibraryRepo = libraryRepository;
         m_iCurrentExercisePlan = 0;
         m_bIsInRestMode = false;
-        m_lStartTime = System.currentTimeMillis();
-        m_NotificationManager = nm;
+        m_TimeSource = timeSource;
+        m_lStartTime = m_TimeSource.currentTimeMillis();
     }
 
     public void LoadWorkoutPlan(String idString) {
@@ -78,8 +79,8 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
     }
 
     private long getElapsedTime(long iStartTime) {
-        long iOffset = System.currentTimeMillis() - iStartTime;
-        return SystemClock.elapsedRealtime() - iOffset;
+        long iOffset = m_TimeSource.currentTimeMillis() - iStartTime;
+        return m_TimeSource.elapsedRealtime() - iOffset;
     }
 
     public void finishSet() {
@@ -89,7 +90,7 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
 
         view.SwitchToRestView();
 
-        long now = System.currentTimeMillis();
+        long now = m_TimeSource.currentTimeMillis();
         view.StartChronometer(getElapsedTime(now));
 
         ShowNextWorkoutInRestView(now);
@@ -137,8 +138,7 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
     }
 
     private void completeWorkout() {
-        NotificationManager nm = (NotificationManager)view.getMyContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        nm.cancel(ONGOING_NOTIFICATION_ID);
+        view.CancelNotification();
         view.CompleteWorkout();
     }
 
@@ -168,6 +168,7 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
 
     public interface View {
         void ShowNotification(WorkoutPlan workoutPlan, int iCurrentExercise, boolean bInRestMode, long iRestTime, long iStartTime, String sNotificationText, boolean bUseChronometer);
+        void CancelNotification();
         void PopulateScreenWithExercisePlan(ExercisePlan exercisePlan);
         void ShowToast(String sMessage);
 

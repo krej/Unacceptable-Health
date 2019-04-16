@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.unacceptable.unacceptablelibrary.Repositories.LibraryRepository;
+import com.unacceptable.unacceptablelibrary.Repositories.TimeSource;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import beer.unacceptable.unacceptablehealth.Controllers.AddExerciseController;
@@ -28,6 +29,8 @@ import beer.unacceptable.unacceptablehealth.Models.ExercisePlan;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutPlan;
 import beer.unacceptable.unacceptablehealth.R;
 import beer.unacceptable.unacceptablehealth.Repositories.Repository;
+
+import static beer.unacceptable.unacceptablehealth.Controllers.PerformWorkoutController.ONGOING_NOTIFICATION_ID;
 
 public class PerformWorkout extends BaseActivity implements PerformWorkoutController.View {
 
@@ -66,7 +69,7 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
 
         FindUIElementsForWorkoutView();
 
-        m_oController = new PerformWorkoutController(new Repository(), new LibraryRepository(), (NotificationManager)getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE));
+        m_oController = new PerformWorkoutController(new Repository(), new LibraryRepository(), new TimeSource());
         m_oController.attachView(this);
 
         String idString = getIntent().getStringExtra("idString");
@@ -138,7 +141,13 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
                 .setAutoCancel(false)
                 .setOngoing(true);
 
-        notificationManager.notify(PerformWorkoutController.ONGOING_NOTIFICATION_ID, mBuilder.build());
+        notificationManager.notify(ONGOING_NOTIFICATION_ID, mBuilder.build());
+    }
+
+    @Override
+    public void CancelNotification() {
+        NotificationManager nm = (NotificationManager)getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        nm.cancel(ONGOING_NOTIFICATION_ID);
     }
 
     @Override
