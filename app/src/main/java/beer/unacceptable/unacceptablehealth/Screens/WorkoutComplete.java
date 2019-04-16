@@ -9,9 +9,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
+import beer.unacceptable.unacceptablehealth.Controllers.DateLogic;
+import beer.unacceptable.unacceptablehealth.Controllers.MainScreenController;
+import beer.unacceptable.unacceptablehealth.Models.DailyLog;
+import beer.unacceptable.unacceptablehealth.Models.GoalItem;
+import beer.unacceptable.unacceptablehealth.Models.Workout;
 import beer.unacceptable.unacceptablehealth.R;
+import beer.unacceptable.unacceptablehealth.Repositories.Repository;
 
-public class WorkoutComplete extends BaseActivity {
+public class WorkoutComplete extends BaseActivity implements MainScreenController.View {
+    private MainScreenController m_oController;
+    private GoalItem[] m_oGoalItems;
+    private Button btnCompleteWorkout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,23 +29,94 @@ public class WorkoutComplete extends BaseActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        final Workout workout = (Workout)getIntent().getSerializableExtra("workout");
+
+        m_oController = new MainScreenController(new Repository(), new DateLogic());
+        m_oController.attachView(this);
+        /*FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
 
-        Button btnCompleteWorkout = findViewById(R.id.btn_CompleteWorkout);
+        btnCompleteWorkout = findViewById(R.id.btn_CompleteWorkout);
+        btnCompleteWorkout.setEnabled(false);
         btnCompleteWorkout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
+                saveAndCompleteWorkout(workout);
+                goToMainScreen();
+            }
+        });
+
+        m_oController.LoadTodaysGoalItems();
+
+        Button btnCancel = findViewById(R.id.cancel_workout);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToMainScreen();
             }
         });
     }
 
+    private void goToMainScreen() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+    }
+
+    private void saveAndCompleteWorkout(Workout workout) {
+        for (GoalItem goalItem : m_oGoalItems) {
+            if (goalItem.WorkoutType.idString.equals(workout.WorkoutPlan.WorkoutType.idString)) {
+                m_oController.ToggleGoalItemComplete(goalItem, null);
+            }
+        }
+
+        workout.Save();
+    }
+
+    @Override
+    public void showTodaysLog(boolean b) {
+
+    }
+
+    @Override
+    public void showNewLogButton(boolean b) {
+
+    }
+
+    @Override
+    public void populateTodaysLog(DailyLog dl) {
+
+    }
+
+    @Override
+    public void showDailyLogError() {
+
+    }
+
+    @Override
+    public void populateTodaysGoalItems(GoalItem[] goalItems) {
+        m_oGoalItems = goalItems;
+        //TODO: This doesn't belong here but I just want to get it working.
+        btnCompleteWorkout.setEnabled(true);
+    }
+
+    @Override
+    public void setGoalItemsVisibility(boolean bVisible) {
+
+    }
+
+    @Override
+    public void setNoGoalLabelVisibility(boolean bVisible) {
+
+    }
+
+    @Override
+    public void showToast(String sMessage) {
+
+    }
 }

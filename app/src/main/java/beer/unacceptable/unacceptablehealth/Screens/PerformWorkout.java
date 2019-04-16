@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -21,8 +24,10 @@ import com.unacceptable.unacceptablelibrary.Repositories.TimeSource;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import beer.unacceptable.unacceptablehealth.Controllers.AddExerciseController;
+import beer.unacceptable.unacceptablehealth.Controllers.MainScreenController;
 import beer.unacceptable.unacceptablehealth.Controllers.PerformWorkoutController;
 import beer.unacceptable.unacceptablehealth.Models.ExercisePlan;
+import beer.unacceptable.unacceptablehealth.Models.Workout;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutPlan;
 import beer.unacceptable.unacceptablehealth.R;
 import beer.unacceptable.unacceptablehealth.Repositories.Repository;
@@ -78,6 +83,21 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
         int iCurrentExercise = getIntent().getIntExtra("currentExercise", -1);
         long iTime = getIntent().getLongExtra("restTime", System.currentTimeMillis());
         long iStartTime = getIntent().getLongExtra("startTime", System.currentTimeMillis());
+        //boolean bCancel = getIntent().getBooleanExtra("cancel", false);
+
+        /*if (bCancel) {
+            CancelNotification();
+            Intent i = new Intent(Intent.ACTION_MAIN);
+            i.addCategory(Intent.CATEGORY_HOME);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+            //System.exit(0);
+            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+            //TODO: This will laucnh the main activity even if the app isn't open. I should fix that.
+            startActivity(i);
+            return;
+        }*/
+
 
         if (workoutPlan == null) {
             m_oController.LoadWorkoutPlan(idString);
@@ -132,6 +152,12 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        Intent cancelIntent = new Intent(context, PerformWorkout.class);
+        cancelIntent.putExtra("cancel", true);
+        cancelIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        //PendingIntent pendingCancelIntent = PendingIntent.getActivity(context, 1, cancelIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, context.getResources().getString(R.string.NOTIFICATION_CHANNEL_ID))
                 .setSmallIcon(R.drawable.ic_dumbbell)
                 .setContentTitle("Workout: " + workoutPlan.name)
@@ -144,6 +170,7 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
                 .setVibrate(new long [] {1000, 1000, 1000})
                 .setAutoCancel(false)
                 .setOngoing(true);
+                //.addAction(0, getString(R.string.cancel), pendingCancelIntent);
 
         notificationManager.notify(ONGOING_NOTIFICATION_ID, mBuilder.build());
     }
@@ -179,6 +206,7 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
         setContentView(R.layout.activity_perform_workout_restview);
         FindUIElementsForRestView();
         SetupRestClickEvents();
+        invalidateOptionsMenu();
     }
 
     private void SetupRestClickEvents() {
@@ -206,6 +234,7 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
         setContentView(R.layout.activity_perform_workout);
         FindUIElementsForWorkoutView();
         SetupWorkoutClickEvents();
+        invalidateOptionsMenu();
     }
 
     private void SetupWorkoutClickEvents() {
@@ -224,8 +253,9 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
     }
 
     @Override
-    public void CompleteWorkout() {
+    public void CompleteWorkout(Workout workout) {
         Intent intent = new Intent(getApplicationContext(), WorkoutComplete.class);
+        intent.putExtra("workout", workout);
         startActivity(intent);
     }
 
@@ -256,5 +286,21 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
         super.onSaveInstanceState(savedInstanceState);
     }*/
 
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_perform_workout, menu);
+        MenuItem miSave = menu.findItem(R.id.cancel_workout);
+        miSave.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                CancelNotification();
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(i);
+                return true;
+            }
+        });
+        //miSave.setVisible(m_oLogic == null || m_oLogic.canEditLog());
+        return true;
+    }
 }

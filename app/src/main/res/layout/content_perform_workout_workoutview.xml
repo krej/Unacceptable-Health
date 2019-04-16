@@ -151,4 +151,5 @@
             android:text="@string/finish_set"/>
 
     </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

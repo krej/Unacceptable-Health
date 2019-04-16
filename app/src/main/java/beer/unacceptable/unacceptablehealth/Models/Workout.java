@@ -3,13 +3,14 @@ package beer.unacceptable.unacceptablehealth.Models;
 import com.google.gson.annotations.Expose;
 import com.unacceptable.unacceptablelibrary.Models.ListableObject;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Workout extends ListableObject {
+public class Workout extends ListableObject implements Serializable {
     @Expose
-    WorkoutPlan WorkoutPlan;
+    public WorkoutPlan WorkoutPlan;
     @Expose
-    String Notes;
+    public String Notes;
     @Expose
-    Date Date;
+    public Date Date;
 }

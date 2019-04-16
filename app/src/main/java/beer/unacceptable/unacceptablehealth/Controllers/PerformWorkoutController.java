@@ -9,6 +9,7 @@ import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 
 import beer.unacceptable.unacceptablehealth.Models.ExercisePlan;
+import beer.unacceptable.unacceptablehealth.Models.Workout;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutPlan;
 import beer.unacceptable.unacceptablehealth.Repositories.IRepository;
 
@@ -130,7 +131,19 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
 
     private void completeWorkout() {
         view.CancelNotification();
-        view.CompleteWorkout();
+
+        Workout workout = createWorkout();
+
+        view.CompleteWorkout(workout);
+    }
+
+    private Workout createWorkout() {
+        Workout workout = new Workout();
+        workout.name = m_WorkoutPlan.name;
+        workout.WorkoutPlan = m_WorkoutPlan;
+        workout.Date = m_TimeSource.getTodaysDate();
+
+        return workout;
     }
 
     private ExercisePlan getCurrentExercisePlan() {
@@ -169,7 +182,7 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
         void StopChronometer();
 
         void SwitchToWorkoutView();
-        void CompleteWorkout();
+        void CompleteWorkout(Workout workout);
 
         void ShowNextExercise(int iVisible);
 
