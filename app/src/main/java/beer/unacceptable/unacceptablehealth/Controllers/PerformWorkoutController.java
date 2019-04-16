@@ -1,12 +1,5 @@
 package beer.unacceptable.unacceptablehealth.Controllers;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.os.SystemClock;
-import android.support.v4.app.NotificationCompat;
-
 import com.android.volley.VolleyError;
 import com.unacceptable.unacceptablelibrary.Logic.BaseLogic;
 import com.unacceptable.unacceptablelibrary.Repositories.ILibraryRepository;
@@ -17,9 +10,7 @@ import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import beer.unacceptable.unacceptablehealth.Models.ExercisePlan;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutPlan;
-import beer.unacceptable.unacceptablehealth.R;
 import beer.unacceptable.unacceptablehealth.Repositories.IRepository;
-import beer.unacceptable.unacceptablehealth.Screens.PerformWorkout;
 
 public class PerformWorkoutController extends BaseLogic<PerformWorkoutController.View> {
 
@@ -69,7 +60,7 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
         if (bIsInRestMode) {
             view.SwitchToRestView();
             //start chronometer
-            view.StartChronometer(getElapsedTime(iTime));
+            view.StartRestChronometer(getElapsedTime(iTime));
             ShowNextWorkoutInRestView(iTime);
         } else {
             view.SwitchToWorkoutView();
@@ -91,7 +82,7 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
         view.SwitchToRestView();
 
         long now = m_TimeSource.currentTimeMillis();
-        view.StartChronometer(getElapsedTime(now));
+        view.StartRestChronometer(getElapsedTime(now));
 
         ShowNextWorkoutInRestView(now);
     }
@@ -174,7 +165,7 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
 
         void SwitchToRestView();
 
-        void StartChronometer(long iTime);
+        void StartRestChronometer(long iTime);
         void StopChronometer();
 
         void SwitchToWorkoutView();
@@ -185,6 +176,5 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
         void PopulateNextExercise(ExercisePlan next);
 
         void ShowNextWeights(int visibility);
-        Context getMyContext();
     }
 }

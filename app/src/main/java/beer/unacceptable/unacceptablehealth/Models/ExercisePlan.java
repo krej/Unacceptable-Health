@@ -4,6 +4,8 @@ import com.google.gson.annotations.Expose;
 import com.unacceptable.unacceptablelibrary.Models.ListableObject;
 
 public class ExercisePlan extends ListableObject {
+    public static final long EXERCISE_LEAD_IN_TIME = 5 * 1000;
+
     @Expose
     public Exercise Exercise;
     @Expose
@@ -44,5 +46,9 @@ public class ExercisePlan extends ListableObject {
 
     public String toString() {
         return name + " - Sets: " + String.valueOf(CompletedSets) + " / " + String.valueOf(Sets);
+    }
+
+    public long timeInMilliseconds() {
+        return Seconds * 1000;
     }
 }

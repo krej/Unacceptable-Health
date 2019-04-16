@@ -6,10 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
@@ -38,17 +35,19 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
 
     LinearLayout m_llWeights;
     LinearLayout m_llReps;
-    //TODO: I'm missing time
+    LinearLayout m_llTime;
 
     TextView m_tvName;
     TextView m_tvWeights;
     TextView m_tvSets;
     TextView m_tvReps;
+    Button m_btnStartWorkoutTimer;
+    Chronometer m_chronoWorkout;
 
     Button m_btnFinishSet;
 
     Button m_btnFinishRest;
-    Chronometer m_Chronometer;
+    Chronometer m_chronoRest;
 
     LinearLayout m_llNextWorkout;
     LinearLayout m_llNextWeight;
@@ -93,6 +92,7 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
     private void FindUIElementsForWorkoutView() {
         m_llReps = findViewById(R.id.ll_reps);
         m_llWeights = findViewById(R.id.ll_weight);
+        m_llTime = findViewById(R.id.ll_workout_timer);
 
         m_tvName = findViewById(R.id.tv_workout_name);
         m_tvReps = findViewById(R.id.rep_number);
@@ -101,10 +101,12 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
 
         m_btnFinishSet = findViewById(R.id.btn_finish_set);
 
+        m_btnStartWorkoutTimer = findViewById(R.id.workout_timer_button);
+        m_chronoWorkout = findViewById(R.id.workout_timer);
     }
 
     private void FindUIElementsForRestView() {
-        m_Chronometer = findViewById(R.id.chronometer);
+        m_chronoRest = findViewById(R.id.chronometer);
         m_btnFinishRest = findViewById(R.id.btn_finishRest);
         m_llNextWorkout = findViewById(R.id.ll_next_workout);
         m_tvNextWeight = findViewById(R.id.next_weight_number);
@@ -154,12 +156,14 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
     public void PopulateScreenWithExercisePlan(ExercisePlan exercisePlan) {
         m_llWeights.setVisibility(AddExerciseController.getVisibility(exercisePlan.Exercise.ShowWeight));
         m_llReps.setVisibility(AddExerciseController.getVisibility(exercisePlan.Exercise.ShowReps));
+        m_llTime.setVisibility(AddExerciseController.getVisibility(exercisePlan.Exercise.ShowTime));
 
         Tools.SetText(m_tvName, exercisePlan.Exercise.name);
         Tools.SetText(m_tvReps, exercisePlan.Reps);
         Tools.SetText(m_tvSets, exercisePlan.SetsRemainingString());
         Tools.SetText(m_tvWeights, exercisePlan.Weight);
-
+        m_chronoWorkout.setBase(SystemClock.elapsedRealtime() + (exercisePlan.timeInMilliseconds() + ExercisePlan.EXERCISE_LEAD_IN_TIME));
+        m_chronoWorkout.setCountDown(true);
     }
 
     @Override
@@ -184,14 +188,14 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
     }
 
     @Override
-    public void StartChronometer(long iBase) {
-        m_Chronometer.setBase(iBase);
-        m_Chronometer.start();
+    public void StartRestChronometer(long iBase) {
+        m_chronoRest.setBase(iBase);
+        m_chronoRest.start();
     }
 
     @Override
     public void StopChronometer() {
-        m_Chronometer.stop();
+        m_chronoRest.stop();
     }
 
     @Override
@@ -206,6 +210,12 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
             @Override
             public void onClick(View v) {
                 m_oController.finishSet();
+            }
+        });
+        m_btnStartWorkoutTimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                m_chronoWorkout.start();
             }
         });
     }
@@ -231,7 +241,7 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
     public void ShowNextWeights(int visibility) {
         m_llNextWeight.setVisibility(visibility);
     }
-
+    
     @Override
     public void onBackPressed() {
         //don't do anything so i don't accidentally hit back and close the app
@@ -243,9 +253,5 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
         super.onSaveInstanceState(savedInstanceState);
     }*/
 
-    @Override
-    public Context getMyContext() {
-        return getApplicationContext();
-    }
 
 }

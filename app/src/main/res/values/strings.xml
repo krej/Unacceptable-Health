@@ -280,4 +280,5 @@
     <string name="workout_complete">Workout complete! Congratulations!</string>
     <string name="complete_workout">Complete Workout</string>
     <string name="next_workout_label">Next Workout:</string>
+    <string name="start_timer">Start Timer</string>
 </resources>

@@ -1,7 +1,5 @@
 package beer.unacceptable.unacceptablehealth;
 
-import android.app.NotificationManager;
-
 import com.unacceptable.unacceptablelibrary.Repositories.ILibraryRepository;
 import com.unacceptable.unacceptablelibrary.Repositories.ITimeSource;
 import com.unacceptable.unacceptablelibrary.Repositories.RepositoryCallback;
@@ -17,7 +15,6 @@ import beer.unacceptable.unacceptablehealth.Models.WorkoutPlan;
 import beer.unacceptable.unacceptablehealth.Repositories.IRepository;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.doAnswer;
@@ -71,7 +68,7 @@ public class PerformWorkoutTests {
         m_oController.finishSet();
 
         verify(view).SwitchToRestView();
-        verify(view).StartChronometer(any(long.class));
+        verify(view).StartRestChronometer(any(long.class));
         verify(view, never()).CompleteWorkout();
         clearInvocations(view);
 
@@ -86,7 +83,7 @@ public class PerformWorkoutTests {
         m_oController.finishSet();
 
         verify(view).SwitchToRestView();
-        verify(view).StartChronometer(any(long.class));
+        verify(view).StartRestChronometer(any(long.class));
         verify(view, never()).CompleteWorkout();
         clearInvocations(view);
 
