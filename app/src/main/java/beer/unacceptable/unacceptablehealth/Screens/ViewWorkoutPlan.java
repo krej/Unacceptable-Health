@@ -68,7 +68,7 @@ public class ViewWorkoutPlan extends BaseActivity implements WorkoutPlanControll
         m_oController.attachView(this);
 
         m_vcExercisePlan = new ExercisePlanAdapterViewControl();
-        m_aExercisePlans = Tools.setupRecyclerView(m_rvExercisePlans, getApplicationContext(), R.layout.list_exerciseplan, R.layout.dialog_exerciseplan, false, m_vcExercisePlan, true);
+        m_aExercisePlans = Tools.setupRecyclerView(m_rvExercisePlans, getApplicationContext(), R.layout.list_exerciseplan, R.layout.dialog_exerciseplan, false, m_vcExercisePlan, true, false, true);
 
         m_IdString = getIntent().getStringExtra("idString");
         m_oController.LoadWorkoutPlan(m_IdString);

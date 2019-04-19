@@ -6,158 +6,174 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingVertical="10dp">
-
-        <TextView
-            android:id="@+id/exerciseName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Exercise Name"
-            android:textSize="14sp"
-            android:paddingHorizontal="10dp"/>
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
             android:orientation="vertical"
-            android:paddingHorizontal="25dp">
+            android:paddingVertical="10dp">
 
-            <LinearLayout
-                android:id="@+id/ll_reps"
+            <TextView
+                android:id="@+id/exerciseName"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/rep_number"
-                    android:layout_width="10dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingStart="6dp"
-                    android:paddingEnd="6dp"
-                    android:text="Rep Number"
-                    android:textAlignment="textEnd"
-                    android:textSize="12sp"/>
-
-                <TextView
-                    android:id="@+id/rep_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/reps_label"
-                    android:textAlignment="textStart"
-                    android:textSize="12sp"/>
-
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10"/>
-
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:text="Exercise Name"
+                android:textSize="14sp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="25dp">
 
-                <TextView
-                    android:id="@+id/set_number"
-                    android:layout_width="10dp"
-                    android:layout_height="wrap_content"
+                <LinearLayout
+                    android:id="@+id/ll_reps"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/rep_number"
+                        android:layout_width="10dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingStart="6dp"
+                        android:paddingEnd="6dp"
+                        android:text="Rep Number"
+                        android:textAlignment="textEnd"
+                        android:textSize="12sp"/>
+
+                    <TextView
+                        android:id="@+id/rep_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/reps_label"
+                        android:textAlignment="textStart"
+                        android:textSize="12sp"/>
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:paddingStart="6dp"
-                    android:paddingEnd="6dp"
-                    android:text="Set Number"
-                    android:textAlignment="textEnd"
-                    android:textSize="12sp"/>
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/set_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    <TextView
+                        android:id="@+id/set_number"
+                        android:layout_width="10dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingStart="6dp"
+                        android:paddingEnd="6dp"
+                        android:text="Set Number"
+                        android:textAlignment="textEnd"
+                        android:textSize="12sp"/>
+
+                    <TextView
+                        android:id="@+id/set_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/sets"
+                        android:textAlignment="textStart"
+                        android:textSize="12sp"/>
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10"/>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/ll_weight"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="@string/sets"
-                    android:textAlignment="textStart"
-                    android:textSize="12sp"/>
+                    android:orientation="horizontal">
 
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10"/>
+                    <TextView
+                        android:id="@+id/weight_number"
+                        android:layout_width="10dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingStart="6dp"
+                        android:paddingEnd="6dp"
+                        android:text="Weight Number"
+                        android:textAlignment="textEnd"
+                        android:textSize="12sp"/>
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/weight_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/weight_label"
+                        android:textAlignment="textStart"
+                        android:textSize="12sp"/>
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10"/>
+
+                </LinearLayout>
 
 
-            <LinearLayout
-                android:id="@+id/ll_weight"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/weight_number"
-                    android:layout_width="10dp"
-                    android:layout_height="wrap_content"
+                <LinearLayout
+                    android:id="@+id/ll_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:paddingStart="6dp"
-                    android:paddingEnd="6dp"
-                    android:text="Weight Number"
-                    android:textAlignment="textEnd"
-                    android:textSize="12sp"/>
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/weight_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/weight_label"
-                    android:textAlignment="textStart"
-                    android:textSize="12sp"/>
+                    <TextView
+                        android:id="@+id/time_number"
+                        android:layout_width="10dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingStart="6dp"
+                        android:paddingEnd="6dp"
+                        android:text="Time Number"
+                        android:textAlignment="textEnd"
+                        android:textSize="12sp"/>
 
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10"/>
+                    <TextView
+                        android:id="@+id/time_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/seconds_label"
+                        android:textAlignment="textStart"
+                        android:textSize="12sp"/>
 
-            </LinearLayout>
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10"/>
 
-
-            <LinearLayout
-                android:id="@+id/ll_time"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/time_number"
-                    android:layout_width="10dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingStart="6dp"
-                    android:paddingEnd="6dp"
-                    android:text="Time Number"
-                    android:textAlignment="textEnd"
-                    android:textSize="12sp"/>
-
-                <TextView
-                    android:id="@+id/time_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/seconds_label"
-                    android:textAlignment="textStart"
-                    android:textSize="12sp"/>
-
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10"/>
-
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/drag_handle"
+            android:layout_width="?listPreferredItemHeight"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|end"
+            android:layout_weight="1"
+            android:scaleType="center"
+            android:src="@drawable/ic_drag_handle"/>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
