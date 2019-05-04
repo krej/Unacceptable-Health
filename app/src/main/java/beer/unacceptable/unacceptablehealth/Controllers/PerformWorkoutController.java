@@ -142,6 +142,8 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
         workout.name = m_WorkoutPlan.name;
         workout.WorkoutPlan = m_WorkoutPlan;
         workout.Date = m_TimeSource.getTodaysDate();
+        workout.StartTime = m_lStartTime;
+        workout.EndTime = m_TimeSource.currentTimeMillis();
 
         return workout;
     }

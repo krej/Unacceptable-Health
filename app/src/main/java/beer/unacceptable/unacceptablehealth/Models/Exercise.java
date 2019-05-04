@@ -16,4 +16,23 @@ public class Exercise extends ListableObject {
     public boolean ShowReps;
     @Expose
     public String Description;
+
+    public String toString() {
+
+        String sResult = name;
+        String sMuscleList = "";
+
+        if ( Muscles.size() > 0) {
+            sResult += " (";
+            for (Muscle m: Muscles) {
+                if (sMuscleList.length() > 0) sMuscleList += ", ";
+
+                sMuscleList += m.name;
+            }
+
+            sResult += sMuscleList + ")";
+        }
+
+        return sResult;
+    }
 }

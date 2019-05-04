@@ -111,7 +111,7 @@ public class ExercisePlanAdapterViewControl extends BaseAdapterViewControl {
         LinearLayout llTime = view.view.findViewById(R.id.ll_time);
 
         ExercisePlan ep = (ExercisePlan)i;
-        tvExerciseName.setText(ep.Exercise.name);
+        tvExerciseName.setText(ep.Exercise.toString());
 
         Tools.SetText(tvReps, ep.Reps);
         llReps.setVisibility(AddExerciseController.getVisibility(ep.Exercise.ShowReps));

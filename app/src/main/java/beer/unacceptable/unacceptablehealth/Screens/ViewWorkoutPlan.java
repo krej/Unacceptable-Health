@@ -100,7 +100,8 @@ public class ViewWorkoutPlan extends BaseActivity implements WorkoutPlanControll
     public void PopulateWorkoutPlan(WorkoutPlan workoutPlan) {
         m_aExercisePlans.clear();
         Tools.PopulateAdapter(m_aExercisePlans, workoutPlan.ExercisePlans);
-        m_etName.setText(workoutPlan.name);
+        //m_etName.setText(workoutPlan.name);
+        SetName(workoutPlan.name);
         //TODO: I don't know why the below didn't work, so I created that function below for it.
         //int selection = Arrays.asList(m_oWorkoutTypes).indexOf(workoutPlan.WorkoutType);
         int selection = m_oController.getWorkoutTypeSpinnerIndex(m_oWorkoutTypes, workoutPlan.WorkoutType);
@@ -119,11 +120,17 @@ public class ViewWorkoutPlan extends BaseActivity implements WorkoutPlanControll
     }
 
     @Override
+    public void SetName(String sName) {
+        Tools.SetText(m_etName, sName);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_view_workoutplan, menu);
         MenuItem miSave = menu.findItem(R.id.save_workoutplan);
         MenuItem miStartWorkout = menu.findItem(R.id.perform_workout);
+        MenuItem miCopyToNew = menu.findItem(R.id.copy_to_new_workoutplan);
 
         miSave.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -140,6 +147,14 @@ public class ViewWorkoutPlan extends BaseActivity implements WorkoutPlanControll
                 i.putExtra("idString", m_IdString);
                 startActivity(i);
                 return true;
+            }
+        });
+
+        miCopyToNew.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                m_oController.CopyToNew();
+                return false;
             }
         });
 

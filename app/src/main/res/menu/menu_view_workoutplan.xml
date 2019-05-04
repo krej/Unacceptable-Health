@@ -15,5 +15,10 @@
         android:orderInCategory="50"
         android:title="@string/save"
         />
+    <item
+        android:id="@+id/copy_to_new_workoutplan"
+        android:orderInCategory="50"
+        android:title="@string/copy_to_new_workoutplan"
+        />
 
 </menu>

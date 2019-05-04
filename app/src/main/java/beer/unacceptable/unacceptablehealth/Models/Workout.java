@@ -13,4 +13,12 @@ public class Workout extends ListableObject implements Serializable {
     public String Notes;
     @Expose
     public Date Date;
+    @Expose
+    public long StartTime;
+    @Expose
+    public long EndTime;
+
+    public int DurationInMinutes() {
+        return (int)((EndTime - StartTime) / 1000 / 60);
+    }
 }

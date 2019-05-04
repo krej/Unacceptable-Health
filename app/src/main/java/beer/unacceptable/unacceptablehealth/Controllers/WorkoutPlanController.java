@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import beer.unacceptable.unacceptablehealth.Models.CustomReturns.WorkoutPlanWithExtras;
 import beer.unacceptable.unacceptablehealth.Models.Exercise;
+import beer.unacceptable.unacceptablehealth.Models.Workout;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutPlan;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutType;
 import beer.unacceptable.unacceptablehealth.Repositories.IRepository;
@@ -19,7 +20,7 @@ public class WorkoutPlanController extends BaseLogic<WorkoutPlanController.View>
 
     private IRepository m_repo;
     private ILibraryRepository m_LibraryRepo;
-    WorkoutPlan m_WorkoutPlan;
+    private WorkoutPlan m_WorkoutPlan;
 
     public WorkoutPlanController(IRepository repo, ILibraryRepository LibraryRepo) {
         m_repo = repo;
@@ -121,6 +122,12 @@ public class WorkoutPlanController extends BaseLogic<WorkoutPlanController.View>
         return -1;
     }
 
+    public void CopyToNew() {
+        m_WorkoutPlan.idString = "";
+        m_WorkoutPlan.name = "";
+        view.SetName("");
+    }
+
 
     public interface View {
         void ShowToast(String sMessage);
@@ -130,5 +137,6 @@ public class WorkoutPlanController extends BaseLogic<WorkoutPlanController.View>
 
         void ClearErrors();
         void SetNameError(String sMessage);
+        void SetName(String sName);
     }
 }

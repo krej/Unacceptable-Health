@@ -51,4 +51,5 @@ public class ExercisePlan extends ListableObject {
     public long timeInMilliseconds() {
         return Seconds * 1000;
     }
+
 }
