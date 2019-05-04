@@ -53,16 +53,18 @@ public class FoodDatabase extends AppCompatActivity {
         //TODO: Figure this out. i had to switch activity_food_database to load content_recipe_list because when loading content_food_database it couldn't find my id...
         //TODO: They're the exact same xml file though so I should probably just do some renaming
         m_rvIngredients = (RecyclerView)findViewById(R.id.recipeView);
-        m_Adapter = new NewAdapter(R.layout.default_list, R.layout.dialog_edit_ingredient, true, new IngredientAdapterViewControl());
+        //m_Adapter = new NewAdapter(R.layout.default_list, R.layout.dialog_edit_ingredient, true, new IngredientAdapterViewControl());
         EditText instructions = findViewById(R.id.recipe_instructions);
         instructions.setVisibility(View.GONE);
 
-        m_rvIngredients.setHasFixedSize(false);
+        //m_rvIngredients.setHasFixedSize(false);
 
-        m_LayoutManager = new LinearLayoutManager(this);
-        m_rvIngredients.setLayoutManager(m_LayoutManager);
+        //m_LayoutManager = new LinearLayoutManager(this);
+        //m_rvIngredients.setLayoutManager(m_LayoutManager);
 
-        m_rvIngredients.setAdapter(m_Adapter);
+        //m_rvIngredients.setAdapter(m_Adapter);
+
+        m_Adapter = Tools.setupRecyclerView(m_rvIngredients, getApplicationContext(), R.layout.one_line_list, R.layout.dialog_edit_ingredient, false, new IngredientAdapterViewControl(), true, false, false);
 
         LoadIngredients();
 

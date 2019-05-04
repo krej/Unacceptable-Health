@@ -28,8 +28,10 @@ public class IngredientAdapterViewControl extends BaseAdapterViewControl {
         EditText name = root.findViewById(R.id.ingredient_name);
         EditText ingredID = root.findViewById(R.id.ingredientID);
 
-        ingredID.setText(ingred.idString);
-        name.setText(ingred.name);
+        if (i != null) {
+            ingredID.setText(ingred.idString);
+            name.setText(ingred.name);
+        }
     }
 
     @Override
