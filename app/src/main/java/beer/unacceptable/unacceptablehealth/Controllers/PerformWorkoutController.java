@@ -8,6 +8,11 @@ import com.unacceptable.unacceptablelibrary.Repositories.RepositoryCallback;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import beer.unacceptable.unacceptablehealth.Models.Exercise;
 import beer.unacceptable.unacceptablehealth.Models.ExercisePlan;
 import beer.unacceptable.unacceptablehealth.Models.Workout;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutPlan;
@@ -24,6 +29,7 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
     private boolean m_bIsInRestMode;
     private long m_lStartTime; //TODO: store this in a workout object
     private ITimeSource m_TimeSource;
+    private long m_lRestStartTime;
 
     public PerformWorkoutController(IRepository repo, ILibraryRepository libraryRepository, ITimeSource timeSource) {
         m_Repo = repo;
@@ -78,14 +84,21 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
     public void finishSet() {
         m_bIsInRestMode = true;
 
-        getCurrentExercisePlan().CompletedSets += 1;
+        //getCurrentExercisePlan().CompletedSets += 1;
+        completeSet(getCurrentExercisePlan());
 
         view.SwitchToRestView();
 
-        long now = m_TimeSource.currentTimeMillis();
-        view.StartRestChronometer(getElapsedTime(now));
+        m_lRestStartTime = m_TimeSource.currentTimeMillis();
+        view.StartRestChronometer(getElapsedTime(m_lRestStartTime));
 
-        ShowNextWorkoutInRestView(now);
+        ShowNextWorkoutInRestView(m_lRestStartTime);
+    }
+
+    private void completeSet(ExercisePlan ep) {
+        ep.CompletedSets += 1;
+        if (ep.CompletedSets >= ep.Sets)
+            ep.Completed = true;
     }
 
     private void ShowNextWorkoutInRestView(long iTime) {
@@ -96,7 +109,7 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
         if (getCurrentExercisePlan().SetsRemaining() <= 0 && next != null) {
             view.ShowNextExercise(AddExerciseController.getVisibility(true));
             view.ShowNextWeights(AddExerciseController.getVisibility(next.Exercise.ShowWeight));
-            view.PopulateNextExercise(next);
+            view.PopulateNextExercise(next, getIncompleteExercises());
             sNotificationText = "Next Workout: " + next.name;
         } else {
             view.ShowNextExercise(AddExerciseController.getVisibility(false));
@@ -106,20 +119,41 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
         showNotification(sNotificationText, true, iTime);
     }
 
-    public void finishRest() {
+    private ExercisePlan[] getIncompleteExercises() {
+        ArrayList<ExercisePlan> exercisePlans = new ArrayList<>();
+
+        for (ExercisePlan ep: m_WorkoutPlan.ExercisePlans) {
+            if (!ep.Completed)
+                exercisePlans.add(ep);
+        }
+
+        //TODO: Find a better way to do this than 2 for loops. this is really ugly.
+        ExercisePlan[] result = new ExercisePlan[exercisePlans.size()];
+        for (int i = 0; i < exercisePlans.size(); i++) {
+            result[i] = exercisePlans.get(i);
+        }
+
+        return result;
+    }
+
+    public void finishRest(ExercisePlan ep) {
         m_bIsInRestMode = false;
+
+        if (ep != null)
+            SetCurrentExercisePlan(ep);
 
         ExercisePlan exercisePlan = getCurrentExercisePlan();
 
         if (exercisePlan.CompletedSets >= exercisePlan.Sets) {
             exercisePlan.Completed = true;
-            m_iCurrentExercisePlan++;
+            //m_iCurrentExercisePlan++;
         }
 
         //TODO: Check if you're done with all your exercises and go to the finished screen if so
         view.StopChronometer();
 
-        if (m_iCurrentExercisePlan >= m_WorkoutPlan.ExercisePlans.size()) {
+        //if (m_iCurrentExercisePlan >= m_WorkoutPlan.ExercisePlans.size()) {
+        if (getIncompleteExercises().length == 0) {
             completeWorkout();
         } else {
             view.SwitchToWorkoutView();
@@ -127,6 +161,10 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
             showNotification();
         }
 
+    }
+
+    private void SetCurrentExercisePlan(ExercisePlan ep) {
+        m_iCurrentExercisePlan = m_WorkoutPlan.ExercisePlans.indexOf(ep);
     }
 
     private void completeWorkout() {
@@ -153,10 +191,15 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
     }
     
     private ExercisePlan getNextExercisePlan() {
-        if (m_WorkoutPlan.ExercisePlans.size() > m_iCurrentExercisePlan + 1)
+        /*if (m_WorkoutPlan.ExercisePlans.size() > m_iCurrentExercisePlan + 1)
             return m_WorkoutPlan.ExercisePlans.get(m_iCurrentExercisePlan + 1);
-        
-        return null;
+        */
+
+        ExercisePlan[] exercisePlans = getIncompleteExercises();
+        if (exercisePlans.length == 0)
+            return null;
+
+        return exercisePlans[0];
     }
 
     public void showNotification() {
@@ -170,7 +213,9 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
 
     }
 
-
+    public long getRestStartTime() {
+        return m_lRestStartTime;
+    }
 
     public interface View {
         void ShowNotification(WorkoutPlan workoutPlan, int iCurrentExercise, boolean bInRestMode, long iRestTime, long iStartTime, String sNotificationText, boolean bUseChronometer);
@@ -188,7 +233,7 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
 
         void ShowNextExercise(int iVisible);
 
-        void PopulateNextExercise(ExercisePlan next);
+        void PopulateNextExercise(ExercisePlan next, ExercisePlan remainingExercises[]);
 
         void ShowNextWeights(int visibility);
     }

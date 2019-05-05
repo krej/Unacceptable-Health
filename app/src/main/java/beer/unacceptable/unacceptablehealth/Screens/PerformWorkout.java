@@ -13,9 +13,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,6 +61,7 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
     LinearLayout m_llNextWeight;
     TextView m_tvNextWeight;
     TextView m_tvNextWorkout;
+    Spinner m_spNextWorkout;
 
 
     @Override
@@ -132,8 +135,9 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
         m_btnFinishRest = findViewById(R.id.btn_finishRest);
         m_llNextWorkout = findViewById(R.id.ll_next_workout);
         m_tvNextWeight = findViewById(R.id.next_weight_number);
-        m_tvNextWorkout = findViewById(R.id.tv_next_workout_name);
+        //m_tvNextWorkout = findViewById(R.id.tv_next_workout_name);
         m_llNextWeight = findViewById(R.id.ll_next_weight);
+        m_spNextWorkout = findViewById(R.id.sp_next_workout);
     }
 
     @Override
@@ -213,7 +217,26 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
         m_btnFinishRest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                m_oController.finishRest();
+                ExercisePlan ep = null;
+                if (m_spNextWorkout.getVisibility() == View.VISIBLE) {
+                    ep = (ExercisePlan) m_spNextWorkout.getItemAtPosition(m_spNextWorkout.getSelectedItemPosition());
+                }
+                m_oController.finishRest(ep);
+            }
+        });
+
+        m_spNextWorkout.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ExercisePlan ep = (ExercisePlan)parent.getAdapter().getItem(position);
+                PopulateNextExerciseWeight(ep.Weight);
+                ShowNextWeights(AddExerciseController.getVisibility(ep.Exercise.ShowWeight));
+                m_oController.showNotification("Next Workout: " + ep.Exercise.name, true, m_oController.getRestStartTime());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
     }
@@ -265,9 +288,14 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
     }
 
     @Override
-    public void PopulateNextExercise(ExercisePlan next) {
-        Tools.SetText(m_tvNextWorkout, next.Exercise.name);
-        Tools.SetText(m_tvNextWeight, next.Weight);
+    public void PopulateNextExercise(ExercisePlan next, ExercisePlan remainingExercises[]) {
+        //Tools.SetText(m_tvNextWorkout, next.Exercise.name);
+        PopulateNextExerciseWeight(next.Weight);
+        Tools.PopulateDropDown(m_spNextWorkout, m_spNextWorkout.getContext(), remainingExercises);
+    }
+
+    private void PopulateNextExerciseWeight(double dWeight) {
+        Tools.SetText(m_tvNextWeight, dWeight);
     }
 
     @Override
