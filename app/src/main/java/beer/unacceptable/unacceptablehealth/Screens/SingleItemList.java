@@ -1,5 +1,6 @@
 package beer.unacceptable.unacceptablehealth.Screens;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,12 +16,14 @@ import com.unacceptable.unacceptablelibrary.Models.ListableObject;
 import com.unacceptable.unacceptablelibrary.Repositories.LibraryRepository;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
+import beer.unacceptable.unacceptablehealth.Adapters.SingleItemViewControl;
 import beer.unacceptable.unacceptablehealth.Controllers.SingleItemListController;
+import beer.unacceptable.unacceptablehealth.Models.Exercise;
 import beer.unacceptable.unacceptablehealth.R;
 import beer.unacceptable.unacceptablehealth.Repositories.Repository;
 
 public class SingleItemList extends AppCompatActivity
-implements SingleItemListController.View {
+        implements SingleItemListController.View {
 
     private RecyclerView m_rvList;
     private NewAdapter m_Adapter;
@@ -38,7 +41,7 @@ implements SingleItemListController.View {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                m_Adapter.showAddItemDialog(m_rvList.getContext(), null);
+                m_Adapter.showAddItemDialog(SingleItemList.this, SingleItemViewControl.ADD_ITEM, null);
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -51,6 +54,7 @@ implements SingleItemListController.View {
         String sTitle = bundle.getString("title");
 
         BaseAdapterViewControl viewControl = (BaseAdapterViewControl) bundle.getSerializable("viewControl");
+        viewControl.m_Activity = this;
 
         setTitle(sTitle);
 
@@ -88,5 +92,55 @@ implements SingleItemListController.View {
     @Override
     public void ShowToast(String sMessage) {
         Tools.ShowToast(getApplicationContext(), sMessage, Toast.LENGTH_LONG);
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        //Tools.ShowToast(getApplicationContext(), "OnRestart", Toast.LENGTH_LONG);
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case SingleItemViewControl.EDIT_ITEM:
+                    String sDeleteID = data.getStringExtra("IDString");
+                    boolean bDeleted = data.getBooleanExtra("deleted", false);
+
+                    if (bDeleted) {
+                        for (int i = 0; i < m_Adapter.size(); i++) {
+                            if (m_Adapter.get(i).idString.equals(sDeleteID)) {
+                                m_Adapter.remove(i);
+                            }
+                        }
+                    }
+                    break;
+
+                case SingleItemViewControl.ADD_ITEM:
+                    Exercise e = new Exercise();
+                    e.idString = data.getStringExtra("IDString");
+                    e.name = data.getStringExtra("name");
+                    m_Adapter.add(e);
+            }
+        }
+
+        /*if (requestCode == SingleItemViewControl.EDIT_ITEM) {
+            if (resultCode == RESULT_OK) {
+                String sDeleteID = data.getStringExtra("IDString");
+                boolean bDeleted = data.getBooleanExtra("deleted", false);
+
+                if (bDeleted) {
+                    for (int i = 0; i < m_Adapter.size(); i++) {
+                        if (m_Adapter.get(i).idString.equals(sDeleteID)) {
+                            m_Adapter.remove(i);
+                        }
+                    }
+                }
+            }
+        }*/
     }
 }

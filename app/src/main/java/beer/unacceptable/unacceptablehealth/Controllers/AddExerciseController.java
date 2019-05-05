@@ -12,7 +12,9 @@ import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import java.util.ArrayList;
 
+import beer.unacceptable.unacceptablehealth.Adapters.SingleItemViewControl;
 import beer.unacceptable.unacceptablehealth.Models.CustomReturns.ExerciseWithMuscleList;
+import beer.unacceptable.unacceptablehealth.Models.CustomReturns.WorkoutPlanList;
 import beer.unacceptable.unacceptablehealth.Models.Exercise;
 import beer.unacceptable.unacceptablehealth.Models.Muscle;
 import beer.unacceptable.unacceptablehealth.Repositories.IRepository;
@@ -21,6 +23,7 @@ public class AddExerciseController extends BaseLogic<AddExerciseController.View>
 
     private IRepository m_repo;
     private ILibraryRepository m_LibraryRepo;
+    private Exercise m_Exercise;
 
     public AddExerciseController(IRepository repo, ILibraryRepository libraryRepository) {
         m_repo = repo;
@@ -43,7 +46,7 @@ public class AddExerciseController extends BaseLogic<AddExerciseController.View>
         });
     }
 
-    public void Save(String idString, String sName, ArrayList<ListableObject> muscles, boolean bShowWeight, boolean bShowTime, boolean bShowReps, String sDescription) {
+    public void Save(String sName, ArrayList<ListableObject> muscles, boolean bShowWeight, boolean bShowTime, boolean bShowReps, String sDescription) {
         boolean bQuit = false;
         view.ClearErrors();
 
@@ -59,17 +62,19 @@ public class AddExerciseController extends BaseLogic<AddExerciseController.View>
 
         if (bQuit) return;
 
-        Exercise exercise = new Exercise();
-        exercise.idString = idString;
-        exercise.name = sName;
-        exercise.Muscles = convertToMuscleArrayList(muscles);
-        exercise.ShowTime = bShowTime;
-        exercise.ShowWeight = bShowWeight;
-        exercise.ShowReps = bShowReps;
-        exercise.Description = sDescription;
+        if (m_Exercise == null)
+            m_Exercise = new Exercise();
 
-        exercise.Save(m_LibraryRepo);
-        view.setScreenTitle(createScreenTitle(exercise));
+        //m_Exercise.idString = idString;
+        m_Exercise.name = sName;
+        m_Exercise.Muscles = convertToMuscleArrayList(muscles);
+        m_Exercise.ShowTime = bShowTime;
+        m_Exercise.ShowWeight = bShowWeight;
+        m_Exercise.ShowReps = bShowReps;
+        m_Exercise.Description = sDescription;
+
+        m_Exercise.Save(m_LibraryRepo);
+        view.setScreenTitle(createScreenTitle(m_Exercise));
     }
 
     private String createScreenTitle(Exercise exercise) {
@@ -97,12 +102,12 @@ public class AddExerciseController extends BaseLogic<AddExerciseController.View>
             @Override
             public void onSuccess(String t) {
                 ExerciseWithMuscleList oResult = Tools.convertJsonResponseToObject(t, ExerciseWithMuscleList.class);
-                Exercise e = oResult.Exercise;
+                m_Exercise = oResult.Exercise;
                 Muscle[] muscles = oResult.Muscles;
 
-                view.setScreenTitle(createScreenTitle(e));
+                view.setScreenTitle(createScreenTitle(m_Exercise));
                 view.PopulateMuscleList(muscles);
-                if (e != null) view.PopulateScreen(e);
+                if (m_Exercise != null) view.PopulateScreen(m_Exercise);
             }
 
             @Override
@@ -127,6 +132,43 @@ public class AddExerciseController extends BaseLogic<AddExerciseController.View>
             Tools.SetText(editText, "");
     }
 
+    public void DeleteExercise(final int iRequestCode) {
+        //check if its in use
+        m_repo.LoadWorkoutPlansByExercise(m_Exercise.idString, new RepositoryCallback() {
+            @Override
+            public void onSuccess(String t) {
+                WorkoutPlanList list = Tools.convertJsonResponseToObject(t, WorkoutPlanList.class);
+
+                //its in use, show a warning
+                if (list.WorkoutPlans.length > 0) {
+                    view.ShowToast("Exercise in use in " + list.WorkoutPlans.length + " workout plans.");
+
+                } else {
+                    //its not in use, delete
+                    String sIDString = m_Exercise.idString;
+                    m_Exercise.Delete();
+                    m_Exercise = null;
+                    view.GoToPreviousActivity(sIDString, true, null, iRequestCode == SingleItemViewControl.ADD_ITEM);
+                }
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+
+            }
+        });
+
+    }
+
+    public void FinishEditing() {
+
+        if (m_Exercise == null) {
+            view.GoToPreviousActivity("", false, "", true);
+        } else {
+            view.GoToPreviousActivity(m_Exercise.idString, false, m_Exercise.name, false);
+        }
+    }
+
     public interface View {
         void ShowToast(String sMessage);
         void PopulateMuscleList(Muscle[] muscles);
@@ -134,5 +176,6 @@ public class AddExerciseController extends BaseLogic<AddExerciseController.View>
         void ClearErrors();
         void setScreenTitle(String sTitle);
         void PopulateScreen(Exercise exercise);
+        void GoToPreviousActivity(String sIDString, boolean bDeleted, String sName, boolean bCancel);
     }
 }

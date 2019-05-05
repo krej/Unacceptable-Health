@@ -17,6 +17,9 @@ import beer.unacceptable.unacceptablehealth.R;
 import beer.unacceptable.unacceptablehealth.Repositories.Repository;
 
 public class SingleItemViewControl extends BaseAdapterViewControl {
+    public static final int ADD_ITEM = 1;
+    public static final int EDIT_ITEM = 2;
+
     private SingleItemListController m_oController;
     private String m_sTitle;
 
@@ -49,7 +52,7 @@ public class SingleItemViewControl extends BaseAdapterViewControl {
 
     @Override
     public void onItemClick(View v, ListableObject i) {
-        m_Adapter.showAddItemDialog(v.getContext(), i);
+        m_Adapter.showAddItemDialog(m_Activity, EDIT_ITEM, i);
     }
 
     @Override

@@ -1,5 +1,8 @@
 package beer.unacceptable.unacceptablehealth.Screens;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +23,7 @@ import com.unacceptable.unacceptablelibrary.Tools.Tools;
 import java.util.ArrayList;
 
 import beer.unacceptable.unacceptablehealth.Adapters.MuscleAdapterViewControl;
+import beer.unacceptable.unacceptablehealth.Adapters.SingleItemViewControl;
 import beer.unacceptable.unacceptablehealth.Controllers.AddExerciseController;
 import beer.unacceptable.unacceptablehealth.Models.Exercise;
 import beer.unacceptable.unacceptablehealth.Models.Muscle;
@@ -34,7 +38,6 @@ public class AddExercise extends BaseActivity implements AddExerciseController.V
     private MuscleAdapterViewControl m_muscleAdapterViewControl;
     private Button m_btnAddMuscle;
     private EditText m_etName;
-    private Exercise m_Exercise;
     private Switch m_swShowWeight;
     private Switch m_swShowTime;
     private Switch m_swShowReps;
@@ -88,21 +91,52 @@ public class AddExercise extends BaseActivity implements AddExerciseController.V
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_view_recipe, menu);
-        MenuItem miSave = menu.findItem(R.id.save_recipe);
-        miSave.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Save();
-                return true;
-            }
-        });
-        //miSave.setVisible(m_oLogic == null || m_oLogic.canEditLog());
+        inflater.inflate(R.menu.menu_save_delete, menu);
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                m_oController.FinishEditing();
+                break;
+            case R.id.save:
+                Save();
+                break;
+            case R.id.delete:
+                DeletePrompt();
+                break;
+        }
+
+        return true;
+    }
+
+    private void DeletePrompt() {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch(which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        //yes
+                        m_oController.DeleteExercise(getIntent().getIntExtra("requestCode", SingleItemViewControl.EDIT_ITEM));
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //no
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(AddExercise.this);
+        builder.setMessage("Delete? Are you sure?")
+                .setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener)
+                .show();
+    }
+
     private void Save() {
-        String idString = m_Exercise == null ? "" : m_Exercise.idString;
+        //String idString = m_Exercise == null ? "" : m_Exercise.idString;
         String sName = m_etName.getText().toString();
         ArrayList<ListableObject> muscles = m_adpMuscles.Dataset();
         boolean bShowWeight = m_swShowWeight.isChecked();
@@ -110,7 +144,7 @@ public class AddExercise extends BaseActivity implements AddExerciseController.V
         boolean bShowReps = m_swShowReps.isChecked();
         String sDescription = m_etDescription.getText().toString();
 
-        m_oController.Save(idString, sName, muscles, bShowWeight, bShowTime, bShowReps, sDescription);
+        m_oController.Save(sName, muscles, bShowWeight, bShowTime, bShowReps, sDescription);
     }
 
     @Override
@@ -143,10 +177,31 @@ public class AddExercise extends BaseActivity implements AddExerciseController.V
     public void PopulateScreen(Exercise exercise) {
         m_etName.setText(exercise.name);
         Tools.PopulateAdapter(m_adpMuscles, exercise.Muscles);
-        m_Exercise = exercise;
         m_swShowWeight.setChecked(exercise.ShowWeight);
         m_swShowTime.setChecked(exercise.ShowTime);
         m_swShowReps.setChecked(exercise.ShowReps);
         Tools.SetText(m_etDescription, exercise.Description);
+    }
+
+    @Override
+    public void GoToPreviousActivity(String idString, boolean bDeleted, String sName, boolean bCancel) {
+        if (bCancel) {
+            setResult(RESULT_CANCELED);
+        } else {
+            Intent intent = new Intent();
+            intent.putExtra("IDString", idString);
+            intent.putExtra("name", sName);
+            intent.putExtra("deleted", bDeleted);
+            setResult(RESULT_OK, intent);
+        }
+
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        m_oController.FinishEditing();
+
+        super.onBackPressed();
     }
 }
