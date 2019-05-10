@@ -41,7 +41,7 @@ public class SingleItemList extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                m_Adapter.showAddItemDialog(SingleItemList.this, SingleItemViewControl.ADD_ITEM, null);
+                m_Adapter.showAddItemDialog(SingleItemList.this, m_rvList.getContext(), SingleItemViewControl.ADD_ITEM, null);
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

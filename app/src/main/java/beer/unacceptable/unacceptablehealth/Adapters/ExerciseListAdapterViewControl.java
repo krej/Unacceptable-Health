@@ -30,7 +30,7 @@ public class ExerciseListAdapterViewControl extends BaseAdapterViewControl {
 
     @Override
     public void onItemClick(View v, ListableObject i) {
-        m_Adapter.showAddItemDialog(m_Activity, SingleItemViewControl.EDIT_ITEM, i);
+        m_Adapter.showAddItemDialog(m_Activity, v.getContext(), SingleItemViewControl.EDIT_ITEM, i);
     }
 
     @Override
