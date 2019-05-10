@@ -20,13 +20,13 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import com.unacceptable.unacceptablelibrary.Repositories.LibraryRepository;
 import com.unacceptable.unacceptablelibrary.Repositories.TimeSource;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import beer.unacceptable.unacceptablehealth.Controllers.AddExerciseController;
-import beer.unacceptable.unacceptablehealth.Controllers.MainScreenController;
 import beer.unacceptable.unacceptablehealth.Controllers.PerformWorkoutController;
 import beer.unacceptable.unacceptablehealth.Models.ExercisePlan;
 import beer.unacceptable.unacceptablehealth.Models.Workout;
@@ -40,6 +40,7 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
 
     private PerformWorkoutController m_oController;
 
+    ViewFlipper m_ViewFlipper;
     LinearLayout m_llWeights;
     LinearLayout m_llReps;
     LinearLayout m_llTime;
@@ -67,15 +68,18 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SwitchToWorkoutView();
+        setContentView(R.layout.activity_perform_workout);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         //keep the screen on when you're working out
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         FindUIElementsForWorkoutView();
+        FindUIElementsForRestView();
+
+        m_ViewFlipper = findViewById(R.id.performWorkoutViewFlipper);
 
         m_oController = new PerformWorkoutController(new Repository(), new LibraryRepository(), new TimeSource());
         m_oController.attachView(this);
@@ -86,20 +90,6 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
         int iCurrentExercise = getIntent().getIntExtra("currentExercise", -1);
         long iTime = getIntent().getLongExtra("restTime", System.currentTimeMillis());
         long iStartTime = getIntent().getLongExtra("startTime", System.currentTimeMillis());
-        //boolean bCancel = getIntent().getBooleanExtra("cancel", false);
-
-        /*if (bCancel) {
-            CancelNotification();
-            Intent i = new Intent(Intent.ACTION_MAIN);
-            i.addCategory(Intent.CATEGORY_HOME);
-            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(i);
-            //System.exit(0);
-            Intent i = new Intent(getApplicationContext(), MainActivity.class);
-            //TODO: This will laucnh the main activity even if the app isn't open. I should fix that.
-            startActivity(i);
-            return;
-        }*/
 
 
         if (workoutPlan == null) {
@@ -108,10 +98,11 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
             m_oController.LoadWorkoutPlan(workoutPlan, bIsInRestMode, iCurrentExercise, iTime, iStartTime);
         }
 
-        //m_oController.startWorkoutNotification(this.getBaseContext());
-        //m_oController.showNotification(this.getBaseContext());
 
+        SetupWorkoutClickEvents();
+        SetupRestClickEvents();
     }
+
 
     private void FindUIElementsForWorkoutView() {
         m_llReps = findViewById(R.id.ll_reps);
@@ -207,10 +198,9 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
 
     @Override
     public void SwitchToRestView() {
-        setContentView(R.layout.activity_perform_workout_restview);
-        FindUIElementsForRestView();
-        SetupRestClickEvents();
-        invalidateOptionsMenu();
+        m_ViewFlipper.setInAnimation(this, R.anim.slide_in_left);
+        m_ViewFlipper.setOutAnimation(this, R.anim.slide_out_left);
+        m_ViewFlipper.setDisplayedChild(m_ViewFlipper.indexOfChild(findViewById(R.id.performWorkoutRestView)));
     }
 
     private void SetupRestClickEvents() {
@@ -254,10 +244,9 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
 
     @Override
     public void SwitchToWorkoutView() {
-        setContentView(R.layout.activity_perform_workout);
-        FindUIElementsForWorkoutView();
-        SetupWorkoutClickEvents();
-        invalidateOptionsMenu();
+        m_ViewFlipper.setInAnimation(this, R.anim.slide_in_right);
+        m_ViewFlipper.setOutAnimation(this, R.anim.slide_out_right);
+        m_ViewFlipper.setDisplayedChild(m_ViewFlipper.indexOfChild(findViewById(R.id.performWorkoutWorkoutView)));
     }
 
     private void SetupWorkoutClickEvents() {
@@ -328,7 +317,6 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
                 return true;
             }
         });
-        //miSave.setVisible(m_oLogic == null || m_oLogic.canEditLog());
         return true;
     }
 }

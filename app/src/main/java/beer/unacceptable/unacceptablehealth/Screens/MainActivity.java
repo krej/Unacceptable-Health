@@ -229,7 +229,7 @@ public class MainActivity extends BaseActivity
             Intent intent = new Intent(getApplicationContext(), classToLaunch);
             intent.putExtra("bundle", b);
             startActivity(intent);
-            //overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            //overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

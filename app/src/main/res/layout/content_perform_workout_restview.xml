@@ -7,7 +7,10 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".Screens.PerformWorkout"
-    tools:showIn="@layout/activity_perform_workout_restview">
+    tools:showIn="@layout/activity_perform_workout_restview"
+    android:id="@+id/performWorkoutRestView">
+
+    <!--tools:showIn="@layout/activity_perform_workout_restview"-->
 
     <LinearLayout
         android:layout_width="match_parent"
