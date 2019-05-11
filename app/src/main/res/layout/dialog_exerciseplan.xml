@@ -23,7 +23,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:weightSum="4">
+            android:weightSum="4"
+            android:id="@+id/exercisePlanDialog_ExerciseSpinner">
 
             <Space
                 android:layout_width="wrap_content"

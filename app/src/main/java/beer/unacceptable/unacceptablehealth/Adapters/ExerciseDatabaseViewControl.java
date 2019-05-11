@@ -47,9 +47,7 @@ public class ExerciseDatabaseViewControl extends BaseAdapterViewControl {
                 b.putSerializable("viewControl", new SingleItemViewControl(b.getString("collectionName"), b.getString("shortName")));
                 break;
             case "Exercises":
-                b.putString("collectionName", "exercise");
-                b.putString("title", "Exercises");
-                b.putString("shortName", "Exercise");
+                b = CreateExerciseBundle();
                 b.putSerializable("viewControl", new ExerciseListAdapterViewControl());
                 break;
             case "Muscles":
@@ -73,5 +71,15 @@ public class ExerciseDatabaseViewControl extends BaseAdapterViewControl {
     @Override
     public boolean onDialogOkClicked(Dialog d, ListableObject i) {
         return false;
+    }
+
+    public static Bundle CreateExerciseBundle() {
+        Bundle b = new Bundle();
+
+        b.putString("collectionName", "exercise");
+        b.putString("title", "Exercises");
+        b.putString("shortName", "Exercise");
+
+        return b;
     }
 }

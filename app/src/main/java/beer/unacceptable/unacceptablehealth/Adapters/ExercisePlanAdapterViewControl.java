@@ -28,16 +28,16 @@ import beer.unacceptable.unacceptablehealth.Repositories.Repository;
 
 public class ExercisePlanAdapterViewControl extends BaseAdapterViewControl {
     private AddExerciseController m_oController;
-    private Exercise[] m_oExercises;
+    protected Exercise[] m_oExercises;
 
-    private Spinner spExercise;
-    private EditText etReps;
-    private EditText etWeight;
-    private EditText etTime;
-    private EditText etSets;
-    private LinearLayout llDialogWeight;
-    private LinearLayout llDialogTime;
-    private LinearLayout llDialogReps;
+    protected Spinner spExercise;
+    protected EditText etReps;
+    protected EditText etWeight;
+    protected EditText etTime;
+    protected EditText etSets;
+    protected LinearLayout llDialogWeight;
+    protected LinearLayout llDialogTime;
+    protected LinearLayout llDialogReps;
 
     public ExercisePlanAdapterViewControl() {
         m_oController = new AddExerciseController(new Repository(), new LibraryRepository());

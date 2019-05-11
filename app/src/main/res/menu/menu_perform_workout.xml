@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
 
     <item
+        android:id="@+id/add_exercise"
+        android:title="@string/add_exercise"
+        app:showAsAction="never"/>
+    <item
         android:id="@+id/cancel_workout"
-        android:title="Cancel Workout"/>
+        android:title="@string/cancel_workout"
+        app:showAsAction="never"/>
 </menu>

@@ -1,10 +1,13 @@
 package beer.unacceptable.unacceptablehealth.Screens;
 
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
@@ -26,8 +29,12 @@ import com.unacceptable.unacceptablelibrary.Repositories.LibraryRepository;
 import com.unacceptable.unacceptablelibrary.Repositories.TimeSource;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
+import beer.unacceptable.unacceptablehealth.Adapters.ExerciseDatabaseViewControl;
+import beer.unacceptable.unacceptablehealth.Adapters.ExerciseSelectionViewControl;
+import beer.unacceptable.unacceptablehealth.Adapters.SingleItemViewControl;
 import beer.unacceptable.unacceptablehealth.Controllers.AddExerciseController;
 import beer.unacceptable.unacceptablehealth.Controllers.PerformWorkoutController;
+import beer.unacceptable.unacceptablehealth.Models.Exercise;
 import beer.unacceptable.unacceptablehealth.Models.ExercisePlan;
 import beer.unacceptable.unacceptablehealth.Models.Workout;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutPlan;
@@ -37,8 +44,10 @@ import beer.unacceptable.unacceptablehealth.Repositories.Repository;
 import static beer.unacceptable.unacceptablehealth.Controllers.PerformWorkoutController.ONGOING_NOTIFICATION_ID;
 
 public class PerformWorkout extends BaseActivity implements PerformWorkoutController.View {
+    public static final int SELECT_EXERCISE = 1;
 
     private PerformWorkoutController m_oController;
+    private Exercise[] m_oExercises;
 
     ViewFlipper m_ViewFlipper;
     LinearLayout m_llWeights;
@@ -75,6 +84,8 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
         //keep the screen on when you're working out
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+        m_oExercises = (Exercise[])getIntent().getSerializableExtra("exercises");
+
 
         FindUIElementsForWorkoutView();
         FindUIElementsForRestView();
@@ -102,7 +113,6 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
         SetupWorkoutClickEvents();
         SetupRestClickEvents();
     }
-
 
     private void FindUIElementsForWorkoutView() {
         m_llReps = findViewById(R.id.ll_reps);
@@ -278,9 +288,12 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
 
     @Override
     public void PopulateNextExercise(ExercisePlan next, ExercisePlan remainingExercises[]) {
-        //Tools.SetText(m_tvNextWorkout, next.Exercise.name);
+
         PopulateNextExerciseWeight(next.Weight);
+
+        ExercisePlan e = (ExercisePlan)m_spNextWorkout.getSelectedItem(); //save selected exercise
         Tools.PopulateDropDown(m_spNextWorkout, m_spNextWorkout.getContext(), remainingExercises);
+        m_spNextWorkout.setSelection(Tools.FindPositionInArray(remainingExercises, e)); //reselect it
     }
 
     private void PopulateNextExerciseWeight(double dWeight) {
@@ -297,17 +310,11 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
         //don't do anything so i don't accidentally hit back and close the app
     }
 
-    /*@Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putString("test", "test");
-        super.onSaveInstanceState(savedInstanceState);
-    }*/
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_perform_workout, menu);
-        MenuItem miSave = menu.findItem(R.id.cancel_workout);
+        /*MenuItem miSave = menu.findItem(R.id.cancel_workout);
         miSave.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -316,7 +323,76 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
                 startActivity(i);
                 return true;
             }
-        });
+        });*/
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.cancel_workout:
+                CancelPrompt();
+                break;
+            case R.id.add_exercise:
+                LaunchExerciseSelection();
+
+        }
+
+        return true;
+    }
+
+    //TODO: I copied this from AddExercise. This should become a shared function.
+    private void CancelPrompt() {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch(which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        //yes
+                        CancelNotification();
+                        //Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                        //startActivity(i);
+                        finish();
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //no
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(PerformWorkout.this);
+        builder.setMessage("Cancel? Are you sure?")
+                .setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener)
+                .show();
+    }
+
+
+    private void LaunchExerciseSelection() {
+        Intent iExerciseList = new Intent(this, SingleItemList.class);
+
+        Bundle b = ExerciseDatabaseViewControl.CreateExerciseBundle();
+        b.putInt("dialogLayout", R.layout.dialog_exerciseplan);
+        ExerciseSelectionViewControl vc = new ExerciseSelectionViewControl();
+        vc.PopulateExerciseList(m_oExercises);
+        b.putSerializable("viewControl", vc);
+
+        iExerciseList.putExtra("bundle", b);
+        startActivityForResult(iExerciseList, SELECT_EXERCISE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case SELECT_EXERCISE:
+                    ExercisePlan ep = (ExercisePlan)data.getSerializableExtra("exercisePlan");
+                    m_oController.AddExercisePlan(ep);
+            }
+        }
+
     }
 }

@@ -36,6 +36,7 @@ public class ViewWorkoutPlan extends BaseActivity implements WorkoutPlanControll
 
     WorkoutPlanController m_oController;
     WorkoutType[] m_oWorkoutTypes;
+    Exercise[] m_oExercises;
 
     RecyclerView m_rvExercisePlans;
     NewAdapter m_aExercisePlans;
@@ -93,6 +94,7 @@ public class ViewWorkoutPlan extends BaseActivity implements WorkoutPlanControll
 
     @Override
     public void PopulateExercises(Exercise[] exercises) {
+        m_oExercises = exercises;
         m_vcExercisePlan.PopulateExerciseList(exercises);
     }
 
@@ -144,6 +146,7 @@ public class ViewWorkoutPlan extends BaseActivity implements WorkoutPlanControll
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 Intent i = new Intent(getApplicationContext(), PerformWorkout.class);
+                i.putExtra("exercises", m_oExercises);
                 i.putExtra("idString", m_IdString);
                 startActivity(i);
                 return true;

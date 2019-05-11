@@ -286,4 +286,6 @@
     <string name="exercise_description">Exercise Description</string>
     <string name="copy_to_new_workoutplan">Copy To New</string>
     <string name="duration">Duration:</string>
+    <string name="add_exercise">Add Exercise</string>
+    <string name="cancel_workout">Cancel Workout</string>
 </resources>

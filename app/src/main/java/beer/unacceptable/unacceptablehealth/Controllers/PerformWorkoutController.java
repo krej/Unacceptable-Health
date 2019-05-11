@@ -217,6 +217,13 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
         return m_lRestStartTime;
     }
 
+    public void AddExercisePlan(ExercisePlan ep) {
+        m_WorkoutPlan.ExercisePlans.add(ep);
+        if (m_bIsInRestMode) {
+            ShowNextWorkoutInRestView(getRestStartTime());
+        }
+    }
+
     public interface View {
         void ShowNotification(WorkoutPlan workoutPlan, int iCurrentExercise, boolean bInRestMode, long iRestTime, long iStartTime, String sNotificationText, boolean bUseChronometer);
         void CancelNotification();

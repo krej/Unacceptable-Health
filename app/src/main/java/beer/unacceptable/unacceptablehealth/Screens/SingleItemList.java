@@ -128,19 +128,5 @@ public class SingleItemList extends AppCompatActivity
             }
         }
 
-        /*if (requestCode == SingleItemViewControl.EDIT_ITEM) {
-            if (resultCode == RESULT_OK) {
-                String sDeleteID = data.getStringExtra("IDString");
-                boolean bDeleted = data.getBooleanExtra("deleted", false);
-
-                if (bDeleted) {
-                    for (int i = 0; i < m_Adapter.size(); i++) {
-                        if (m_Adapter.get(i).idString.equals(sDeleteID)) {
-                            m_Adapter.remove(i);
-                        }
-                    }
-                }
-            }
-        }*/
     }
 }
