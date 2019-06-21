@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import beer.unacceptable.unacceptablehealth.Models.CustomReturns.WorkoutPlanWithExtras;
 import beer.unacceptable.unacceptablehealth.Models.Exercise;
+import beer.unacceptable.unacceptablehealth.Models.ExercisePlan;
 import beer.unacceptable.unacceptablehealth.Models.Workout;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutPlan;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutType;
@@ -128,6 +129,33 @@ public class WorkoutPlanController extends BaseLogic<WorkoutPlanController.View>
         view.SetName("");
     }
 
+    public void adjustAllReps(int i) {
+        for (ExercisePlan e : m_WorkoutPlan.ExercisePlans) {
+            if (e.Exercise.ShowReps)
+                e.Reps += i;
+        }
+
+        view.UpdateAdapter();
+    }
+
+    public void loadHistoryScreen() {
+        m_repo.GetWorkoutPlanHistory(m_WorkoutPlan.idString, new RepositoryCallback() {
+            @Override
+            public void onSuccess(String t) {
+                Workout[] workouts = Tools.convertJsonResponseToObject(t, Workout[].class);
+                view.LoadHistoryScreen(workouts);
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+                view.ShowToast(Tools.ParseVolleyError(error));
+            }
+        });
+    }
+
+    public String getWorkoutPlanName() {
+        return m_WorkoutPlan.name;
+    }
 
     public interface View {
         void ShowToast(String sMessage);
@@ -138,5 +166,8 @@ public class WorkoutPlanController extends BaseLogic<WorkoutPlanController.View>
         void ClearErrors();
         void SetNameError(String sMessage);
         void SetName(String sName);
+
+        void UpdateAdapter();
+        void LoadHistoryScreen(Workout[] workouts);
     }
 }

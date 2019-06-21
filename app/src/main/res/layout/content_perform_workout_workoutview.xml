@@ -34,13 +34,18 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/weight_number"
+            <Space
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"/>
+
+            <EditText
+                android:id="@+id/weight_number"
+                android:layout_width="51dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingEnd="5dp"
-                android:text="Weight Number"
+                android:text="W"
                 android:textAlignment="textEnd"
                 android:textSize="32sp"/>
 
@@ -48,7 +53,7 @@
                 android:id="@+id/weight_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:text="@string/weight_label"
                 android:textSize="32sp"/>
         </LinearLayout>
@@ -59,13 +64,20 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/rep_number"
+            <Button
+                android:id="@+id/decreaseRep"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:text="@string/minus"/>
+
+            <TextView
+                android:id="@+id/rep_number"
+                android:layout_width="93dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:paddingEnd="5dp"
-                android:text="Rep Number"
+                android:text="Reps"
                 android:textAlignment="textEnd"
                 android:textSize="32sp"/>
 
@@ -76,6 +88,13 @@
                 android:layout_weight="1"
                 android:text="@string/reps_label"
                 android:textSize="32sp"/>
+
+            <Button
+                android:id="@+id/increaseRep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/plus"/>
         </LinearLayout>
 
         <LinearLayout

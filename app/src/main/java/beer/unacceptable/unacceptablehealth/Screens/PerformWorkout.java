@@ -7,10 +7,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -31,7 +33,6 @@ import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import beer.unacceptable.unacceptablehealth.Adapters.ExerciseDatabaseViewControl;
 import beer.unacceptable.unacceptablehealth.Adapters.ExerciseSelectionViewControl;
-import beer.unacceptable.unacceptablehealth.Adapters.SingleItemViewControl;
 import beer.unacceptable.unacceptablehealth.Controllers.AddExerciseController;
 import beer.unacceptable.unacceptablehealth.Controllers.PerformWorkoutController;
 import beer.unacceptable.unacceptablehealth.Models.Exercise;
@@ -55,12 +56,14 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
     LinearLayout m_llTime;
 
     TextView m_tvName;
-    TextView m_tvWeights;
+    EditText m_etWeights;
     TextView m_tvSets;
     TextView m_tvReps;
     Button m_btnStartWorkoutTimer;
     Chronometer m_chronoWorkout;
     TextView m_tvExerciseDescription;
+    Button m_btnDecreaseRep;
+    Button m_btnIncreaseSet;
 
     Button m_btnFinishSet;
 
@@ -122,13 +125,16 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
         m_tvName = findViewById(R.id.tv_workout_name);
         m_tvReps = findViewById(R.id.rep_number);
         m_tvSets = findViewById(R.id.set_number);
-        m_tvWeights = findViewById(R.id.weight_number);
+        m_etWeights = findViewById(R.id.weight_number);
 
         m_btnFinishSet = findViewById(R.id.btn_finish_set);
 
         m_btnStartWorkoutTimer = findViewById(R.id.workout_timer_button);
         m_chronoWorkout = findViewById(R.id.workout_timer);
         m_tvExerciseDescription = findViewById(R.id.exercise_description);
+
+        m_btnDecreaseRep = findViewById(R.id.decreaseRep);
+        m_btnIncreaseSet = findViewById(R.id.increaseRep);
     }
 
     private void FindUIElementsForRestView() {
@@ -195,7 +201,7 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
         Tools.SetText(m_tvName, exercisePlan.Exercise.name);
         Tools.SetText(m_tvReps, exercisePlan.Reps);
         Tools.SetText(m_tvSets, exercisePlan.SetsRemainingString());
-        Tools.SetText(m_tvWeights, exercisePlan.Weight);
+        Tools.SetText(m_etWeights, exercisePlan.Weight);
         m_chronoWorkout.setBase(SystemClock.elapsedRealtime() + (exercisePlan.timeInMilliseconds() + ExercisePlan.EXERCISE_LEAD_IN_TIME));
         m_chronoWorkout.setCountDown(true);
         Tools.SetText(m_tvExerciseDescription, exercisePlan.Exercise.Description);
@@ -270,6 +276,39 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
             @Override
             public void onClick(View v) {
                 m_chronoWorkout.start();
+            }
+        });
+
+        m_etWeights.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                double dWeight = Tools.ParseDouble(s.toString());
+                m_oController.changeWeight(dWeight);
+
+            }
+        });
+
+        m_btnIncreaseSet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                m_oController.adjustSet(2);
+            }
+        });
+
+        m_btnDecreaseRep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                m_oController.adjustSet(-2);
             }
         });
     }

@@ -11,6 +11,11 @@
         android:title="@string/perform_workout"
         app:showAsAction="ifRoom"/>
     <item
+        android:id="@+id/adjustAllReps"
+        android:orderInCategory="45"
+        android:title="@string/adjustAllReps"
+        />
+    <item
         android:id="@+id/save_workoutplan"
         android:orderInCategory="50"
         android:title="@string/save"
@@ -20,5 +25,9 @@
         android:orderInCategory="50"
         android:title="@string/copy_to_new_workoutplan"
         />
+    <item
+        android:id="@+id/view_workoutplan_history"
+        android:orderInCategory="60"
+        android:title="@string/view_history"/>
 
 </menu>

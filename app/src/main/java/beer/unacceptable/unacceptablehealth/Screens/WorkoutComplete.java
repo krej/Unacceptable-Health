@@ -82,6 +82,10 @@ public class WorkoutComplete extends BaseActivity implements MainScreenControlle
         }
 
         workout.Save();
+
+        if (workout.WorkoutPlan.HasChanges) {
+            workout.WorkoutPlan.Save();
+        }
     }
 
     @Override

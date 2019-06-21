@@ -50,6 +50,8 @@ public class SingleItemList extends AppCompatActivity
         final String sCollectionName = bundle.getString("collectionName");
         int iDialogLayout = bundle.getInt("dialogLayout", R.layout.dialog_edit_ingredient);
         int iItemLayout = bundle.getInt("itemLayout", R.layout.one_line_list);
+        ListableObject[] data = (ListableObject[])bundle.getSerializable("data");
+        boolean bAddHorizontalSpacing = bundle.getBoolean("addHorizontalSpacing", false);
 
         String sTitle = bundle.getString("title");
 
@@ -64,16 +66,25 @@ public class SingleItemList extends AppCompatActivity
         m_rvList = findViewById(R.id.list);
         m_SwipeRefresh = findViewById(R.id.swiperefresh);
 
-        m_Adapter = Tools.setupRecyclerView(m_rvList, getApplicationContext(), iItemLayout, iDialogLayout, false, viewControl, true);
+        m_Adapter = Tools.setupRecyclerView(m_rvList, getApplicationContext(), iItemLayout, iDialogLayout, false, viewControl, true, bAddHorizontalSpacing);
 
-        m_SwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                m_oController.LoadCollection(sCollectionName, true);
-            }
-        });
+        final boolean bEnableSwipeRefresh = data == null;
 
-        m_oController.LoadCollection(sCollectionName, false);
+            m_SwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    if (bEnableSwipeRefresh)
+                        m_oController.LoadCollection(sCollectionName, true);
+                    else
+                        m_SwipeRefresh.setRefreshing(false);
+                }
+            });
+
+        if (bEnableSwipeRefresh) {
+            m_oController.LoadCollection(sCollectionName, false);
+        } else {
+            PopulateList(data, false);
+        }
     }
 
     @Override

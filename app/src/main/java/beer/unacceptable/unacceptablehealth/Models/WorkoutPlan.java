@@ -19,4 +19,6 @@ public class WorkoutPlan extends ListableObject implements Serializable {
     public int ExerciseCount() {
         return ExercisePlans.size();
     }
+
+    public boolean HasChanges;
 }

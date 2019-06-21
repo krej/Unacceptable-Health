@@ -20,4 +20,5 @@ public interface IRepository {
     void LoadExerciseWithMuscles(String idString, RepositoryCallback callback);
     void LoadWorkoutPlan(String idString, RepositoryCallback callback);
     void LoadWorkoutPlansByExercise(String idString, RepositoryCallback callback);
+    void GetWorkoutPlanHistory(String idString, RepositoryCallback callback);
 }

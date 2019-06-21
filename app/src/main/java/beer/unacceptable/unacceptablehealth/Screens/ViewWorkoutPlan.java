@@ -25,8 +25,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import beer.unacceptable.unacceptablehealth.Adapters.ExercisePlanAdapterViewControl;
+import beer.unacceptable.unacceptablehealth.Adapters.SingleItemViewControl;
+import beer.unacceptable.unacceptablehealth.Adapters.WorkoutHistoryAdapterViewControl;
 import beer.unacceptable.unacceptablehealth.Controllers.WorkoutPlanController;
 import beer.unacceptable.unacceptablehealth.Models.Exercise;
+import beer.unacceptable.unacceptablehealth.Models.Workout;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutPlan;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutType;
 import beer.unacceptable.unacceptablehealth.R;
@@ -127,10 +130,32 @@ public class ViewWorkoutPlan extends BaseActivity implements WorkoutPlanControll
     }
 
     @Override
+    public void UpdateAdapter() {
+        m_aExercisePlans.notifyDataSetChanged();
+    }
+
+    @Override
+    public void LoadHistoryScreen(Workout[] workouts) {
+        Intent i = new Intent(getApplicationContext(), SingleItemList.class);
+        Bundle b = new Bundle();
+        //b.putString("collectionName", "muscle");
+        b.putString("title", "History: " + m_oController.getWorkoutPlanName());
+        b.putSerializable("data", workouts);
+        //b.putString("shortName", "Muscle");
+        b.putInt("itemLayout", R.layout.list_workout_history);
+        b.putSerializable("viewControl", new WorkoutHistoryAdapterViewControl());
+        b.putBoolean("addHorizontalSpacing", true);
+
+        i.putExtra("bundle", b);
+
+        startActivity(i);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_view_workoutplan, menu);
-        MenuItem miSave = menu.findItem(R.id.save_workoutplan);
+        /*MenuItem miSave = menu.findItem(R.id.save_workoutplan);
         MenuItem miStartWorkout = menu.findItem(R.id.perform_workout);
         MenuItem miCopyToNew = menu.findItem(R.id.copy_to_new_workoutplan);
 
@@ -160,8 +185,36 @@ public class ViewWorkoutPlan extends BaseActivity implements WorkoutPlanControll
                 return false;
             }
         });
-
+*/
         //miSave.setVisible(m_oLogic == null || m_oLogic.canEditLog());
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.save_workoutplan:
+                Save();
+                break;
+            case R.id.perform_workout:
+                Intent i = new Intent(getApplicationContext(), PerformWorkout.class);
+                i.putExtra("exercises", m_oExercises);
+                i.putExtra("idString", m_IdString);
+                startActivity(i);
+                break;
+            case R.id.copy_to_new_workoutplan:
+                m_oController.CopyToNew();
+                break;
+            case R.id.adjustAllReps:
+                m_oController.adjustAllReps(2); //TODO: Have a prompt so I can specify how many reps to adjust by.
+                break;
+            case R.id.view_workoutplan_history:
+                m_oController.loadHistoryScreen();
+                break;
+        }
+
         return true;
     }
 

@@ -224,6 +224,24 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
         }
     }
 
+    public void changeWeight(double dWeight) {
+        if (getCurrentExercisePlan().Weight != dWeight) {
+            getCurrentExercisePlan().Weight = dWeight;
+            m_WorkoutPlan.HasChanges = true;
+        }
+    }
+
+    public void adjustSet(int iAdjustment) {
+        if (getCurrentExercisePlan().Reps + iAdjustment < 0)
+            getCurrentExercisePlan().Reps = 0;
+        else
+            getCurrentExercisePlan().Reps += iAdjustment;
+
+        m_WorkoutPlan.HasChanges = true;
+
+        view.PopulateScreenWithExercisePlan(getCurrentExercisePlan());
+    }
+
     public interface View {
         void ShowNotification(WorkoutPlan workoutPlan, int iCurrentExercise, boolean bInRestMode, long iRestTime, long iStartTime, String sNotificationText, boolean bUseChronometer);
         void CancelNotification();

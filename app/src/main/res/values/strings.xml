@@ -288,4 +288,8 @@
     <string name="duration">Duration:</string>
     <string name="add_exercise">Add Exercise</string>
     <string name="cancel_workout">Cancel Workout</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
+    <string name="adjustAllReps">Adjust All Reps By 2</string>
+    <string name="view_history">View History</string>
 </resources>
