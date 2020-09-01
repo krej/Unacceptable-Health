@@ -92,6 +92,7 @@ public class MainActivity extends BaseActivity
             @Override
             public void onRefresh() {
                 LoadScreen();
+                m_SwipeRefresh.setRefreshing(false);
             }
         });
     }

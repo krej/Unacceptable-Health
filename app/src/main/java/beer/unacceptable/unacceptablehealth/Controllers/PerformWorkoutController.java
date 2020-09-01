@@ -8,11 +8,8 @@ import com.unacceptable.unacceptablelibrary.Repositories.RepositoryCallback;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-import beer.unacceptable.unacceptablehealth.Models.Exercise;
 import beer.unacceptable.unacceptablehealth.Models.ExercisePlan;
 import beer.unacceptable.unacceptablehealth.Models.Workout;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutPlan;
@@ -81,8 +78,13 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
         return m_TimeSource.elapsedRealtime() - iOffset;
     }
 
+    /**
+     * Button click to finish the set
+     */
     public void finishSet() {
         m_bIsInRestMode = true;
+
+        view.StopWorkoutChronometer();
 
         //getCurrentExercisePlan().CompletedSets += 1;
         completeSet(getCurrentExercisePlan());
@@ -150,7 +152,7 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
         }
 
         //TODO: Check if you're done with all your exercises and go to the finished screen if so
-        view.StopChronometer();
+        view.StopRestChronometer();
 
         //if (m_iCurrentExercisePlan >= m_WorkoutPlan.ExercisePlans.size()) {
         if (getIncompleteExercises().length == 0) {
@@ -251,7 +253,7 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
         void SwitchToRestView();
 
         void StartRestChronometer(long iTime);
-        void StopChronometer();
+        void StopRestChronometer();
 
         void SwitchToWorkoutView();
         void CompleteWorkout(Workout workout);
@@ -261,5 +263,7 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
         void PopulateNextExercise(ExercisePlan next, ExercisePlan remainingExercises[]);
 
         void ShowNextWeights(int visibility);
+
+        void StopWorkoutChronometer();
     }
 }

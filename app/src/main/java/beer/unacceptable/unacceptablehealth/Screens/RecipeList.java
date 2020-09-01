@@ -30,8 +30,6 @@ import java.util.ArrayList;
 
 import beer.unacceptable.unacceptablehealth.Adapters.RecipeAdapter;
 import beer.unacceptable.unacceptablehealth.Models.FoodRecipe;
-import beer.unacceptable.unacceptablehealth.Models.Ingredient;
-import beer.unacceptable.unacceptablehealth.Models.IngredientAddition;
 import beer.unacceptable.unacceptablehealth.R;
 
 public class RecipeList extends AppCompatActivity
@@ -109,7 +107,7 @@ public class RecipeList extends AppCompatActivity
         m_Adapter.add(r3);*/
 
         //TODO: This shouldn't load ENTIRE recipes, just the names because we're gonna need to reload it later...
-        Network.WebRequest(Request.Method.GET, Preferences.RestAPIURL() + "/foodrecipe", null,
+        Network.WebRequest(Request.Method.GET, Preferences.HealthAPIURL() + "/foodrecipe", null,
 
                 new Response.Listener<String>() {
                     @Override

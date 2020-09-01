@@ -111,7 +111,8 @@ public class MainScreenController extends BaseLogic<MainScreenController.View> {
             @Override
             public void onError(VolleyError error) {
                 Response response = Tools.convertJsonResponseToObject(error.getMessage(), Response.class);
-                view.showToast(response.Message);
+
+                view.showToast(Tools.ParseVolleyError(error));
             }
         });
     }

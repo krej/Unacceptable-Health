@@ -76,7 +76,7 @@ public class ViewRecipe extends AppCompatActivity {
     }
 
     private void LoadIngredients() {
-        Network.WebRequest(Request.Method.GET, Preferences.RestAPIURL() + "/ingredient", null,
+        Network.WebRequest(Request.Method.GET, Preferences.HealthAPIURL() + "/ingredient", null,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -110,7 +110,7 @@ public class ViewRecipe extends AppCompatActivity {
         if (CurrentRecipe != null) {
             //Tools.ShowToast(getApplicationContext(), r.name, Toast.LENGTH_LONG);
             //reload it
-            Network.WebRequest(Request.Method.GET, Preferences.RestAPIURL() + "/foodrecipe/" + CurrentRecipe.idString, null,
+            Network.WebRequest(Request.Method.GET, Preferences.HealthAPIURL() + "/foodrecipe/" + CurrentRecipe.idString, null,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {

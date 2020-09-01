@@ -254,8 +254,13 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
     }
 
     @Override
-    public void StopChronometer() {
+    public void StopRestChronometer() {
         m_chronoRest.stop();
+    }
+
+    @Override
+    public void StopWorkoutChronometer() {
+        m_chronoWorkout.stop();
     }
 
     @Override

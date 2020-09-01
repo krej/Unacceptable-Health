@@ -163,13 +163,13 @@
     <string name="pref_server">Server to connect to</string>
     <string-array name="list_preference_server">
         <item>Desktop</item>
-        <item>BeerNet</item>
-        <item>LinuxDesktop</item>
+        <item>HealthNet</item>
+        <!--<item>LinuxDesktop</item>-->
     </string-array>
     <string-array name="list_preference_server_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
+        <item>HealthNet_Desktop</item>
+        <item>HealthNet</item>
+        <!--<item>2</item>-->
     </string-array>
 
     <string name="pref_title_sync_frequency">Sync frequency</string>
