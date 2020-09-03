@@ -14,6 +14,10 @@ import java.util.Date;
 import beer.unacceptable.unacceptablehealth.Models.GoalItemAction;
 
 public class Repository implements IRepository, Serializable {
+    public void LoadAllDailyLogs(RepositoryCallback callback) {
+        Network.WebRequest(Request.Method.GET, Preferences.HealthAPIURL() + "/dailylog/", null, callback, true);
+    }
+
     public void LoadDailyLog(String sStringID, RepositoryCallback callback) {
         Network.WebRequest(Request.Method.GET, Preferences.HealthAPIURL() + "/dailylog/" + sStringID, null, callback, true);
     }

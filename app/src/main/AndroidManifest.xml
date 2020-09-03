@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="beer.unacceptable.unacceptablehealth">
+    package="beer.unacceptable.unacceptablehealth">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -16,10 +16,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".Screens.DebugTool"
+            android:label="@string/title_activity_debug_tool"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".Screens.WorkoutComplete"
             android:label="@string/title_activity_workout_complete"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".Screens.PerformWorkout"
             android:label="@string/title_activity_perform_workout"
@@ -27,7 +30,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="beer.unacceptable.unacceptablehealth.Screens.ViewWorkoutPlan"/>
+                android:value="beer.unacceptable.unacceptablehealth.Screens.ViewWorkoutPlan" />
         </activity>
         <activity
             android:name=".Screens.ViewWorkoutPlan"
@@ -36,7 +39,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="beer.unacceptable.unacceptablehealth.Screens.MainActivity"/>
+                android:value="beer.unacceptable.unacceptablehealth.Screens.MainActivity" />
         </activity>
         <activity
             android:name=".Screens.AddExercise"
@@ -45,7 +48,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="beer.unacceptable.unacceptablehealth.Screens.BaseActivity"/>
+                android:value="beer.unacceptable.unacceptablehealth.Screens.BaseActivity" />
         </activity>
         <activity
             android:name=".Screens.GoalList"
@@ -54,7 +57,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="beer.unacceptable.unacceptablehealth.Screens.MainActivity"/>
+                android:value="beer.unacceptable.unacceptablehealth.Screens.MainActivity" />
         </activity>
         <activity
             android:name=".Screens.ViewGoal"
@@ -63,7 +66,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="beer.unacceptable.unacceptablehealth.Screens.MainActivity"/>
+                android:value="beer.unacceptable.unacceptablehealth.Screens.MainActivity" />
         </activity>
         <activity
             android:name=".Screens.CreateGoal"
@@ -72,7 +75,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="beer.unacceptable.unacceptablehealth.Screens.MainActivity"/>
+                android:value="beer.unacceptable.unacceptablehealth.Screens.MainActivity" />
         </activity>
         <activity
             android:name=".Screens.SingleItemList"
@@ -81,7 +84,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="beer.unacceptable.unacceptablehealth.Screens.MainActivity"/>
+                android:value="beer.unacceptable.unacceptablehealth.Screens.MainActivity" />
         </activity>
         <activity
             android:name=".Screens.ExerciseDatabase"
@@ -90,23 +93,21 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="beer.unacceptable.unacceptablehealth.Screens.MainActivity"/>
+                android:value="beer.unacceptable.unacceptablehealth.Screens.MainActivity" />
         </activity>
-        <activity android:name=".Screens.BaseActivity">
-        </activity>
+        <activity android:name=".Screens.BaseActivity"></activity>
         <activity
             android:name=".Screens.Settings"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".Screens.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="beer.unacceptable.unacceptablehealth.Screens.MainActivity"/>
+                android:value="beer.unacceptable.unacceptablehealth.Screens.MainActivity" />
         </activity>
         <activity
             android:name=".Screens.DailyLogList"
             android:label="@string/title_activity_daily_log_list"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".Screens.ViewDailyLog"
             android:label="@string/title_activity_view_daily_log"
@@ -114,7 +115,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="beer.unacceptable.unacceptablehealth.Screens.MainActivity"/>
+                android:value="beer.unacceptable.unacceptablehealth.Screens.MainActivity" />
         </activity>
         <activity
             android:name=".Screens.FoodDatabase"
@@ -123,13 +124,12 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="beer.unacceptable.unacceptablehealth.Screens.MainActivity"/>
+                android:value="beer.unacceptable.unacceptablehealth.Screens.MainActivity" />
         </activity>
         <activity
             android:name=".Screens.ViewRecipe"
             android:label="@string/title_activity_view_recipe"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".Screens.RecipeList"
             android:label="@string/title_activity_recipe_list"
@@ -137,32 +137,31 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="beer.unacceptable.unacceptablehealth.Screens.MainActivity"/>
+                android:value="beer.unacceptable.unacceptablehealth.Screens.MainActivity" />
         </activity>
         <activity
             android:name=".Screens.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.unacceptable.unacceptablelibrary.Screens.LoginActivity"
             android:label="@string/title_activity_login"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
 
         <receiver
             android:name=".Receivers.DailyLogAlarmReceiver"
-            android:enabled="true">
-        </receiver>
+            android:enabled="true"></receiver>
         <receiver
             android:name=".Receivers.BootReceiver"
             android:enabled="true">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
     </application>

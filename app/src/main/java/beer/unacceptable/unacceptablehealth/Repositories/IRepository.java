@@ -21,4 +21,5 @@ public interface IRepository {
     void LoadWorkoutPlan(String idString, RepositoryCallback callback);
     void LoadWorkoutPlansByExercise(String idString, RepositoryCallback callback);
     void GetWorkoutPlanHistory(String idString, RepositoryCallback callback);
+    void LoadAllDailyLogs(RepositoryCallback callback);
 }

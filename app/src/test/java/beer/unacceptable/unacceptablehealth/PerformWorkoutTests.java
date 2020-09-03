@@ -62,37 +62,37 @@ public class PerformWorkoutTests {
         m_oController.LoadWorkoutPlan("5cae783ac24c7f33b82a94f1");
 
         verify(view).PopulateScreenWithExercisePlan(eq(m_WorkoutPlan.ExercisePlans.get((0))));
-        verify(view, never()).CompleteWorkout();
+        verify(view, never()).CompleteWorkout(null);
         clearInvocations(view);
 
         m_oController.finishSet();
 
         verify(view).SwitchToRestView();
         verify(view).StartRestChronometer(any(long.class));
-        verify(view, never()).CompleteWorkout();
+        verify(view, never()).CompleteWorkout(null);
         clearInvocations(view);
 
-        m_oController.finishRest();
+        m_oController.finishRest(null);
 
         verify(view).SwitchToWorkoutView();
         verify(view).PopulateScreenWithExercisePlan(m_WorkoutPlan.ExercisePlans.get(0));
-        verify(view).StopChronometer();
-        verify(view, never()).CompleteWorkout();
+        verify(view).StopRestChronometer();
+        verify(view, never()).CompleteWorkout(null);
         clearInvocations(view);
 
         m_oController.finishSet();
 
         verify(view).SwitchToRestView();
         verify(view).StartRestChronometer(any(long.class));
-        verify(view, never()).CompleteWorkout();
+        verify(view, never()).CompleteWorkout(null);
         clearInvocations(view);
 
-        m_oController.finishRest();
+        m_oController.finishRest(null);
 
         verify(view).SwitchToWorkoutView();
         verify(view).PopulateScreenWithExercisePlan(m_WorkoutPlan.ExercisePlans.get(1));
-        verify(view).StopChronometer();
-        verify(view, never()).CompleteWorkout();
+        verify(view).StopRestChronometer();
+        verify(view, never()).CompleteWorkout(null);
         clearInvocations(view);
     }
 
@@ -103,9 +103,9 @@ public class PerformWorkoutTests {
         //finish all the sets we have
         for (int i = 0; i < 2+6+5; i++ ) {
             m_oController.finishSet();
-            m_oController.finishRest();
+            m_oController.finishRest(null);
         }
 
-        verify(view).CompleteWorkout();
+        verify(view).CompleteWorkout(null);
     }
 }

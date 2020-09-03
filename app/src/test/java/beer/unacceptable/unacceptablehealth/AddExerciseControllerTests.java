@@ -62,7 +62,7 @@ public class AddExerciseControllerTests {
 
     @Test
     public void emptyScreen_SaveClicked_ErrorsShown() {
-        m_oController.Save("","", new ArrayList<ListableObject>(), false, false, false);
+        m_oController.Save("", new ArrayList<ListableObject>(), false, false, false, "");
 
         verify(view).SetNameError(anyString());
         verify(view).ShowToast(anyString());
@@ -76,7 +76,7 @@ public class AddExerciseControllerTests {
         m.name = "Bicep";
         muscles.add(m);
 
-        m_oController.Save("123","Test", muscles, false, false, false);
+        m_oController.Save("Test", muscles, false, false, false, "123");
 
         verify(view, never()).SetNameError(anyString());
         verify(libraryRepository).Save(anyString(), any(byte[].class), any(RepositoryCallback.class));
@@ -85,11 +85,11 @@ public class AddExerciseControllerTests {
 
     @Test
     public void emptyScreen_ErrorsShow_FixError_ErrorCleared() {
-        m_oController.Save("","", null, false, false, false);
+        m_oController.Save("", null, false, false, false, "");
 
         verify(view).SetNameError(anyString());
 
-        m_oController.Save("", "Test", new ArrayList<ListableObject>(), false, false, false);
+        m_oController.Save( "Test", new ArrayList<ListableObject>(), false, false, false, "");
 
         verify(view, atLeastOnce()).ClearErrors();
     }

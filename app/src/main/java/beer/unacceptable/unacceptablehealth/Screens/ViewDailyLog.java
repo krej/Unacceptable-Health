@@ -154,8 +154,8 @@ public class ViewDailyLog extends BaseActivity implements DailyLogLogic.View {
         chkWorkDay.setChecked(dailyLog.WorkDay);
         rbWorkRating.setRating(dailyLog.WorkRating);
         rbPersonalDayRating.setRating(dailyLog.PersonalDayRating);
-        txtMindfulMoment.setText(dailyLog.MindfulMoment);
-        txtOverallNotes.setText(dailyLog.OverallNotes);
+        txtMindfulMoment.setText(dailyLog.getMindfulMoment());
+        txtOverallNotes.setText(dailyLog.getOverallNotes());
 
         AnimateView(chkUsedFlonase, radFlo);
         AnimateView(chkWorkDay, llWorkRating);

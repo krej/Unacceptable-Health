@@ -4,6 +4,8 @@ import com.google.gson.annotations.Expose;
 import com.unacceptable.unacceptablelibrary.Models.ListableObject;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
+import org.apache.commons.codec.binary.Base64;
+
 import java.util.Date;
 
 public class DailyLog extends ListableObject {
@@ -96,4 +98,13 @@ public class DailyLog extends ListableObject {
     public boolean isFlonaseAllergyInsurance() {
         return FlonaseReasoning == 3;
     }
+
+    public String getMindfulMoment() {
+        return Tools.decodeBase64(MindfulMoment);
+    }
+
+    public String getOverallNotes() {
+        return Tools.decodeBase64(OverallNotes);
+    }
+
 }

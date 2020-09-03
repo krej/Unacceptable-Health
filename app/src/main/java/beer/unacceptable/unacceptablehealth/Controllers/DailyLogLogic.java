@@ -106,8 +106,8 @@ public class DailyLogLogic extends BaseLogic<DailyLogLogic.View> {
             m_dlLog.WorkDay = bWorkDay;
             m_dlLog.WorkRating = getWorkRating(bWorkDay, iWorkRating);
             m_dlLog.PersonalDayRating = iPersonalDayRating;
-            m_dlLog.MindfulMoment = sMindfulMoment;
-            m_dlLog.OverallNotes = sOverallNotes;
+            m_dlLog.MindfulMoment = Tools.encodeToBase64(sMindfulMoment);
+            m_dlLog.OverallNotes = Tools.encodeToBase64(sOverallNotes);
 
             m_dlLog.Save(libraryRepository);
         } else {
