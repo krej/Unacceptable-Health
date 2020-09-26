@@ -29,6 +29,8 @@ public class Goal extends ListableObject {
     public WorkoutType OverallGoalAmountType;
     @Expose
     public boolean Acheived;
+    @Expose
+    public ArrayList<GoalExtension> GoalExtensions;
 
     public String DurationLabel() {
         return Tools.FormatDate(StartDate, DailyLog.LongDateFormat) + " to " + Tools.FormatDate(EndDate, DailyLog.LongDateFormat);
@@ -75,5 +77,11 @@ public class Goal extends ListableObject {
 
     public String EndDateFormatted() {
         return Tools.FormatDate(EndDate, DailyLog.LongDateFormat);
+    }
+
+    public void addGoalExtension(GoalExtension goalExtension) {
+        if (GoalExtensions == null) GoalExtensions = new ArrayList<>();
+
+        GoalExtensions.add(goalExtension);
     }
 }

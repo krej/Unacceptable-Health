@@ -1,5 +1,6 @@
 package beer.unacceptable.unacceptablehealth.Screens;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -20,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -27,13 +29,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
+import com.unacceptable.unacceptablelibrary.Models.CustomCallback;
+import com.unacceptable.unacceptablelibrary.Repositories.LibraryRepository;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 
 import beer.unacceptable.unacceptablehealth.Adapters.GoalItemAdapterViewControl;
+import beer.unacceptable.unacceptablehealth.Controllers.CreateGoalController;
+import beer.unacceptable.unacceptablehealth.Controllers.DateLogic;
 import beer.unacceptable.unacceptablehealth.Controllers.MainScreenController;
 import beer.unacceptable.unacceptablehealth.Controllers.ViewGoalController;
 import beer.unacceptable.unacceptablehealth.Models.DailyLog;
@@ -46,8 +53,7 @@ import beer.unacceptable.unacceptablehealth.Repositories.Repository;
 
 public class ViewGoal
         extends BaseActivity
-    implements ViewGoalController.View
-        {
+        implements ViewGoalController.View {
 
     //A lot of this is copy and pasted from CreateGoal. Maybe I should combine these? I don't know...
     TextView m_etStartDate;
@@ -89,7 +95,7 @@ public class ViewGoal
         m_viewPager.setAdapter(m_SectionsPagerAdapter);
         m_TabLayout.setupWithViewPager(m_viewPager);
 
-        m_oController = new ViewGoalController(new Repository());
+        m_oController = new ViewGoalController(new Repository(), new DateLogic(), new LibraryRepository());
         m_oController.attachView(this);
         m_oController.loadWorkoutTypes();
 
@@ -161,7 +167,7 @@ public class ViewGoal
     }
 
 
-            /**** tab stuff here ***/
+    /**** tab stuff here ***/
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         GoalItemsFragment m_oUpcomingFragment;
@@ -215,12 +221,50 @@ public class ViewGoal
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_view_goal, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+
+        switch (id) {
+            case R.id.extendGoal:
+                m_oController.extendGoal();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void ShowCalendar() {
+        Tools.ShowCalendar(ViewGoal.this, o -> {
+            Calendar c = (Calendar)o;
+            m_oController.extendGoal(c);
+        });
+    }
+
+    @Override
+    public void ShowToast(String sMessage) {
+        Tools.ShowToast(getApplicationContext(), sMessage, Toast.LENGTH_SHORT);
+    }
+
     public static class GoalItemsFragment extends Fragment
-    implements MainScreenController.View{
+            implements MainScreenController.View {
         private RecyclerView m_rvGoalItems;
         private NewAdapter m_Adapter;
 
-        public GoalItemsFragment() {}
+        public GoalItemsFragment() {
+        }
 
         public static GoalItemsFragment newInstance(int sectionNumber) {
             GoalItemsFragment fragment = new GoalItemsFragment();
@@ -246,8 +290,8 @@ public class ViewGoal
             for (GoalItem gi : goalItems) {
                 //TODO: Put this logic in a controller so i can test it
 
-                if (bShowPastGoalItems || gi.Date.after(dt) || (Tools.CompareDatesWithoutTime(gi.Date, dt) && !gi.Completed) )
-                m_Adapter.add(gi);
+                if (bShowPastGoalItems || gi.Date.after(dt) || (Tools.CompareDatesWithoutTime(gi.Date, dt) && !gi.Completed))
+                    m_Adapter.add(gi);
             }
         }
 

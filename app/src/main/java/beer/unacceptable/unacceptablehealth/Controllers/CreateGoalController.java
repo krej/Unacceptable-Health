@@ -151,27 +151,39 @@ public class CreateGoalController extends BaseLogic<CreateGoalController.View> {
     }
 
     public void createGoalItems(boolean bBasedOnWeek) {
-        Date dt = m_oGoal.StartDate;
-        Date dtEnd = addDays(m_oGoal.EndDate,1);
+        //Date dt = m_oGoal.StartDate;
+        //Date dtEnd = addDays(m_oGoal.EndDate,1);
         m_oGoal.GoalItems = new ArrayList<>();
-        int iWorkoutCounter = 0;
 
-        while (dt.before(dtEnd)) {
+        createGoalItems(m_oGoal.StartDate, m_oGoal.EndDate, bBasedOnWeek, m_oGoal, m_oPendingGoalItems);
+    }
+
+    public void createGoalItems(Date dtStart, Date dtEnd, boolean bBasedOnWeek, Goal goal, ArrayList<PendingGoalItem> pendingGoalItems) {
+        dtEnd = Tools.addDays(dtEnd, 1);
+
+        Calendar cStart = Calendar.getInstance();
+        Calendar cEnd = Calendar.getInstance();
+        cStart.setTime(dtStart);
+        cEnd.setTime(dtEnd);
+
+        int iWorkoutCounter = 0;
+        while ( !Tools.isSameDay(cStart, cEnd)) {
 
             if (bBasedOnWeek) {
-                ArrayList<PendingGoalItem> pendingGoalItems = getPendingGoalItemsForDay(m_oPendingGoalItems, Tools.FormatDate(dt, "EEEE")); //EEEE is the day of week spelled out fully: https://knowm.org/get-day-of-week-from-date-object-in-java/
-                for(PendingGoalItem p : pendingGoalItems) {
-                    GoalItem g = new GoalItem(dt, p.WorkoutType);
-                    m_oGoal.GoalItems.add(g);
+                ArrayList<PendingGoalItem> pendingGIs = getPendingGoalItemsForDay(pendingGoalItems, Tools.FormatDate(cStart.getTime(), "EEEE")); //EEEE is the day of week spelled out fully: https://knowm.org/get-day-of-week-from-date-object-in-java/
+                for(PendingGoalItem p : pendingGIs) {
+                    GoalItem g = new GoalItem(cStart.getTime(), p.WorkoutType);
+                    goal.GoalItems.add(g);
                 }
             } else {
-                GoalItem g = new GoalItem(dt, m_oPendingGoalItems.get(iWorkoutCounter % m_oPendingGoalItems.size()).WorkoutType);
+                GoalItem g = new GoalItem(cStart.getTime(), pendingGoalItems.get(iWorkoutCounter % pendingGoalItems.size()).WorkoutType);
                 iWorkoutCounter++;
-                m_oGoal.GoalItems.add(g);
+                goal.GoalItems.add(g);
             }
 
 
-            dt = addDays(dt, 1);
+            //dtStart = Tools.addDays(dtStart, 1);
+            cStart.add(Calendar.DATE, 1);
         }
     }
 
@@ -186,12 +198,7 @@ public class CreateGoalController extends BaseLogic<CreateGoalController.View> {
         return pgiByday;
     }
 
-    private Date addDays(Date dt, int days) {
-        Calendar c = Calendar.getInstance();
-        c.setTime(dt);
-        c.add(Calendar.DATE, days);
-        return c.getTime();
-    }
+
 
 
     public ArrayList<GoalItem> getGoalItems() {
