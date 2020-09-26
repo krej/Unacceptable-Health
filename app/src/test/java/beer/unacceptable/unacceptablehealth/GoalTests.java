@@ -359,6 +359,8 @@ public class GoalTests {
                 return null;
             }
         }).when(m_repo).LoadGoal(eq("123"), any(RepositoryCallback.class));
+
+
     }
 
     @Test

@@ -32,6 +32,8 @@ import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
 import com.unacceptable.unacceptablelibrary.Repositories.LibraryRepository;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
+import java.util.ArrayList;
+
 import beer.unacceptable.unacceptablehealth.Adapters.GoalItemAdapterViewControl;
 import beer.unacceptable.unacceptablehealth.Adapters.WorkoutPlanAdapterViewControl;
 import beer.unacceptable.unacceptablehealth.Controllers.DailyLogLogic;
@@ -39,6 +41,7 @@ import beer.unacceptable.unacceptablehealth.Controllers.DateLogic;
 import beer.unacceptable.unacceptablehealth.Controllers.MainScreenController;
 import beer.unacceptable.unacceptablehealth.Models.DailyLog;
 import beer.unacceptable.unacceptablehealth.Models.GoalItem;
+import beer.unacceptable.unacceptablehealth.Models.WorkoutPlan;
 import beer.unacceptable.unacceptablehealth.R;
 import beer.unacceptable.unacceptablehealth.Repositories.Repository;
 
@@ -272,8 +275,10 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public void populateTodaysGoalItems(GoalItem[] goalItems) {
+    public void populateTodaysGoalItems(GoalItem[] goalItems, WorkoutPlan[] plans) {
         m_GoalItemsAdapter.clear();
+        GoalItemAdapterViewControl vc = (GoalItemAdapterViewControl)m_GoalItemsAdapter.getAdapterViewControl();
+        vc.setWorkoutPlans(plans);
 
         for (GoalItem goalItem : goalItems) {
             m_GoalItemsAdapter.add(goalItem);
@@ -300,6 +305,11 @@ public class MainActivity extends BaseActivity
     @Override
     public void showToast(String sMessage) {
         Tools.ShowToast(getApplicationContext(), sMessage, Toast.LENGTH_LONG);
+    }
+
+    @Override
+    public void enableCompleteWorkoutButton(boolean bEnabled) {
+
     }
 
     private void createNotificationChannel() {

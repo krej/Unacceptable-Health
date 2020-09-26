@@ -137,7 +137,7 @@ public class AddExerciseController extends BaseLogic<AddExerciseController.View>
         m_repo.LoadWorkoutPlansByExercise(m_Exercise.idString, new RepositoryCallback() {
             @Override
             public void onSuccess(String t) {
-                WorkoutPlanList list = Tools.convertJsonResponseToObject(t, WorkoutPlanList.class);
+                WorkoutPlanList list = Tools.convertJsonResponseToObject(t, WorkoutPlanList.class, true);
 
                 //its in use, show a warning
                 if (list.WorkoutPlans.length > 0) {

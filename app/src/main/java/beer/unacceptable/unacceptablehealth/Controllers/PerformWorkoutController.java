@@ -27,6 +27,14 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
     private long m_lStartTime; //TODO: store this in a workout object
     private ITimeSource m_TimeSource;
     private long m_lRestStartTime;
+    private boolean m_bBetweenExercises;
+    private Workout m_oWorkout;
+
+    /**
+     * This is used to let me click finish and rest instead of long click when debugging things and I just want to get to the end of it.
+     * DO NOT CHECK IN OR USE WITH THIS AS TRUE
+     */
+    private boolean DEBUGMODE = false;
 
     public PerformWorkoutController(IRepository repo, ILibraryRepository libraryRepository, ITimeSource timeSource) {
         m_Repo = repo;
@@ -35,13 +43,14 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
         m_bIsInRestMode = false;
         m_TimeSource = timeSource;
         m_lStartTime = m_TimeSource.currentTimeMillis();
+        m_oWorkout = null;
     }
 
     public void LoadWorkoutPlan(String idString) {
         m_Repo.LoadWorkoutPlan(idString, new RepositoryCallback() {
             @Override
             public void onSuccess(String t) {
-                WorkoutPlan plan = Tools.convertJsonResponseToObject(t, WorkoutPlan.class);
+                WorkoutPlan plan = Tools.convertJsonResponseToObject(t, WorkoutPlan.class, true);
                 m_WorkoutPlan = plan;
                 view.PopulateScreenWithExercisePlan(m_WorkoutPlan.ExercisePlans.get(m_iCurrentExercisePlan));
                 showNotification();
@@ -81,20 +90,46 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
     /**
      * Button click to finish the set
      */
-    public void finishSet() {
-        m_bIsInRestMode = true;
+    public void finishSet(boolean bFinish) {
+        bFinish = DebugFinishVariable(bFinish);
 
-        view.StopWorkoutChronometer();
+        if (bFinish) {
+            m_bIsInRestMode = true;
 
-        //getCurrentExercisePlan().CompletedSets += 1;
-        completeSet(getCurrentExercisePlan());
+            view.StopWorkoutChronometer();
 
-        view.SwitchToRestView();
+            //getCurrentExercisePlan().CompletedSets += 1;
+            completeSet(getCurrentExercisePlan());
 
-        m_lRestStartTime = m_TimeSource.currentTimeMillis();
-        view.StartRestChronometer(getElapsedTime(m_lRestStartTime));
+            if (!CheckForFinishedWorkout()) {
 
-        ShowNextWorkoutInRestView(m_lRestStartTime);
+                view.SwitchToRestView();
+
+                m_lRestStartTime = m_TimeSource.currentTimeMillis();
+                view.StartRestChronometer(getElapsedTime(m_lRestStartTime));
+
+                ShowNextWorkoutInRestView(m_lRestStartTime);
+            }
+        } else {
+            view.ShowToast(getFinishedButtonText());
+        }
+    }
+
+    private String getFinishedButtonText() {
+        if (DEBUGMODE) {
+            return "Single press to continue.";
+        }
+        return "Long press to continue.";
+    }
+
+    /**
+     * This inverts the functionality of the 'Finish Set/Rest' buttons, so when debugging you can
+     * quickly click it instead of long press.
+     */
+    private boolean DebugFinishVariable(boolean bFinish) {
+        if (DEBUGMODE)
+            bFinish = !bFinish;
+        return bFinish;
     }
 
     private void completeSet(ExercisePlan ep) {
@@ -113,12 +148,18 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
             view.ShowNextWeights(AddExerciseController.getVisibility(next.Exercise.ShowWeight));
             view.PopulateNextExercise(next, getIncompleteExercises());
             sNotificationText = "Next Workout: " + next.name;
+            m_bBetweenExercises = true;
         } else {
             view.ShowNextExercise(AddExerciseController.getVisibility(false));
             sNotificationText = "Rest Time - " + getCurrentExercisePlan().toString();
+            m_bBetweenExercises = false;
         }
 
         showNotification(sNotificationText, true, iTime);
+    }
+
+    public boolean isBetweenExercises() {
+        return m_bBetweenExercises;
     }
 
     private ExercisePlan[] getIncompleteExercises() {
@@ -138,31 +179,45 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
         return result;
     }
 
-    public void finishRest(ExercisePlan ep) {
-        m_bIsInRestMode = false;
+    public void finishRest(ExercisePlan ep, boolean bFinish) {
+        bFinish = DebugFinishVariable(bFinish);
 
-        if (ep != null)
-            SetCurrentExercisePlan(ep);
+        if (bFinish) {
+            m_bIsInRestMode = false;
 
-        ExercisePlan exercisePlan = getCurrentExercisePlan();
+            if (ep != null)
+                SetCurrentExercisePlan(ep);
 
-        if (exercisePlan.CompletedSets >= exercisePlan.Sets) {
-            exercisePlan.Completed = true;
-            //m_iCurrentExercisePlan++;
+            ExercisePlan exercisePlan = getCurrentExercisePlan();
+
+            if (exercisePlan.CompletedSets >= exercisePlan.Sets) {
+                exercisePlan.Completed = true;
+                //m_iCurrentExercisePlan++;
+            }
+
+            //TODO: Check if you're done with all your exercises and go to the finished screen if so
+            view.StopRestChronometer();
+
+            //if (m_iCurrentExercisePlan >= m_WorkoutPlan.ExercisePlans.size()) {
+            //if (getIncompleteExercises().length == 0) {
+            //    completeWorkout();
+            //} else {
+            if (!CheckForFinishedWorkout()) {
+                view.SwitchToWorkoutView();
+                view.PopulateScreenWithExercisePlan(getCurrentExercisePlan());
+                showNotification();
+            }
+        } else {
+            view.ShowToast(getFinishedButtonText());
         }
+    }
 
-        //TODO: Check if you're done with all your exercises and go to the finished screen if so
-        view.StopRestChronometer();
-
-        //if (m_iCurrentExercisePlan >= m_WorkoutPlan.ExercisePlans.size()) {
+    private boolean CheckForFinishedWorkout() {
         if (getIncompleteExercises().length == 0) {
             completeWorkout();
-        } else {
-            view.SwitchToWorkoutView();
-            view.PopulateScreenWithExercisePlan(getCurrentExercisePlan());
-            showNotification();
+            return true;
         }
-
+        return false;
     }
 
     private void SetCurrentExercisePlan(ExercisePlan ep) {
@@ -172,9 +227,9 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
     private void completeWorkout() {
         view.CancelNotification();
 
-        Workout workout = createWorkout();
+        m_oWorkout = createWorkout();
 
-        view.CompleteWorkout(workout);
+        view.CompleteWorkout(m_oWorkout);
     }
 
     private Workout createWorkout() {
@@ -192,7 +247,7 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
         return m_WorkoutPlan.ExercisePlans.get(m_iCurrentExercisePlan);
     }
     
-    private ExercisePlan getNextExercisePlan() {
+    public ExercisePlan getNextExercisePlan() {
         /*if (m_WorkoutPlan.ExercisePlans.size() > m_iCurrentExercisePlan + 1)
             return m_WorkoutPlan.ExercisePlans.get(m_iCurrentExercisePlan + 1);
         */
@@ -242,6 +297,10 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
         m_WorkoutPlan.HasChanges = true;
 
         view.PopulateScreenWithExercisePlan(getCurrentExercisePlan());
+    }
+
+    public Workout getWorkout() {
+        return m_oWorkout;
     }
 
     public interface View {

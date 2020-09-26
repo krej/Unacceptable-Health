@@ -7,11 +7,19 @@ import com.unacceptable.unacceptablelibrary.Models.Response;
 import com.unacceptable.unacceptablelibrary.Repositories.RepositoryCallback;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
+import beer.unacceptable.unacceptablehealth.Models.CustomReturns.GoalItemsWithWorkoutPlans;
 import beer.unacceptable.unacceptablehealth.Models.DailyLog;
 import beer.unacceptable.unacceptablehealth.Models.GoalItem;
 import beer.unacceptable.unacceptablehealth.Models.GoalItemAction;
+import beer.unacceptable.unacceptablehealth.Models.Workout;
+import beer.unacceptable.unacceptablehealth.Models.WorkoutPlan;
+import beer.unacceptable.unacceptablehealth.Models.WorkoutType;
 import beer.unacceptable.unacceptablehealth.Repositories.IRepository;
 
 public class MainScreenController extends BaseLogic<MainScreenController.View> {
@@ -52,6 +60,9 @@ public class MainScreenController extends BaseLogic<MainScreenController.View> {
 
             @Override
             public void onError(VolleyError error) {
+                if (Tools.isHttpCleartextError(error)) {
+                    view.showToast("Add the APIs new IP address to the apps HTTP Cleartext allowed IPs.");
+                }
                 view.showTodaysLog(false);
                 view.showNewLogButton(false);
                 view.showDailyLogError();
@@ -69,22 +80,42 @@ public class MainScreenController extends BaseLogic<MainScreenController.View> {
         m_repo.LoadGoalItemsByDate(todaysDate(), new RepositoryCallback() {
             @Override
             public void onSuccess(String t) {
-                GoalItem[] goalItems = Tools.convertJsonResponseToObject(t, GoalItem[].class);
-                if (goalItems.length > 0) {
-                    view.populateTodaysGoalItems(goalItems);
+                GoalItemsWithWorkoutPlans result = Tools.convertJsonResponseToObject(t, GoalItemsWithWorkoutPlans.class, true);
+                GoalItem[] goalItems = result.GoalItems;
+                WorkoutPlan[] oWorkoutPlans = result.WorkoutPlans;
+                boolean bGoalItemsExist = goalItems != null && goalItems.length > 0;
+
+                Arrays.sort(oWorkoutPlans, Comparator.comparing(WorkoutPlan::GetLastUsedAsInt));
+
+                /*if (goalItems.length > 0) {
+                    view.populateTodaysGoalItems(goalItems, oWorkoutPlans);
                     view.setGoalItemsVisibility(true);
                     view.setNoGoalLabelVisibility(false);
                 } else {
                     view.setGoalItemsVisibility(false);
                     view.setNoGoalLabelVisibility(true);
-                }
+                }*/
+
+                if (bGoalItemsExist) view.populateTodaysGoalItems(goalItems, oWorkoutPlans);
+                view.setGoalItemsVisibility(bGoalItemsExist);
+                view.setNoGoalLabelVisibility(!bGoalItemsExist);
+                view.enableCompleteWorkoutButton(true);
             }
 
             @Override
             public void onError(VolleyError error) {
-
+                if (Tools.isHttpCleartextError(error)) {
+                    view.showToast("Add the APIs new IP address to the apps HTTP Cleartext allowed IPs.");
+                }
             }
         });
+    }
+
+
+
+    private WorkoutPlan[] sortWorkoutPlans(WorkoutPlan[] plans) {
+        Arrays.sort(plans, Comparator.comparing(WorkoutPlan::GetLastUsedAsInt));
+        return plans;
     }
 
     public void ToggleGoalItemComplete(final GoalItem goalItem, final NewAdapter adapter) {
@@ -170,9 +201,10 @@ public class MainScreenController extends BaseLogic<MainScreenController.View> {
 
         void populateTodaysLog(DailyLog dl);
         void showDailyLogError();
-        void populateTodaysGoalItems(GoalItem[] goalItems);
+        void populateTodaysGoalItems(GoalItem[] goalItems, WorkoutPlan[] plans);
         void setGoalItemsVisibility(boolean bVisible);
         void setNoGoalLabelVisibility(boolean bVisible);
         void showToast(String sMessage);
+        void enableCompleteWorkoutButton(boolean bEnabled);
     }
 }

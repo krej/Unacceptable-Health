@@ -4,12 +4,15 @@ import com.android.volley.VolleyError;
 import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
 import com.unacceptable.unacceptablelibrary.Repositories.RepositoryCallback;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 
 import beer.unacceptable.unacceptablehealth.Controllers.IDateLogic;
@@ -17,6 +20,7 @@ import beer.unacceptable.unacceptablehealth.Controllers.MainScreenController;
 import beer.unacceptable.unacceptablehealth.Models.DailyLog;
 import beer.unacceptable.unacceptablehealth.Models.GoalItem;
 import beer.unacceptable.unacceptablehealth.Models.GoalItemAction;
+import beer.unacceptable.unacceptablehealth.Models.WorkoutPlan;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutType;
 import beer.unacceptable.unacceptablehealth.Repositories.IRepository;
 
@@ -169,5 +173,22 @@ public class MainScreenControllerTest {
         m_oController.ToggleGoalItemComplete(goalItem, null);
 
         verify(view).showToast(eq("No GoalItems Completed"));
+    }
+
+    @Test
+    public void SortWorkoutPlansByLastUsed() {
+        WorkoutPlan[] plans = new WorkoutPlan[2];
+        WorkoutPlan w1 = new WorkoutPlan();
+        w1.LastUsed = new Date(2020,9,11);
+        w1.name = "One";
+        plans[1] = w1;
+        WorkoutPlan w0 = new WorkoutPlan();
+        w0.LastUsed = new Date(2019,2,3);
+        plans[0] = w0;
+        w0.name = "Zero";
+
+        Arrays.sort(plans, Comparator.comparing(WorkoutPlan::GetLastUsedAsInt));
+
+        Assert.assertEquals("One", plans[0].name);
     }
 }

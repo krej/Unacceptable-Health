@@ -97,7 +97,7 @@ public class WorkoutPlanController extends BaseLogic<WorkoutPlanController.View>
         m_repo.LoadWorkoutPlanWithExtras(idString, new RepositoryCallback() {
             @Override
             public void onSuccess(String t) {
-                WorkoutPlanWithExtras data = Tools.convertJsonResponseToObject(t, WorkoutPlanWithExtras.class);
+                WorkoutPlanWithExtras data = Tools.convertJsonResponseToObject(t, WorkoutPlanWithExtras.class, true);
 
                 view.PopulateExercises(data.Exercises);
                 view.PopulateWorkoutType(data.WorkoutTypes);
@@ -142,7 +142,7 @@ public class WorkoutPlanController extends BaseLogic<WorkoutPlanController.View>
         m_repo.GetWorkoutPlanHistory(m_WorkoutPlan.idString, new RepositoryCallback() {
             @Override
             public void onSuccess(String t) {
-                Workout[] workouts = Tools.convertJsonResponseToObject(t, Workout[].class);
+                Workout[] workouts = Tools.convertJsonResponseToObject(t, Workout[].class, true);
                 view.LoadHistoryScreen(workouts);
             }
 

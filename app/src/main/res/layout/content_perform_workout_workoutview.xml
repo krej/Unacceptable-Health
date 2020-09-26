@@ -47,7 +47,9 @@
                 android:paddingEnd="5dp"
                 android:text="W"
                 android:textAlignment="textEnd"
-                android:textSize="32sp"/>
+                android:textSize="32sp"
+                android:inputType="numberDecimal"
+                android:selectAllOnFocus="true"/>
 
             <TextView
                 android:id="@+id/weight_label"

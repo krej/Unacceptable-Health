@@ -39,6 +39,7 @@ import beer.unacceptable.unacceptablehealth.Controllers.ViewGoalController;
 import beer.unacceptable.unacceptablehealth.Models.DailyLog;
 import beer.unacceptable.unacceptablehealth.Models.Goal;
 import beer.unacceptable.unacceptablehealth.Models.GoalItem;
+import beer.unacceptable.unacceptablehealth.Models.WorkoutPlan;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutType;
 import beer.unacceptable.unacceptablehealth.R;
 import beer.unacceptable.unacceptablehealth.Repositories.Repository;
@@ -275,7 +276,7 @@ public class ViewGoal
         }
 
         @Override
-        public void populateTodaysGoalItems(GoalItem[] goalItems) {
+        public void populateTodaysGoalItems(GoalItem[] goalItems, WorkoutPlan[] plans) {
 
         }
 
@@ -292,6 +293,11 @@ public class ViewGoal
         @Override
         public void showToast(String sMessage) {
             Tools.ShowToast(getContext(), sMessage, Toast.LENGTH_LONG);
+        }
+
+        @Override
+        public void enableCompleteWorkoutButton(boolean bEnabled) {
+
         }
     }
 }

@@ -17,6 +17,7 @@ import beer.unacceptable.unacceptablehealth.Controllers.MainScreenController;
 import beer.unacceptable.unacceptablehealth.Models.DailyLog;
 import beer.unacceptable.unacceptablehealth.Models.GoalItem;
 import beer.unacceptable.unacceptablehealth.Models.Workout;
+import beer.unacceptable.unacceptablehealth.Models.WorkoutPlan;
 import beer.unacceptable.unacceptablehealth.R;
 import beer.unacceptable.unacceptablehealth.Repositories.Repository;
 
@@ -75,9 +76,11 @@ public class WorkoutComplete extends BaseActivity implements MainScreenControlle
     }
 
     private void saveAndCompleteWorkout(Workout workout) {
-        for (GoalItem goalItem : m_oGoalItems) {
-            if (goalItem.WorkoutType.idString.equals(workout.WorkoutPlan.WorkoutType.idString)) {
-                m_oController.ToggleGoalItemComplete(goalItem, null);
+        if (m_oGoalItems != null) {
+            for (GoalItem goalItem : m_oGoalItems) {
+                if (goalItem.WorkoutType.idString.equals(workout.WorkoutPlan.WorkoutType.idString)) {
+                    m_oController.ToggleGoalItemComplete(goalItem, null);
+                }
             }
         }
 
@@ -109,10 +112,8 @@ public class WorkoutComplete extends BaseActivity implements MainScreenControlle
     }
 
     @Override
-    public void populateTodaysGoalItems(GoalItem[] goalItems) {
+    public void populateTodaysGoalItems(GoalItem[] goalItems, WorkoutPlan[] plans) {
         m_oGoalItems = goalItems;
-        //TODO: This doesn't belong here but I just want to get it working.
-        btnCompleteWorkout.setEnabled(true);
         Tools.SetText(m_tvDuration, m_Workout.DurationInMinutes());
     }
 
@@ -129,5 +130,10 @@ public class WorkoutComplete extends BaseActivity implements MainScreenControlle
     @Override
     public void showToast(String sMessage) {
 
+    }
+
+    @Override
+    public void enableCompleteWorkoutButton(boolean bEnabled) {
+        btnCompleteWorkout.setEnabled(bEnabled);
     }
 }

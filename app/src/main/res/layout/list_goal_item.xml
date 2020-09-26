@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                             android:layout_width="match_parent"
-                                             android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,5 +28,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView"/>
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lstWorkoutPlans"
+            android:orientation="horizontal"
+            app:flexDirection="row_reverse"
+            app:justifyContent="center"
+            app:alignItems="center"
+            app:flexWrap="wrap"
+            >
+        </com.google.android.flexbox.FlexboxLayout>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

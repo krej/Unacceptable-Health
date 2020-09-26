@@ -11,6 +11,8 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import beer.unacceptable.unacceptablehealth.Controllers.PerformWorkoutController;
+import beer.unacceptable.unacceptablehealth.Models.ExercisePlan;
+import beer.unacceptable.unacceptablehealth.Models.Workout;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutPlan;
 import beer.unacceptable.unacceptablehealth.Repositories.IRepository;
 
@@ -65,14 +67,14 @@ public class PerformWorkoutTests {
         verify(view, never()).CompleteWorkout(null);
         clearInvocations(view);
 
-        m_oController.finishSet();
+        m_oController.finishSet(true);
 
         verify(view).SwitchToRestView();
         verify(view).StartRestChronometer(any(long.class));
         verify(view, never()).CompleteWorkout(null);
         clearInvocations(view);
 
-        m_oController.finishRest(null);
+        m_oController.finishRest(null, true);
 
         verify(view).SwitchToWorkoutView();
         verify(view).PopulateScreenWithExercisePlan(m_WorkoutPlan.ExercisePlans.get(0));
@@ -80,14 +82,14 @@ public class PerformWorkoutTests {
         verify(view, never()).CompleteWorkout(null);
         clearInvocations(view);
 
-        m_oController.finishSet();
+        m_oController.finishSet(true);
 
         verify(view).SwitchToRestView();
         verify(view).StartRestChronometer(any(long.class));
         verify(view, never()).CompleteWorkout(null);
         clearInvocations(view);
 
-        m_oController.finishRest(null);
+        m_oController.finishRest(m_oController.getNextExercisePlan(), true);
 
         verify(view).SwitchToWorkoutView();
         verify(view).PopulateScreenWithExercisePlan(m_WorkoutPlan.ExercisePlans.get(1));
@@ -100,12 +102,19 @@ public class PerformWorkoutTests {
     public void finalExerciseComplete_finishSetPushed_GoToCompleteScreen() {
         m_oController.LoadWorkoutPlan("5cae783ac24c7f33b82a94f1");
 
+
         //finish all the sets we have
-        for (int i = 0; i < 2+6+5; i++ ) {
-            m_oController.finishSet();
-            m_oController.finishRest(null);
+        for (int i = 0; i < 2+7+6; i++ ) {
+            ExercisePlan ep = null;
+            if ( m_oController.isBetweenExercises())
+                ep = m_oController.getNextExercisePlan();
+
+            m_oController.finishSet(true);
+            if (i < 2+7+6-1)
+            m_oController.finishRest(ep, true);
         }
 
-        verify(view).CompleteWorkout(null);
+        Workout w = m_oController.getWorkout();
+        verify(view).CompleteWorkout(w);
     }
 }

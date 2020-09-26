@@ -219,16 +219,21 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
         m_ViewFlipper.setDisplayedChild(m_ViewFlipper.indexOfChild(findViewById(R.id.performWorkoutRestView)));
     }
 
+    private ExercisePlan getNextSelectedExercise() {
+        ExercisePlan ep = null;
+        //if (m_spNextWorkout.getVisibility() == View.VISIBLE) {
+        if (m_oController.isBetweenExercises()) {
+            ep = (ExercisePlan) m_spNextWorkout.getItemAtPosition(m_spNextWorkout.getSelectedItemPosition());
+        }
+
+        return ep;
+    }
+
     private void SetupRestClickEvents() {
-        m_btnFinishRest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ExercisePlan ep = null;
-                if (m_spNextWorkout.getVisibility() == View.VISIBLE) {
-                    ep = (ExercisePlan) m_spNextWorkout.getItemAtPosition(m_spNextWorkout.getSelectedItemPosition());
-                }
-                m_oController.finishRest(ep);
-            }
+        m_btnFinishRest.setOnClickListener(v -> m_oController.finishRest(getNextSelectedExercise(), false));
+        m_btnFinishRest.setOnLongClickListener(view -> {
+            m_oController.finishRest(getNextSelectedExercise(), true);
+            return true;
         });
 
         m_spNextWorkout.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -271,12 +276,12 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
     }
 
     private void SetupWorkoutClickEvents() {
-        m_btnFinishSet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                m_oController.finishSet();
-            }
+        m_btnFinishSet.setOnClickListener(v -> m_oController.finishSet(false));
+        m_btnFinishSet.setOnLongClickListener(view -> {
+            m_oController.finishSet(true);
+            return true;
         });
+
         m_btnStartWorkoutTimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
