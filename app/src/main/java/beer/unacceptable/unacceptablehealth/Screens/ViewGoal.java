@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 import beer.unacceptable.unacceptablehealth.Adapters.GoalItemAdapterViewControl;
 import beer.unacceptable.unacceptablehealth.Controllers.CreateGoalController;
@@ -88,7 +89,7 @@ public class ViewGoal
                         .setAction("Action", null).show();
             }
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         FindUIElements();
 
         m_SectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());

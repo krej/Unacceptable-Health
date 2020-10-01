@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -16,6 +17,8 @@ import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
 import com.unacceptable.unacceptablelibrary.Tools.Network;
 import com.unacceptable.unacceptablelibrary.Tools.Preferences;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
+
+import java.util.Objects;
 
 import beer.unacceptable.unacceptablehealth.Adapters.DailyLogAdapterViewControl;
 import beer.unacceptable.unacceptablehealth.Models.DailyLog;
@@ -33,6 +36,7 @@ public class DailyLogList extends AppCompatActivity {
         setContentView(R.layout.activity_daily_log_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
 
         m_rvDailyLogs = (RecyclerView)findViewById(R.id.dailyLogList);

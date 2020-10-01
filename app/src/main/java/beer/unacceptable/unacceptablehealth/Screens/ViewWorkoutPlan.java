@@ -213,6 +213,9 @@ public class ViewWorkoutPlan extends BaseActivity implements WorkoutPlanControll
             case R.id.view_workoutplan_history:
                 m_oController.loadHistoryScreen();
                 break;
+            case android.R.id.home:
+                onBackPressed();;
+                break;
         }
 
         return true;

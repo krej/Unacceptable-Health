@@ -226,6 +226,10 @@ public class ViewDailyLog extends BaseActivity implements DailyLogLogic.View {
         switch(item.getItemId()) {
             case R.id.save_recipe:
                 SaveDailyLog();
+                break;
+            case android.R.id.home:
+                onBackPressed();
+                break;
         }
 
         return true;
