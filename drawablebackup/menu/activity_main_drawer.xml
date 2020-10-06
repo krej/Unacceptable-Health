@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_exercise"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/nav_title_exercise"/>
+        <item
+            android:id="@+id/nav_nutrition"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/nav_title_nutrition"/>
+        <item
+            android:id="@+id/nav_recipes"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/nav_title_recipes"/>
+        <item
+            android:id="@+id/nav_daily_logs"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/view_daily_log"/>
+
+    </group>
+
+    <item android:title="Setup">
+        <menu>
+            <item
+                android:id="@+id/nav_goals"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="@string/nav_title_goals"/>
+            <item
+                android:id="@+id/nav_food_database"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="@string/nav_title_food_database"/>
+            <item
+                android:id="@+id/nav_exercise_database"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="@string/nav_title_exercise_database"/>
+        </menu>
+    </item>
+
+    <item android:title="Account">
+        <menu>
+            <item
+                android:id="@+id/nav_sign_out"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="@string/nav_title_sign_out"/>
+        </menu>
+    </item>
+
+</menu>

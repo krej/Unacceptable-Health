@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="wrap_content"
+    android:layout_gravity="start">
+
+        <!--android:minHeight="65dp"-->
+    <LinearLayout
+        android:id="@+id/dailyLogPreview_List"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="5dp"
+        android:paddingBottom="15dp"
+        android:orientation="vertical"
+        android:background="?attr/selectableItemBackground">
+
+        <TextView
+            android:id="@+id/dailyLogPreview_Date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            />
+
+        <RatingBar
+            android:id="@+id/dailyLogPreview_OverallDayRating"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:stepSize="0.5"
+            />
+        <!--android:progressTint="#8f3820"-->
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
