@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import beer.unacceptable.unacceptablehealth.Models.CustomReturns.WorkoutPlanWithExtras;
 import beer.unacceptable.unacceptablehealth.Models.Exercise;
 import beer.unacceptable.unacceptablehealth.Models.ExercisePlan;
+import beer.unacceptable.unacceptablehealth.Models.Muscle;
 import beer.unacceptable.unacceptablehealth.Models.Workout;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutPlan;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutType;
@@ -153,6 +154,23 @@ public class WorkoutPlanController extends BaseLogic<WorkoutPlanController.View>
         });
     }
 
+    public void viewMuscleList() {
+        String sMuscleList = getMuscleList();
+        view.ViewMuscleList(sMuscleList);
+    }
+
+    private String getMuscleList() {
+        String sMuscleList = "";
+
+        for (ExercisePlan ep: m_WorkoutPlan.ExercisePlans) {
+            for (Muscle m: ep.Exercise.Muscles) {
+                sMuscleList += m.name + "\n";
+            }
+        }
+
+        return sMuscleList;
+    }
+
     public String getWorkoutPlanName() {
         return m_WorkoutPlan.name;
     }
@@ -169,5 +187,6 @@ public class WorkoutPlanController extends BaseLogic<WorkoutPlanController.View>
 
         void UpdateAdapter();
         void LoadHistoryScreen(Workout[] workouts);
+        void ViewMuscleList(String sMuscleList);
     }
 }

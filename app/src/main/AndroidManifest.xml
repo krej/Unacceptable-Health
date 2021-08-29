@@ -6,6 +6,9 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -155,6 +158,12 @@
             android:name="com.unacceptable.unacceptablelibrary.Screens.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme" />
+        <activity android:name=".Screens.GPXTest"
+            android:label="@string/GPXTesting"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".Screens.MainActivity"/>
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="@string/maps_api_key" />
 
         <receiver
             android:name=".Receivers.DailyLogAlarmReceiver"

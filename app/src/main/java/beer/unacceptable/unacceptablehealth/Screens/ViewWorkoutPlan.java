@@ -210,12 +210,21 @@ public class ViewWorkoutPlan extends BaseActivity implements WorkoutPlanControll
             case R.id.view_workoutplan_history:
                 m_oController.loadHistoryScreen();
                 break;
+            case R.id.view_workoutplan_muscles:
+                m_oController.viewMuscleList();
+                break;
             case android.R.id.home:
                 onBackPressed();;
                 break;
         }
 
         return true;
+    }
+
+    @Override
+    public void ViewMuscleList(String sMuscleList) {
+        //Tools.ShowToast(this, "Test", Toast.LENGTH_LONG);
+        Tools.CreateAlertDialog(this, sMuscleList, false);
     }
 
     private void Save() {

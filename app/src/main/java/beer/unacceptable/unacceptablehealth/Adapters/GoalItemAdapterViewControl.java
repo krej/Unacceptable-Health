@@ -73,6 +73,7 @@ public class GoalItemAdapterViewControl extends BaseAdapterViewControl {
             lstWorkoutPlans.setVisibility(View.GONE);
         }
 
+        ClearWorkoutPlanButtons(lstWorkoutPlans);
         CreateWorkoutPlanButtons(workoutPlans, lstWorkoutPlans, view.view.getContext());
     }
 
@@ -94,12 +95,20 @@ public class GoalItemAdapterViewControl extends BaseAdapterViewControl {
 
     private void CreateWorkoutPlanButtons(ArrayList<WorkoutPlan> workoutPlans, FlexboxLayout lstWorkoutPlans, Context c) {
         for (WorkoutPlan plan : workoutPlans) {
+
             Button b = new Button(c);
             b.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             b.setText(plan.name);
             AddWorkoutPlanButtonClickEvent(b, plan.idString);
             lstWorkoutPlans.addView(b);
         }
+    }
+
+    private void ClearWorkoutPlanButtons(FlexboxLayout lstWorkoutPlans) {
+        //I'm not entirely sure why this is needed. It fixes duplicated buttons when refreshing. However i'd think that when i delete the list of goal items that would fix it
+        //but it doesn't... so I'm doing this
+        //i have not tested it with 2 goal items on the same day.
+        lstWorkoutPlans.removeAllViews();
     }
 
     private void AddWorkoutPlanButtonClickEvent(Button b, String idString) {

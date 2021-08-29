@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.unacceptable.unacceptablelibrary.Repositories.LibraryRepository;
+import com.unacceptable.unacceptablelibrary.Repositories.TimeSource;
 import com.unacceptable.unacceptablelibrary.Tools.CustomizedExceptionHandler;
 import com.unacceptable.unacceptablelibrary.Tools.Network;
 import com.unacceptable.unacceptablelibrary.Tools.Preferences;
@@ -47,7 +49,13 @@ public class BaseActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
         }
         Thread.setDefaultUncaughtExceptionHandler(new CustomizedExceptionHandler(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getPath()));
-
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread paramThread, Throwable paramThrowable) {
+                Tools.LogException(paramThrowable, "Unhanled Exception", new TimeSource(), new LibraryRepository(), getApplicationContext());
+                //System.exit(2);
+            }
+        });
         return true;
     }
 

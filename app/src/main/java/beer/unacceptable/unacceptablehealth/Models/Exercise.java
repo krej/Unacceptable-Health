@@ -16,6 +16,8 @@ public class Exercise extends ListableObject {
     public boolean ShowReps;
     @Expose
     public String Description;
+    @Expose
+    public boolean GPSTracking;
 
     public String toString() {
 
@@ -32,6 +34,9 @@ public class Exercise extends ListableObject {
 
             sResult += sMuscleList + ")";
         }
+
+        if (GPSTracking)
+            sResult += "(GPS)";
 
         return sResult;
     }

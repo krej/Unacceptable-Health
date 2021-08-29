@@ -46,7 +46,7 @@ public class AddExerciseController extends BaseLogic<AddExerciseController.View>
         });
     }
 
-    public void Save(String sName, ArrayList<ListableObject> muscles, boolean bShowWeight, boolean bShowTime, boolean bShowReps, String sDescription) {
+    public void Save(String sName, ArrayList<ListableObject> muscles, boolean bShowWeight, boolean bShowTime, boolean bShowReps, String sDescription, boolean bGPSTracking) {
         boolean bQuit = false;
         view.ClearErrors();
 
@@ -72,6 +72,7 @@ public class AddExerciseController extends BaseLogic<AddExerciseController.View>
         m_Exercise.ShowWeight = bShowWeight;
         m_Exercise.ShowReps = bShowReps;
         m_Exercise.Description = sDescription;
+        m_Exercise.GPSTracking = bGPSTracking;
 
         m_Exercise.Save(m_LibraryRepo);
         view.setScreenTitle(createScreenTitle(m_Exercise));

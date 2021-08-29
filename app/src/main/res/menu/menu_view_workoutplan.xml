@@ -26,6 +26,10 @@
         android:title="@string/copy_to_new_workoutplan"
         />
     <item
+        android:id="@+id/view_workoutplan_muscles"
+        android:orderInCategory="60"
+        android:title="@string/view_muscles_list"/>
+    <item
         android:id="@+id/view_workoutplan_history"
         android:orderInCategory="60"
         android:title="@string/view_history"/>

@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
@@ -38,9 +40,10 @@ public class AddExercise extends BaseActivity implements AddExerciseController.V
     private MuscleAdapterViewControl m_muscleAdapterViewControl;
     private Button m_btnAddMuscle;
     private EditText m_etName;
-    private Switch m_swShowWeight;
-    private Switch m_swShowTime;
-    private Switch m_swShowReps;
+    private SwitchCompat m_swShowWeight;
+    private SwitchCompat m_swShowTime;
+    private SwitchCompat m_swShowReps;
+    private SwitchCompat m_swGPSTracking;
     private EditText m_etDescription;
 
     @Override
@@ -75,6 +78,7 @@ public class AddExercise extends BaseActivity implements AddExerciseController.V
         m_swShowWeight = findViewById(R.id.sw_showWeight);
         m_swShowReps = findViewById(R.id.sw_showReps);
         m_etDescription = findViewById(R.id.exercise_description_text);
+        m_swGPSTracking = findViewById(R.id.swGPSTracking);
     }
 
     private void SetupButtonClickEvents() {
@@ -142,9 +146,10 @@ public class AddExercise extends BaseActivity implements AddExerciseController.V
         boolean bShowWeight = m_swShowWeight.isChecked();
         boolean bShowTime = m_swShowTime.isChecked();
         boolean bShowReps = m_swShowReps.isChecked();
+        boolean bGPSTracking = m_swGPSTracking.isChecked();
         String sDescription = m_etDescription.getText().toString();
 
-        m_oController.Save(sName, muscles, bShowWeight, bShowTime, bShowReps, sDescription);
+        m_oController.Save(sName, muscles, bShowWeight, bShowTime, bShowReps, sDescription, bGPSTracking);
     }
 
     @Override
@@ -181,6 +186,7 @@ public class AddExercise extends BaseActivity implements AddExerciseController.V
         m_swShowTime.setChecked(exercise.ShowTime);
         m_swShowReps.setChecked(exercise.ShowReps);
         Tools.SetText(m_etDescription, exercise.Description);
+        m_swGPSTracking.setChecked(exercise.GPSTracking);
     }
 
     @Override

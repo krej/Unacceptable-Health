@@ -1,13 +1,19 @@
 package beer.unacceptable.unacceptablehealth.Screens;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.SystemClock;
+
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.appcompat.widget.Toolbar;
 import android.text.Editable;
@@ -30,6 +36,9 @@ import android.widget.ViewFlipper;
 import com.unacceptable.unacceptablelibrary.Repositories.LibraryRepository;
 import com.unacceptable.unacceptablelibrary.Repositories.TimeSource;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import beer.unacceptable.unacceptablehealth.Adapters.ExerciseDatabaseViewControl;
 import beer.unacceptable.unacceptablehealth.Adapters.ExerciseSelectionViewControl;
@@ -95,7 +104,17 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
 
         m_ViewFlipper = findViewById(R.id.performWorkoutViewFlipper);
 
-        m_oController = new PerformWorkoutController(new Repository(), new LibraryRepository(), new TimeSource());
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        ExecutorService executorService = Executors.newFixedThreadPool(4);
+
+        //If we don't have GPS permissions, ask for them. Only ask if we do not have them, otherwise it gives a "Permission Granted" toast each time
+        if (!HasGPSPermissions()) {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE}, 1);
+
+            //If we still don't have permissions, don't quit, just keep going...
+            //return;
+        }
+        m_oController = new PerformWorkoutController(new Repository(), new LibraryRepository(), new TimeSource(), executorService, locationManager);
         m_oController.attachView(this);
 
         String idString = getIntent().getStringExtra("idString");
@@ -115,6 +134,12 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
 
         SetupWorkoutClickEvents();
         SetupRestClickEvents();
+    }
+
+    private boolean HasGPSPermissions() {
+        return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE) == PackageManager.PERMISSION_GRANTED;
     }
 
     private void FindUIElementsForWorkoutView() {
@@ -266,6 +291,11 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
     @Override
     public void StopWorkoutChronometer() {
         m_chronoWorkout.stop();
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 
     @Override

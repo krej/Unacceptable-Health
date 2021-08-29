@@ -4,4 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Screens.GPXTest"/>
+    android:orientation="vertical"
+    tools:context=".Screens.GPXTest">
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/GPXTesting" />
+
+    <!--<com.google.android.gms.maps.MapView
+        android:id="@+id/mapViewTest"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />-->
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/map"
+        tools:context=".Screens.GPXTest"
+        android:name="com.google.android.gms.maps.SupportMapFragment" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

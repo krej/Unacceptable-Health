@@ -176,6 +176,9 @@ public class MainActivity extends BaseActivity
             case R.id.create_daily_log:
                 classToLaunch = ViewDailyLog.class;
                 break;
+            case R.id.gpxtesting:
+                classToLaunch = GPXTest.class;
+                break;
         }
 
         if (classToLaunch != null) {
