@@ -8,6 +8,8 @@ import com.unacceptable.unacceptablelibrary.Repositories.RepositoryCallback;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.TreeMap;
 
 import beer.unacceptable.unacceptablehealth.Models.CustomReturns.WorkoutPlanWithExtras;
 import beer.unacceptable.unacceptablehealth.Models.Exercise;
@@ -162,12 +164,42 @@ public class WorkoutPlanController extends BaseLogic<WorkoutPlanController.View>
     private String getMuscleList() {
         String sMuscleList = "";
 
-        for (ExercisePlan ep: m_WorkoutPlan.ExercisePlans) {
+        Map<String, Integer> mMuscleCount = getSortedMuscleCount(m_WorkoutPlan.ExercisePlans);
+        sMuscleList = createMuscleList(sMuscleList, mMuscleCount);
+
+        return sMuscleList;
+    }
+
+    private Map<String, Integer> getSortedMuscleCount(ArrayList<ExercisePlan> exercisePlans) {
+        Map<String, Integer> mMuscleCount = new TreeMap<>();
+
+        for (ExercisePlan ep: exercisePlans) {
             for (Muscle m: ep.Exercise.Muscles) {
-                sMuscleList += m.name + "\n";
+                Integer count = 1;
+                String name = m.name.trim();
+
+                if (mMuscleCount.containsKey(name)) {
+                    count = mMuscleCount.get(name);
+                    count++;
+                }
+
+                mMuscleCount.put(name, count);
             }
         }
 
+        return mMuscleCount;
+    }
+
+    private String createMuscleList(String sMuscleList, Map<String, Integer> mMuscleCount) {
+        for (Map.Entry mapElement : mMuscleCount.entrySet()) {
+            String key = (String)mapElement.getKey();
+            Integer value = (Integer) mapElement.getValue();
+
+            sMuscleList += key;
+            if (value > 1)
+                sMuscleList += " (x" + value + ")";
+            sMuscleList += "\n";
+        }
         return sMuscleList;
     }
 

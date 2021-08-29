@@ -40,7 +40,7 @@ public class PerformWorkoutTests {
         libraryRepository = mock(ILibraryRepository.class);
         repository = mock(IRepository.class);
         m_TimeSource = mock(ITimeSource.class);
-        m_oController = new PerformWorkoutController(repository, libraryRepository, m_TimeSource);
+        m_oController = new PerformWorkoutController(repository, libraryRepository, m_TimeSource, null, null);
         m_oController.attachView(view);
 
         m_sTestPlan = "{\"idString\":\"5cae783ac24c7f33b82a94f1\",\"name\":\"Test Workout 1\",\"WorkoutType\":{\"idString\":\"5c6f8938f293eb1db4da1e62\",\"name\":\"Arms\"},\"ExercisePlans\":[{\"idString\":null,\"name\":\"Bicep Curl\",\"Exercise\":{\"idString\":\"5caa487a60c3331f2cfffcbd\",\"name\":\"Bicep Curl\",\"Muscles\":[{\"idString\":\"5ca692cf81005e41b045712f\",\"name\":\"Bicep\"}],\"ShowWeight\":true,\"ShowTime\":false,\"ShowReps\":true},\"Order\":0,\"Reps\":6,\"Sets\":2,\"Weight\":3.0,\"Seconds\":0},{\"idString\":null,\"name\":\"Tricep Dips\",\"Exercise\":{\"idString\":\"5caa95026063b146b8ab550a\",\"name\":\"Tricep Dips\",\"Muscles\":[{\"idString\":\"5ca6c912f8d26a41943b9186\",\"name\":\"Tricep\"}],\"ShowWeight\":false,\"ShowTime\":false,\"ShowReps\":false},\"Order\":0,\"Reps\":5,\"Sets\":6,\"Weight\":7.0,\"Seconds\":8},{\"idString\":null,\"name\":\"Plank\",\"Exercise\":{\"idString\":\"5cae9cc627ba9d2ab8569e01\",\"name\":\"Plank\",\"Muscles\":[{\"idString\":\"5cae7993089abb0de8c5f9b2\",\"name\":\"Abs\"}],\"ShowWeight\":false,\"ShowTime\":true,\"ShowReps\":false},\"Order\":0,\"Reps\":0,\"Sets\":5,\"Weight\":0.0,\"Seconds\":10}],\"CalorieLogs\":null,\"TotalCalories\":0,\"Id\":\"5cae783ac24c7f33b82a94f1\"}";

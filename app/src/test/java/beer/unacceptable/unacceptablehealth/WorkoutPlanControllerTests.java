@@ -1,8 +1,13 @@
 package beer.unacceptable.unacceptablehealth;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import com.unacceptable.unacceptablelibrary.Repositories.ILibraryRepository;
+import com.unacceptable.unacceptablelibrary.Repositories.RepositoryCallback;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -10,6 +15,7 @@ import org.junit.Test;
 
 import beer.unacceptable.unacceptablehealth.Controllers.WorkoutPlanController;
 import beer.unacceptable.unacceptablehealth.Repositories.IRepository;
+import beer.unacceptable.unacceptablehealth.Repositories.Repository;
 
 public class WorkoutPlanControllerTests {
 
@@ -28,11 +34,46 @@ public class WorkoutPlanControllerTests {
 
         m_Controller = new WorkoutPlanController(repo, LibraryRepo);
         m_Controller.attachView(view);
+
+        doAnswer(invocation -> {
+            RepositoryCallback callback = invocation.getArgument(1);
+            callback.onSuccess(sWorkoutPlanData);
+            return null;
+        }).when(repo).LoadWorkoutPlanWithExtras(eq("5cad619054eaba3fa6788242"), any(RepositoryCallback.class));
+
+        m_Controller.LoadWorkoutPlan("5cad619054eaba3fa6788242");
     }
 
+    /*
+    Notes about this test...
+    To make it easy to test at first I made getMuscleList public so that I didn't need to relearn mockito's verify thing.
+    When doing that, I use Assert.assertEquals. When the test failed, it gave me a "Show Differences" between the actual and expected, in a diff like view that easily highlighted an extra space character that threw it off.
+    Trying to make the controller code "better", I made getMuscleList private and used the mockito verify function.
+
+    This worked, but I no longer have the "Show Differences" which was very helpful. I'm a little torn now. Do I make the code "better", but for what reason other than brownie points? Or do I make the unit tests easier to find bugs with?
+     */
     @Test
     public void Test_Create_MuscleListSummary() {
-        Assert.assertTrue(true);
+        //String sMuscleList = m_Controller.getMuscleList();
+
+        Assert.assertNotNull(m_Controller);
+
+        m_Controller.viewMuscleList();
+
+        verify(view).ViewMuscleList("Back\n" +
+                "Biceps\n" +
+                "Chest (x2)\n" +
+                "Forearm\n" +
+                "Shoulder (x2)\n" +
+                "Triceps (x2)\n");
+
+        /*Assert.assertEquals("Back\n" +
+                        "Biceps\n" +
+                        "Chest (x2)\n" +
+                        "Forearm\n" +
+                        "Shoulder (x2)\n" +
+                        "Triceps (x2)\n",
+                sMuscleList);*/
     }
 
 }
