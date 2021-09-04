@@ -306,4 +306,6 @@
     <string name="GPXTesting">GPX Testing</string>
     <string name="GPSTracking">GPS Tracking</string>
     <string name="view_muscles_list">View Muscles</string>
+    <string name="goal_percent_complete_placeholder">97%</string>
+    <string name="placeholderText">TextView</string>
 </resources>

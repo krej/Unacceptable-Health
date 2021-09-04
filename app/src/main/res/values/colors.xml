@@ -5,4 +5,9 @@
     <color name="colorAccent">#D81B60</color>
     <color name="backgroundGrey">#dbdbdb</color>
     <color name="white">#FFFFFF</color>
+    <color name="textShadow">#000000</color>
+    <color name="percentCompletedGood">#1be035</color>
+    <color name="percentCompleteBad">#f03737</color>
+    <color name="percentCompleteOkay">#eda921</color>
+    <color name="percentCompleteCurrent">#2469ff</color>
 </resources>

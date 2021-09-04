@@ -370,7 +370,7 @@ public class GoalTests {
             @Override
             public void onSuccess(String t) {
                 Goal g = Tools.convertJsonResponseToObject(t, Goal.class);
-                String sCompletedPercent = g.GoalsCompletedPercent(false);
+                String sCompletedPercent = g.GoalsCompletedPercent(false, false);
                 Assert.assertEquals("70", sCompletedPercent);
             }
 

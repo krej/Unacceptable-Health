@@ -1,11 +1,19 @@
 package beer.unacceptable.unacceptablehealth.Models;
 
+import android.content.Context;
+import android.graphics.Color;
+
+import androidx.core.content.res.ResourcesCompat;
+
 import com.google.gson.annotations.Expose;
 import com.unacceptable.unacceptablelibrary.Models.ListableObject;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import java.util.ArrayList;
 import java.util.Date;
+
+import beer.unacceptable.unacceptablehealth.Controllers.IDateLogic;
+import beer.unacceptable.unacceptablehealth.R;
 
 public class Goal extends ListableObject {
     @Expose
@@ -42,13 +50,42 @@ public class Goal extends ListableObject {
         return goalsCompleted + "/" + goalItemCount;
     }
 
-    public String GoalsCompletedPercent(boolean bCountRestDays) {
+    public String GoalsCompletedPercent(boolean bCountRestDays, boolean bIncludePercentSign) {
+
+        int iPercent = GoalsCompletedPercent(bCountRestDays);
+        String sResult = Integer.toString(iPercent);
+        if (bIncludePercentSign)
+            sResult += "%";
+
+        return sResult;
+    }
+
+    private int GoalsCompletedPercent(boolean bCountRestDays) {
         int goalsCompleted = getGoalsCompleted(bCountRestDays);
         int goalItemCount = goalItemSize(bCountRestDays);
         double result = (double)goalsCompleted / (double)goalItemCount;
         result *= 100;
-        int iResult = (int)result;
-        return Integer.toString(iResult);
+
+        return (int)result;
+    }
+
+    public int GetGoalsCompletedPercentColor(boolean bCountRestDays, Context ctx, IDateLogic dateLogic) {
+        int iPercent = GoalsCompletedPercent(bCountRestDays);
+
+        int color;
+
+        Date today = dateLogic.getTodaysDate();
+
+        if (today.after(StartDate) && today.before(EndDate))
+            color = ResourcesCompat.getColor(ctx.getResources(), R.color.percentCompleteCurrent, null);
+        else if (iPercent >= 90)
+            color = ResourcesCompat.getColor(ctx.getResources(), R.color.percentCompletedGood, null);
+        else if (iPercent >= 70)
+            color = ResourcesCompat.getColor(ctx.getResources(), R.color.percentCompleteOkay, null);
+        else
+            color = ResourcesCompat.getColor(ctx.getResources(), R.color.percentCompleteBad, null);
+
+        return color;
     }
 
     private int goalItemSize(boolean bCountRestDays) {
