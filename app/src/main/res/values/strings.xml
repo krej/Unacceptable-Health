@@ -308,4 +308,6 @@
     <string name="view_muscles_list">View Muscles</string>
     <string name="goal_percent_complete_placeholder">97%</string>
     <string name="placeholderText">TextView</string>
+    <string name="view_workout_summary">View Summary</string>
+    <string name="freestyleGoal">Freestyle?</string>
 </resources>

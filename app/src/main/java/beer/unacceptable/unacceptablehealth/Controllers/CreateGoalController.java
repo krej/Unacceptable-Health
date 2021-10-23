@@ -225,6 +225,9 @@ public class CreateGoalController extends BaseLogic<CreateGoalController.View> {
         }
 
         //hard code don't allow dates before November 1st 2018 because thats when I started creating these types of goals
+        //9.20.21 - This looks very strange almost 3 years later than this date... I think what I meant was in November 2018 was when I started doing the
+        //          'create a goal with items, then let me move them around if i skip a workout day' style of goals. NOT when i started using this app, as the first checking of this file was 2.24.2019
+        //          So I don't know why I limited when I could start a goal... Why does the above matter? Also when would I ever create a goal for the past? Not sure what I was thinking but i'll leave it because i dont think its hurting anything.
         if ( m_oGoal.StartDate == null || m_oGoal.StartDate.before(Tools.createDate(Calendar.NOVEMBER, 1, 2018, 0, 0, 0).getTime())) {
             view.showStartDateError();
             bContinue = false;
@@ -240,19 +243,25 @@ public class CreateGoalController extends BaseLogic<CreateGoalController.View> {
             bContinue = false;
         }
 
-        if (dataset == null || dataset.size() == 0) {
-            view.showMessage("Pending Goal Items Required");
-            bContinue = false;
+        if (!m_oGoal.Freestyle) {
+            if (dataset == null || dataset.size() == 0) {
+                view.showMessage("Pending Goal Items Required");
+                bContinue = false;
+            }
         }
 
         if (!bContinue) return;
 
-        //store pending goal items from the UI
-        setPendingGoalItemsFromAdapter(dataset);
+        if (!m_oGoal.Freestyle ) {
+            //store pending goal items from the UI
+            setPendingGoalItemsFromAdapter(dataset);
+        }
+
 
         m_oGoal.name = sName;
         m_oGoal.Description = sDescription;
-        createGoalItems(bBasedOnWeek);
+        if (!m_oGoal.Freestyle)
+            createGoalItems(bBasedOnWeek);
         m_oGoal.BasedOnWeek = bBasedOnWeek;
         m_oGoal.PendingGoalItems = m_oPendingGoalItems;
         m_oGoal.Acheived = false;
@@ -260,6 +269,11 @@ public class CreateGoalController extends BaseLogic<CreateGoalController.View> {
         m_oGoal.OverallGoalAmountType = wtGoalType;
 
         m_oGoal.Save(m_LibraryRepository);
+    }
+
+    public void setFreestyle(boolean bFreestyle) {
+        m_oGoal.Freestyle = bFreestyle;
+        view.ToggleGoalItemVisibility(!bFreestyle);
     }
 
     public interface View {
@@ -276,5 +290,6 @@ public class CreateGoalController extends BaseLogic<CreateGoalController.View> {
         void showEndDateError(String sMessage);
         void showMessage(String sMessage);
         void clearErrors();
+        void ToggleGoalItemVisibility(boolean bVisible);
     }
 }

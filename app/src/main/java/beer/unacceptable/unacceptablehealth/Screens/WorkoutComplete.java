@@ -14,6 +14,7 @@ import com.unacceptable.unacceptablelibrary.Tools.Tools;
 import beer.unacceptable.unacceptablehealth.Controllers.DateLogic;
 import beer.unacceptable.unacceptablehealth.Controllers.MainScreenController;
 import beer.unacceptable.unacceptablehealth.Models.DailyLog;
+import beer.unacceptable.unacceptablehealth.Models.Goal;
 import beer.unacceptable.unacceptablehealth.Models.GoalItem;
 import beer.unacceptable.unacceptablehealth.Models.Workout;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutPlan;
@@ -26,6 +27,7 @@ public class WorkoutComplete extends BaseActivity implements MainScreenControlle
     private Button btnCompleteWorkout;
     private TextView m_tvDuration;
     private Workout m_Workout;
+    private Goal m_Goal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,7 @@ public class WorkoutComplete extends BaseActivity implements MainScreenControlle
         });
 
         m_oController.LoadTodaysGoalItems();
+        m_oController.LoadCurrentGoal();
 
         Button btnCancel = findViewById(R.id.cancel_workout);
         btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -77,10 +80,16 @@ public class WorkoutComplete extends BaseActivity implements MainScreenControlle
     private void saveAndCompleteWorkout(Workout workout) {
         if (m_oGoalItems != null) {
             for (GoalItem goalItem : m_oGoalItems) {
-                if (goalItem.WorkoutType.idString.equals(workout.WorkoutPlan.WorkoutType.idString)) {
+                if (goalItem.WorkoutType.idString.equals(workout.WorkoutPlan.WorkoutType.idString) && !goalItem.Completed) {
                     m_oController.ToggleGoalItemComplete(goalItem, null);
                 }
             }
+        }
+
+        if (m_Goal.Freestyle) {
+            GoalItem goalItem = m_oController.CreateNewGoalItem(workout);
+            m_Goal.AddGoalItem(goalItem);
+            m_Goal.Save();
         }
 
         workout.Save();
@@ -134,5 +143,10 @@ public class WorkoutComplete extends BaseActivity implements MainScreenControlle
     @Override
     public void enableCompleteWorkoutButton(boolean bEnabled) {
         btnCompleteWorkout.setEnabled(bEnabled);
+    }
+
+    @Override
+    public void SetGoal(Goal goal) {
+        m_Goal = goal;
     }
 }

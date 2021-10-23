@@ -4,6 +4,7 @@ import com.android.volley.VolleyError;
 import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
 import com.unacceptable.unacceptablelibrary.Logic.BaseLogic;
 import com.unacceptable.unacceptablelibrary.Models.Response;
+import com.unacceptable.unacceptablelibrary.Repositories.ITimeSource;
 import com.unacceptable.unacceptablelibrary.Repositories.RepositoryCallback;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
@@ -15,6 +16,7 @@ import java.util.Date;
 
 import beer.unacceptable.unacceptablehealth.Models.CustomReturns.GoalItemsWithWorkoutPlans;
 import beer.unacceptable.unacceptablehealth.Models.DailyLog;
+import beer.unacceptable.unacceptablehealth.Models.Goal;
 import beer.unacceptable.unacceptablehealth.Models.GoalItem;
 import beer.unacceptable.unacceptablehealth.Models.GoalItemAction;
 import beer.unacceptable.unacceptablehealth.Models.Workout;
@@ -193,6 +195,31 @@ public class MainScreenController extends BaseLogic<MainScreenController.View> {
         });
     }
 
+    public GoalItem CreateNewGoalItem(Workout workout) {
+        GoalItem goalItem = new GoalItem(m_date.getTodaysDate(), workout.WorkoutPlan.WorkoutType);
+        //goalItem.WorkoutType = workout.WorkoutPlan.WorkoutType;
+        goalItem.Completed = true;
+        //goalItem.Date = m_date.getTodaysDate();
+        //goalItem.name = workout.WorkoutPlan.WorkoutType.name + " on " + m_date.getTodaysDate();
+
+        return goalItem;
+    }
+
+    public void LoadCurrentGoal() {
+        m_repo.LoadCurrentGoal(new RepositoryCallback() {
+            @Override
+            public void onSuccess(String t) {
+                Goal goal = Tools.convertJsonResponseToObject(t, Goal.class);
+                view.SetGoal(goal);
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+
+            }
+        });
+    }
+
     public interface View {
 
         void showTodaysLog(boolean b);
@@ -206,5 +233,6 @@ public class MainScreenController extends BaseLogic<MainScreenController.View> {
         void setNoGoalLabelVisibility(boolean bVisible);
         void showToast(String sMessage);
         void enableCompleteWorkoutButton(boolean bEnabled);
+        void SetGoal(Goal goal);
     }
 }

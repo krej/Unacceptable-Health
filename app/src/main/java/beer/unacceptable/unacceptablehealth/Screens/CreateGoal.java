@@ -20,6 +20,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
 import com.unacceptable.unacceptablelibrary.Repositories.LibraryRepository;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
@@ -43,7 +44,9 @@ public class CreateGoal
     TextView m_etEndDate;
     TextView m_tvName;
     TextView m_etBriefDescription;
-    Switch m_swGoalType;
+    TextView m_tvGoalItemsHeader;
+    SwitchMaterial m_swGoalType;
+    SwitchMaterial m_swFreestyle;
     Spinner m_spGoalAmountType;
     EditText m_etGoalAmount;
     FloatingActionButton m_fab;
@@ -92,6 +95,10 @@ public class CreateGoal
                 m_oController.setPendingGoalItemsFromAdapter(m_Adapter.Dataset());
                 m_oController.changeGoalType(isChecked);
             }
+        });
+
+        m_swFreestyle.setOnCheckedChangeListener((compoundButton, b) -> {
+            m_oController.setFreestyle(b);
         });
     }
 
@@ -168,6 +175,8 @@ public class CreateGoal
         m_tvName = findViewById(R.id.goal_name);
         m_spGoalAmountType = findViewById(R.id.goal_amount_type);
         m_etGoalAmount = findViewById(R.id.goal_amount);
+        m_tvGoalItemsHeader = findViewById(R.id.goal_items_header);
+        m_swFreestyle = findViewById(R.id.goal_freestyle);
     }
 
     @Override
@@ -236,6 +245,19 @@ public class CreateGoal
     }
 
     @Override
+    public void ToggleGoalItemVisibility(boolean bVisible) {
+        if (bVisible) {
+            m_swGoalType.setVisibility(View.VISIBLE);
+            m_tvGoalItemsHeader.setVisibility(View.VISIBLE);
+            m_rvGoalItems.setVisibility(View.VISIBLE);
+        } else {
+            m_swGoalType.setVisibility(View.GONE);
+            m_tvGoalItemsHeader.setVisibility(View.GONE);
+            m_rvGoalItems.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_view_recipe, menu);
@@ -264,4 +286,5 @@ public class CreateGoal
 
         m_oController.saveGoal(sName, sDescription, bBasedOnWeek, m_Adapter.Dataset(), dGoalAmount, wtGoalType);
     }
+
 }

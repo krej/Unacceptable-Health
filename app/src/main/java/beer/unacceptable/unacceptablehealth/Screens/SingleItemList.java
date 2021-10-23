@@ -44,7 +44,6 @@ public class SingleItemList extends AppCompatActivity
                 m_Adapter.showAddItemDialog(SingleItemList.this, m_rvList.getContext(), SingleItemViewControl.ADD_ITEM, null);
             }
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Bundle bundle = getIntent().getBundleExtra("bundle");
         final String sCollectionName = bundle.getString("collectionName");
@@ -52,6 +51,15 @@ public class SingleItemList extends AppCompatActivity
         int iItemLayout = bundle.getInt("itemLayout", R.layout.one_line_list);
         ListableObject[] data = (ListableObject[])bundle.getSerializable("data");
         boolean bAddHorizontalSpacing = bundle.getBoolean("addHorizontalSpacing", false);
+        boolean bEnableHomeAsUp = bundle.getBoolean("EnableHomeAsUp", true);
+        boolean bShowFAB = bundle.getBoolean("ShowFAB", true);
+
+        if (!bShowFAB) {
+            fab.setVisibility(View.INVISIBLE);
+        }
+
+        if (bEnableHomeAsUp)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         String sTitle = bundle.getString("title");
 
@@ -69,7 +77,9 @@ public class SingleItemList extends AppCompatActivity
         m_Adapter = Tools.setupRecyclerView(m_rvList, getApplicationContext(), iItemLayout, iDialogLayout, false, viewControl, true, bAddHorizontalSpacing);
 
         final boolean bEnableSwipeRefresh = data == null;
+        m_SwipeRefresh.setEnabled(bEnableSwipeRefresh);
 
+        if (bEnableSwipeRefresh) {
             m_SwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
@@ -79,6 +89,7 @@ public class SingleItemList extends AppCompatActivity
                         m_SwipeRefresh.setRefreshing(false);
                 }
             });
+        }
 
         if (bEnableSwipeRefresh) {
             m_oController.LoadCollection(sCollectionName, false);

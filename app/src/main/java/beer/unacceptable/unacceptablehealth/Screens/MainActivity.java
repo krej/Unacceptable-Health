@@ -36,6 +36,7 @@ import beer.unacceptable.unacceptablehealth.Controllers.DailyLogLogic;
 import beer.unacceptable.unacceptablehealth.Controllers.DateLogic;
 import beer.unacceptable.unacceptablehealth.Controllers.MainScreenController;
 import beer.unacceptable.unacceptablehealth.Models.DailyLog;
+import beer.unacceptable.unacceptablehealth.Models.Goal;
 import beer.unacceptable.unacceptablehealth.Models.GoalItem;
 import beer.unacceptable.unacceptablehealth.Models.WorkoutPlan;
 import beer.unacceptable.unacceptablehealth.R;
@@ -308,6 +309,11 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void enableCompleteWorkoutButton(boolean bEnabled) {
+
+    }
+
+    @Override
+    public void SetGoal(Goal goal) {
 
     }
 

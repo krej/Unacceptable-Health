@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.unacceptable.unacceptablelibrary.Adapters.BaseAdapterViewControl;
 import com.unacceptable.unacceptablelibrary.Adapters.NewAdapter;
 import com.unacceptable.unacceptablelibrary.Models.ListableObject;
+import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
 import beer.unacceptable.unacceptablehealth.Controllers.DateLogic;
 import beer.unacceptable.unacceptablehealth.Models.Goal;
@@ -28,6 +29,7 @@ public class GoalAdapterViewControl extends BaseAdapterViewControl {
         TextView goalsCompleted = view.view.findViewById(R.id.goal_items_completed);
         //TextView goalsCompletedPercent = view.view.findViewById(R.id.goal_items_completed_percent);
         TextView goalsCompletedPercent = view.view.findViewById(R.id.goalPercentComplete);
+        TextView goalItemsCompletedLabel = view.view.findViewById(R.id.goal_items_completed_label);
 
         Goal g = (Goal)i;
 
@@ -37,7 +39,7 @@ public class GoalAdapterViewControl extends BaseAdapterViewControl {
         goalsCompleted.setText(g.GoalsCompletedLabel(false));
         goalsCompletedPercent.setText(g.GoalsCompletedPercent(false, true));
         goalsCompletedPercent.setTextColor(g.GetGoalsCompletedPercentColor(false, view.view.getContext(), new DateLogic()));
-
+        Tools.SetText(goalItemsCompletedLabel, g.GetGoalItemsCompletedLabel());
     }
 
     @Override

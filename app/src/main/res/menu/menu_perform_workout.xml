@@ -2,6 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item
+        android:id="@+id/view_workout_summary"
+        android:title="@string/view_workout_summary"
+        app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/add_exercise"

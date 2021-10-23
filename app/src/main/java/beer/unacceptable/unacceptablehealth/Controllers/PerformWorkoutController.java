@@ -3,9 +3,11 @@ package beer.unacceptable.unacceptablehealth.Controllers;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.SystemClock;
 
 import androidx.core.app.ActivityCompat;
 
@@ -104,7 +106,8 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
         m_WorkoutPlan = workoutPlan;
         m_bIsInRestMode = bIsInRestMode;
         m_iCurrentExercisePlan = iCurrentExercise;
-        m_lStartTime = iStartTime;
+        //m_lStartTime = iStartTime;
+        m_lStartTime = m_TimeSource.getTodaysDate().getTime();
 
         if (bIsInRestMode) {
             view.SwitchToRestView();
@@ -354,7 +357,7 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
         return workout;
     }
 
-    private ExercisePlan getCurrentExercisePlan() {
+    public ExercisePlan getCurrentExercisePlan() {
         return m_WorkoutPlan.ExercisePlans.get(m_iCurrentExercisePlan);
     }
 
@@ -368,6 +371,11 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
             return null;
 
         return exercisePlans[0];
+    }
+
+    public long GetWorkoutTimerTime() {
+
+        return m_TimeSource.elapsedRealtime() + (getCurrentExercisePlan().timeInMilliseconds() + ExercisePlan.EXERCISE_LEAD_IN_TIME);
     }
 
     public void showNotification() {
@@ -447,6 +455,22 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
         } else return network_loc;
     }
 
+    public void ViewWorkoutSummary() {
+        ExercisePlan[] exercisePlans = m_WorkoutPlan.ExercisePlans.toArray(new ExercisePlan[0]);
+
+        view.ViewWorkoutSummary(exercisePlans);
+    }
+
+    /*
+        This is used in the Workout Summary screen to show which exercises are finished
+     */
+    public static int GetExercisePlanBackgroundColor(ExercisePlan exercisePlan) {
+        if (exercisePlan.SetsRemaining() == 0)
+            return Color.LTGRAY;
+
+        return Color.WHITE;
+    }
+
     public interface View {
         void ShowNotification(WorkoutPlan workoutPlan, int iCurrentExercise, boolean bInRestMode, long iRestTime, long iStartTime, String sNotificationText, boolean bUseChronometer);
 
@@ -477,5 +501,7 @@ public class PerformWorkoutController extends BaseLogic<PerformWorkoutController
         Context getContext();
 
         //Location getGPSCoords();
+
+        void ViewWorkoutSummary(ExercisePlan[] exercisePlans);
     }
 }

@@ -80,10 +80,17 @@
             android:maxLines="3"
             android:hint="@string/description"/>
 
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/goal_freestyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/freestyleGoal"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <EditText
                 android:id="@+id/goal_amount"
@@ -101,7 +108,7 @@
 
         </LinearLayout>
 
-        <Switch
+        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/goal_create_based_on_week"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

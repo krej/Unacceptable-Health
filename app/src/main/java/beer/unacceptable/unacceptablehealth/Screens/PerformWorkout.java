@@ -37,11 +37,15 @@ import com.unacceptable.unacceptablelibrary.Repositories.LibraryRepository;
 import com.unacceptable.unacceptablelibrary.Repositories.TimeSource;
 import com.unacceptable.unacceptablelibrary.Tools.Tools;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import beer.unacceptable.unacceptablehealth.Adapters.ExerciseDatabaseViewControl;
+import beer.unacceptable.unacceptablehealth.Adapters.ExerciseListAdapterViewControl;
 import beer.unacceptable.unacceptablehealth.Adapters.ExerciseSelectionViewControl;
+import beer.unacceptable.unacceptablehealth.Adapters.SingleItemViewControl;
+import beer.unacceptable.unacceptablehealth.Adapters.WorkoutSummaryViewControl;
 import beer.unacceptable.unacceptablehealth.Controllers.AddExerciseController;
 import beer.unacceptable.unacceptablehealth.Controllers.PerformWorkoutController;
 import beer.unacceptable.unacceptablehealth.Models.Exercise;
@@ -227,7 +231,7 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
         Tools.SetText(m_tvReps, exercisePlan.Reps);
         Tools.SetText(m_tvSets, exercisePlan.SetsRemainingString());
         Tools.SetText(m_etWeights, exercisePlan.Weight);
-        m_chronoWorkout.setBase(SystemClock.elapsedRealtime() + (exercisePlan.timeInMilliseconds() + ExercisePlan.EXERCISE_LEAD_IN_TIME));
+        m_chronoWorkout.setBase(m_oController.GetWorkoutTimerTime()); //This is needed here to initially setup the timer, otherwise it will show 0:00
         m_chronoWorkout.setCountDown(true);
         Tools.SetText(m_tvExerciseDescription, exercisePlan.Exercise.Description);
     }
@@ -312,9 +316,13 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
             return true;
         });
 
+
+
         m_btnStartWorkoutTimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //this is needed here to reset the timer, otherwise when you click start it will jump to however many seconds its been since the screen loaded
+                m_chronoWorkout.setBase(m_oController.GetWorkoutTimerTime());
                 m_chronoWorkout.start();
             }
         });
@@ -414,10 +422,35 @@ public class PerformWorkout extends BaseActivity implements PerformWorkoutContro
                 break;
             case R.id.add_exercise:
                 LaunchExerciseSelection();
+                break;
+            case R.id.view_workout_summary:
+                m_oController.ViewWorkoutSummary();
+                break;
 
         }
 
         return true;
+    }
+
+    @Override
+    public void ViewWorkoutSummary(ExercisePlan[] exercisePlans) {
+        Class<?> classToLaunch = SingleItemList.class;
+        Bundle b = new Bundle();
+
+        //b.putString("collectionName", "workouttype");
+        b.putString("title", "Workout Summary");
+        b.putString("shortName", "Summary");
+        b.putBoolean("ShowFAB", false);
+        b.putBoolean("EnableHomeAsUp", false);
+        b.putInt("itemLayout", R.layout.list_workout_summary);
+        //b.putSerializable("viewControl", new SingleItemViewControl(b.getString("collectionName"), b.getString("shortName")));
+        b.putSerializable("viewControl", new WorkoutSummaryViewControl());
+        b.putSerializable("data", exercisePlans);
+
+        Intent intent = new Intent(getContext(), classToLaunch);
+
+        intent.putExtra("bundle", b);
+        getContext().startActivity(intent);
     }
 
     //TODO: I copied this from AddExercise. This should become a shared function.

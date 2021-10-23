@@ -52,4 +52,12 @@ public class ExercisePlan extends ListableObject {
         return Seconds * 1000;
     }
 
+    public String getStatus() {
+        if (SetsRemaining() == 0) {
+            return "Complete";
+        }
+
+        return SetsRemainingString();
+    }
+
 }

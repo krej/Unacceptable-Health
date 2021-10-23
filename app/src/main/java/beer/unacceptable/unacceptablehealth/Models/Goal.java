@@ -39,15 +39,23 @@ public class Goal extends ListableObject {
     public boolean Acheived;
     @Expose
     public ArrayList<GoalExtension> GoalExtensions;
+    @Expose
+    public boolean Freestyle;
 
     public String DurationLabel() {
         return Tools.FormatDate(StartDate, DailyLog.LongDateFormat) + " to " + Tools.FormatDate(EndDate, DailyLog.LongDateFormat);
     }
 
     public String GoalsCompletedLabel(boolean bCountRestDays) {
-        int goalsCompleted = getGoalsCompleted(bCountRestDays);
+
         int goalItemCount = goalItemSize(bCountRestDays);
-        return goalsCompleted + "/" + goalItemCount;
+
+        if (Freestyle) {
+            return Integer.toString(goalItemCount);
+        } else {
+            int goalsCompleted = getGoalsCompleted(bCountRestDays);
+            return goalsCompleted + "/" + goalItemCount;
+        }
     }
 
     public String GoalsCompletedPercent(boolean bCountRestDays, boolean bIncludePercentSign) {
@@ -90,6 +98,8 @@ public class Goal extends ListableObject {
 
     private int goalItemSize(boolean bCountRestDays) {
         int i = 0;
+        if (GoalItems == null) return i;
+
         for (GoalItem goalItem : GoalItems) {
             if (!goalItem.WorkoutType.name.equals("Rest") || bCountRestDays)
                 i++;
@@ -100,6 +110,8 @@ public class Goal extends ListableObject {
 
     private int getGoalsCompleted(boolean bCountRestDays) {
         int i = 0;
+        if (GoalItems == null) return i;
+
         for (GoalItem goalItem : GoalItems) {
             if (goalItem.Completed && (!goalItem.WorkoutType.name.equals("Rest") || bCountRestDays))
                 i++;
@@ -120,5 +132,20 @@ public class Goal extends ListableObject {
         if (GoalExtensions == null) GoalExtensions = new ArrayList<>();
 
         GoalExtensions.add(goalExtension);
+    }
+
+    public String GetGoalItemsCompletedLabel() {
+        //TODO: Move this into the strings.xml file
+        if (Freestyle) {
+            return "Freestyle Workouts:";
+        } else {
+            return "Goals Completed:";
+        }
+    }
+
+    public void AddGoalItem(GoalItem goalItem) {
+        if (GoalItems == null) GoalItems = new ArrayList<>();
+
+        GoalItems.add(goalItem);
     }
 }

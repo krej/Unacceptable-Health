@@ -282,6 +282,8 @@ public class ViewGoal
 
         public void PopulateGoalItems(ArrayList<GoalItem> goalItems, boolean bShowPastGoalItems) {
             Date dt = new Date();
+            if (goalItems == null) return;
+
             for (GoalItem gi : goalItems) {
                 //TODO: Put this logic in a controller so i can test it
 
@@ -336,6 +338,11 @@ public class ViewGoal
 
         @Override
         public void enableCompleteWorkoutButton(boolean bEnabled) {
+
+        }
+
+        @Override
+        public void SetGoal(Goal goal) {
 
         }
     }
