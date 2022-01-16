@@ -28,6 +28,7 @@ public class MainScreenController extends BaseLogic<MainScreenController.View> {
 
     private IRepository m_repo;
     private IDateLogic m_date;
+    private Goal m_CurrentGoal;
 
     public MainScreenController(IRepository repository, IDateLogic dateLogic) {
         m_repo = repository;
@@ -177,6 +178,13 @@ public class MainScreenController extends BaseLogic<MainScreenController.View> {
         });
     }
 
+    public void SwapGoalItems(GoalItem itemToSwap, int which, ArrayList<GoalItem> goalItems, NewAdapter adapter, boolean showAllGoalItems) {
+        GoalItem itemToSwapWith = goalItems.get(which);
+
+        SetGoalItemDate(itemToSwapWith.Date, itemToSwap, adapter, showAllGoalItems);
+        SetGoalItemDate(itemToSwap.Date, itemToSwapWith, adapter, showAllGoalItems);
+    }
+
     public void DeleteGoalItem(final GoalItem goalItem, final NewAdapter adapter) {
         GoalItemAction action = new GoalItemAction();
         action.Item = goalItem;
@@ -220,6 +228,81 @@ public class MainScreenController extends BaseLogic<MainScreenController.View> {
         });
     }
 
+    public void showSwapGoalItemMenu(GoalItem goalItem, String m_sGoalIdString) {
+        m_repo.LoadGoal(m_sGoalIdString, new RepositoryCallback() {
+            @Override
+            public void onSuccess(String t) {
+                Goal goal = Tools.convertJsonResponseToObject(t, Goal.class);
+                ArrayList<GoalItem> goalItems = filterGoalItems(goal.GoalItems, goalItem);
+
+                if (goalItems == null) {
+                    view.showToast("No goal items to swap with.");
+                    return;
+                }
+
+                String[] goalItemDescriptions = createGoalItemDescriptions(goalItems);
+
+                view.ShowGoalSwapMenu(goalItem, goalItemDescriptions, goalItems);
+
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+
+            }
+        });
+    }
+
+    private String[] createGoalItemDescriptions(ArrayList<GoalItem> goalItems) {
+        String[] desc = new String[goalItems.size()];
+
+        for (int i = 0; i < goalItems.size(); i++) {
+            GoalItem g = goalItems.get(i);
+            desc[i] = g.WorkoutType.name + " on " + Tools.FormatDate(g.Date, DailyLog.LongDateFormat);
+        }
+
+        return desc;
+    }
+
+    private ArrayList<GoalItem> filterGoalItems(ArrayList<GoalItem> goalItems, GoalItem itemToRemove) {
+        if (goalItems == null || goalItems.size() <= 1) return null;
+
+        ArrayList<GoalItem> newList = new ArrayList<GoalItem>();
+        newList = (ArrayList<GoalItem>)goalItems.clone();
+        newList.remove(itemToRemove);
+        newList.removeIf(g -> g.Completed);
+
+        return newList;
+    }
+
+    public void GetCurrentGoal() {
+        m_repo.LoadCurrentGoal(new RepositoryCallback() {
+            @Override
+            public void onSuccess(String t) {
+                Goal goal = Tools.convertJsonResponseToObject(t, Goal.class);
+                m_CurrentGoal = goal;
+                view.SetCurrentGoalIdString(getCurrentGoalIdString());
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+                view.showToast("Error loading current goal");
+            }
+        });
+    }
+
+    public String getCurrentGoalIdString() {
+        return m_CurrentGoal.idString;
+    }
+
+    public void showSwapError() {
+        //TODO: So I'm giving up on swapping right now because I was running into issues.
+        //The first is that it keeps changing the time for some reason and that is screwing up where the GoalItems go to, and sometimes prevents the correct goal item from showing up on the main screen as todays goal item.
+        //The second is that sometimes it would switch with the wrong day, maybe... I was testing by having Arms on Sat and Rest on Sun and trying to select Arms and swapping to Sun. This would then move Arms to Friday. I'm guessing its because of the way
+        //  I am determining which item was picked. It isn't by actual item, but on index on a filtered list.
+        view.showToast("Swapping not supported yet. See comments.");
+    }
+
     public interface View {
 
         void showTodaysLog(boolean b);
@@ -234,5 +317,8 @@ public class MainScreenController extends BaseLogic<MainScreenController.View> {
         void showToast(String sMessage);
         void enableCompleteWorkoutButton(boolean bEnabled);
         void SetGoal(Goal goal);
+
+        void ShowGoalSwapMenu(GoalItem itemToSwap, String[] goalItemDescriptions, ArrayList<GoalItem> goalItems);
+        void SetCurrentGoalIdString(String idString);
     }
 }
